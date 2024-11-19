@@ -1,0 +1,198 @@
+{
+  "main": {
+    "id": "1819b83897591f2d",
+    "type": "split",
+    "children": [
+      {
+        "id": "3f189a365e51386e",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "ff1ffc77ad2d81a2",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Informatica/13 - Componenti computer.md",
+                "mode": "source",
+                "backlinks": false,
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "13 - Componenti computer"
+            }
+          },
+          {
+            "id": "7e18b026895bb4e9",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "chimica/2 - La mole.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2 - La mole"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "ef1185a4f8648f9c",
+    "type": "split",
+    "children": [
+      {
+        "id": "ed439e0239ff7d8b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "50f326ddb85c6f2e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "f2e581c41f213000",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "8bf6a77560816360",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "ed1933459f3df990",
+    "type": "split",
+    "children": [
+      {
+        "id": "7b7bce63d96f8ed2",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "14ddcd15bbfb515c",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Informatica/13 - Componenti computer.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for 13 - Componenti computer"
+            }
+          },
+          {
+            "id": "60795b76499e0fbe",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Informatica/13 - Componenti computer.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from 13 - Componenti computer"
+            }
+          },
+          {
+            "id": "b92b8642dd531e7a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "75e23a03f341b59e",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Informatica/13 - Componenti computer.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of 13 - Componenti computer"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "ff1ffc77ad2d81a2",
+  "lastOpenFiles": [
+    "Informatica/14 - Gestione dei files.md",
+    "Informatica/13 - Componenti computer.md",
+    "Informatica/11 - liste.md",
+    "Informatica/12 - Tabelle.md",
+    "Informatica/10 - Funzioni.md",
+    "Informatica/9 - Numeri relativi (continuo lezione5).md",
+    "Informatica/8 - Cicli annidati.md",
+    "Informatica/7 - Cicli.md",
+    "Informatica/6 - Operatori logici booleani.md",
+    "Informatica/5 - Sistemi in base n per calcolatori.md",
+    "chimica/2 - La mole.md",
+    "Informatica/4 - ASCII.md",
+    "Informatica/3 - Operatori numerici.md",
+    "Informatica/2 - Tipi di dati.md",
+    "Informatica/1 - Introduzione alla programmazione.md"
+  ]
+}

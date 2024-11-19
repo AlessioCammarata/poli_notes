@@ -60,7 +60,7 @@ else:
     print("Nessun voto inserito\n")
 ```
 
-**Non usare break e continue.**
+>**Non usare break e continue.**
 
 #### Hand-Tracing dei cicli
 
@@ -93,6 +93,8 @@ while i >=0:
 una variabile sentinella puo anche essere una 'flag'.
 
 ### Somma e Media di n valori
+
+Usa le funzioni sum e len.
 
 ### Contare n valori
 

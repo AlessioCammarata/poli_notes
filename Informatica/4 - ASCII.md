@@ -1,5 +1,4 @@
-ASCII
---
+
 American Standard for Coding Information Interchange.
 Tutti gli strumenti che utilizzano ascii si capiscono.
 
@@ -10,7 +9,7 @@ Gli altri sono caratteri che comprendono tante altre cose, ma non lettere accent
 print("ok")
 ```
 
-chr() e ord() servono ad ottenere i codici ascii o al contrario:
+>**chr() e ord()** servono ad ottenere i codici ascii o al contrario:
 
 ```Python
 print(chr(64))  # stampa: @
@@ -22,7 +21,6 @@ print(ord("@")) # stampa: 64
 
 Tutti i valori in python sono oggetti, ogni oggetto ha i suoi metodi.
 Metodi delle stringhe:
-
 ```Python
 name = "John Smith"
 
@@ -32,7 +30,8 @@ lowercase_name = name.lower() # Lo rende lowercase
 
 replaced_name = name.replace("S","O") # Lo rende: "John Omith"
 ```
-Cosa fanno upper e lower?
+
+>Cosa fanno upper e lower?
 
 Trasformo la lettera in codice con chr() , controllo se il carattere è tra le lettere in minuscolo, se è cosi, allora sommo la differenza tra i 2, continuo per ogni carattere.
 
@@ -40,20 +39,21 @@ Trasformo la lettera in codice con chr() , controllo se il carattere è tra le l
 ##### Funzioni e Metodi
 
 Le #funzioni sono generiche e accettano argomenti di diverso tipo, i #metodi sono specifici rispetto all'oggetto.
-Non si puo fare questo:
 
+Non si può fare questo:
 ```Python
 num = 9
 
-uppercase_name = name.upper() # ERRORE
+uppercase_name = num.upper() # ERRORE
 ```
+
 Le #Funzioni sono chiamate direttamente, con un elenco di parametri mentre i #metodi sono chiamate nome_oggetto.metodo().
 Sia le #funzioni che i #metodi possono ritornare un valore.
 
+---
 #### Sequenze di escape
 
-Il carattere successivo viene interpretato diversmìamente.
-
+Il carattere successivo viene interpretato diversamente:
 ```Python
 print("He said \ "Hello\"") # He said "Hello"
 ```
@@ -85,7 +85,7 @@ print(f"{int=}") # int=2
 ---
 #### Specificatori di formato
 
-è possibile modificare il formato in cui vengono stampati i valori con gli specificatori di formato.
+È possibile modificare il formato in cui vengono stampati i valori con gli specificatori di formato.
 
 - : , serve a separare il valore
 - Allineamento , < sinistra, > destra, ^ accentra
@@ -144,11 +144,10 @@ print("%x"%(b)) # In esadecimale
 
 Costrutto di scelta, istruzione di controllo di flusso, permette di eseguire un blocco o un altro a seconda che si verifiche una certa condizione.
 
-- If
-- Else
+- **If**
+- **Else**
 
-Esempio #Ascensore
-
+Esempio #Ascensore:
 ```Python
 piano = int(input("Inserire il numero del piano\n"))
 
@@ -167,11 +166,12 @@ print(f"Arriverai al piano {piano}")
 
 Esiste anche la if che fa solo una cosa senza else.
 
+---
 ### Approssimazione
 
 Epsilon sara un valore estremamente piccolo che decido io.
 
-math.isClose() -> Ti dice che sono simili fino a 10^-9
+**math.isClose()** -> Ti dice che sono simili fino a 10^-9
 
 ```Python
 import math

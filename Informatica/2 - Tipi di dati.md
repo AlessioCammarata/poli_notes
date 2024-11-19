@@ -1,5 +1,4 @@
 
-
 Una *variabile* è una locazione di memoria
 In python si inizializza con una assegnazione:
 
@@ -8,9 +7,8 @@ variabile = 10 #Definisce la var
 
 variabile = 6 #Soovrascrive la var
 ```
-
-Variabile VS Costante
-
+---
+#### Variabile VS Costante
 
 Le costanti non dovrebbero mai cambiare durante il programma --> Sono scritte in maiuscolo in python
 
@@ -29,14 +27,12 @@ mese = 7
 #Costanti
 PI = 3.14
 ```
+---
+### Tipi di dati
 
-Tipi di dati
---
 Si separano i numeri interi dalla parte Reale con il punto.
 
-
-Le variabili possono cambiare tipo.
-
+Le variabili possono cambiare tipo:
 ```Python
 #Assegnazione a integer
 anno = 2024
@@ -47,6 +43,7 @@ anno = "2024"
 # Diventa float
 anno = 20.24
 ```
+
 Ogni volta che si cambia tipo data, python occupa un altra zona di memoria, distrugge quella di prima e ne crea un'altra.  --> Non è sicuro che un int e una str stiano nello stesso spazio
 
 #### Stringa
@@ -103,7 +100,7 @@ nome = "Nome"
 print(nome[4]) # Index Out of Range
 ```
 
-###### Slicing
+##### Slicing
 
 Permette di dividere una stringa in base a due indici. -> Permette di accedere a porzioni di stringhe
 Il primo indica il carattere di partenza incluso e il secondo quello d'arrivo escluso
@@ -124,7 +121,7 @@ print(nome[::2]) # Nmlno
 print(nome[1::2]) # oeug
 ```
 
-Si puo contare al contrario:
+Si può contare al contrario:
 
 ```Python
 lista = [1,2,3,4,5]

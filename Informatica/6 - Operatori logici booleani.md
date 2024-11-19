@@ -32,19 +32,19 @@ print(f"L'acqua è {state}\n")
 
 ##### Proprietà
 
-- Commutativa
+- **Commutativa**
 
 A and B = B and A
 
-- Associativa
+- **Associativa**
 
 A and B and C = (A and B) and C = A and (B and C)
 
-- distributiva
+- **distributiva**
 
 A and (B or C) = (A and B) or (A and C)
 
-- Legge di Demorgan
+- **Legge di Demorgan**
 
 not(A and B) = not A or not B
 not(A or B) = not A and not B
@@ -62,7 +62,6 @@ esempio di funzione bool()
 # equivale a bool()
 
 def boolean(num):
-
     return False if num == 0 else True
 
   
@@ -74,10 +73,10 @@ print(boolean(10))
 
 #### Metodi stringhe che restituiscono valori
 
-- endswith("somethin") -> Controlla con cosa finisce una stringa.
-- s.count("Some") -> Conta quante volte la stringa è contenuta in un nome s
-- startswith("Somethin") -> Uguale alla end ma controlla l'inizio
-- s.find("Some") -> Cerca la stringa e restitusice l'indice rispetto alla prima occorrenza che trova, se non lo trova restituisce -1
+- **endswith("somethin")** -> Controlla con cosa finisce una stringa.
+- **s.count("Some")** -> Conta quante volte la stringa è contenuta in un nome s
+- **startswith("Somethin")** -> Uguale alla end ma controlla l'inizio
+- **s.find("Some")** -> Cerca la stringa e restitusice l'indice rispetto alla prima occorrenza che trova, se non lo trova restituisce -1
 
 ##### Altri metodi
 

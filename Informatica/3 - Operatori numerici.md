@@ -1,8 +1,6 @@
+### Introduzione
 
-Operatori numerici
---
-
-Gli operatori sono:
+Gli operatori numerici sono:
 
 - Addizione: +
 - Sottrazione: -
@@ -10,7 +8,7 @@ Gli operatori sono:
 - Divisione: /
 - Potenza: **
 
-La priorità è uguale a quella classica
+La priorità è uguale a quella classica.
 
 Se provo ad usare un *operatore numerico* tra due variabili che non sono numeri, da errore.
 
@@ -39,8 +37,7 @@ string2 = " besy"
 print("Sei una", string, string2) # Il risultato sara: Sei una babba besy
 ```
 
-
-Si puo usare anche il per con significato di *ripetizione*:
+Si può usare anche il per con significato di *ripetizione*:
 
 ```Python
 string  = "babba"
@@ -88,10 +85,10 @@ try:
 except ValueError as e:
     print("Errore:", e)
 ```
+---
+### Funzioni
 
-Funzioni
---
-Le funzioni ricevono dei parametri ( argomenti ), separati tra loro da argomenti.
+Le funzioni ricevono dei parametri ( **argomenti** ), separati tra loro da argomenti.
 Uno dell'argomento di una funzione può essere il risultato di un'altra funzione.
 
 Vengono eseguite prima le funzioni interne.
@@ -150,12 +147,14 @@ print("7") # Il tuo nome completo è lungo 7
 print("Il tuo nome completo è lungo ", end="7")
  # Il tuo nome completo è lungo 7
 ```
+---
+### Pacchetti di funzioni (Librerie)
 
-Pacchetti da importare
---
+Nelle librerie sono presenti funzioni o variabili che permettono di semplificare la scrittura del codice.
+#### Importare pacchetti
 
 Quando si fa import le librerie vengono inserite in una particolare locazione di memoria.
-### Pacchetti installati con python
+#### Pacchetti preinstallati
 
 Un esempio di questi moduli è #math.
 Ci sono due modi per importare, si puo importare la funzione, per esempio:
@@ -212,7 +211,7 @@ print(m.floor(a)) # 7
 print(m.ceil(a)) # 8
 ```
 
-Si pens che floor e trunc funzionano allo stesso modo ma con i numeri negativi si nota la differenza:
+Si pensa che **floor** e **trunc** funzionano allo stesso modo ma con i numeri negativi si nota la differenza:
 
 ```Python
 import math as m
@@ -237,15 +236,4 @@ total = price * quantity
 print(total) # 786.999999994
 ```
 
-2 valori sono uguali in base ad una tolleranza, quando si vuole confrontare 2 valori molto simili, si usa math.isclose(a,b):
-
-```Python
-import math as m
-
-price = 7.87
-quantity = 100
-total = price * quantity
-
-#Il risultato dovrebbe essere 787.00
-print(total) # 786.999999994
-```
+2 valori sono uguali in base ad una tolleranza, quando si vuole confrontare 2 valori molto simili, si usa **math.isclose(a,b).**

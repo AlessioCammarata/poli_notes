@@ -1,40 +1,56 @@
-Sistemi in base n per calcolatori
---
 
-base elevata alla sua posizione.
+Base elevata alla sua posizione.
 
 10000000 in binario = 1 * 2^8 = 256 in decimale
 
 252 = 2 * 10^2  + 5 * 10^1 + 2 * 10^0
 
-Se la cifra meno significativa è 1 allora è dispari, se è 0 è pari
+>Se la cifra meno significativa è 1 allora è dispari, se è 0 è pari
 
 ---
-In informatica:
+**In informatica:**
 
 Kilo    = 2^10
 Mega = 2^20
 Giga   = 2^30
 
-201 in base $5 = 2 * 5^2 + 0* 5^1 + 1 * 5^0 = 25 + 0 + 1 = 26$
+201 in base $5 = 2 \times 5^2 + 0 \times 5^1 + 1 \times 5^0 = 25 + 0 + 1 = 26$
 
 1 byte = 8 bit = 256
 1 word = 2 byte = 16 bit = 65 536
-### Trasfomare un valore da decimale ad altra base
+### Trasformare un valore da decimale ad altra base
 
-divido ripetutamente per la base di cui voglio, prendo i resti delle divisioni in senso inverso mi fermo quando il numero è nullo, quindi non piu divisibile.
+Divido ripetutamente per la base di cui voglio, prendo i resti delle divisioni in senso inverso mi fermo quando il numero è nullo, quindi non piu divisibile.
 
 #Esempio
 
-11 in decimale = $11/2$ = 5 resto *1*, $5/2$ = 2 resto *1*, $2/2$ = 1 resto *0* , $1/2$ resto *1*
+**11 in decimale:**
 
-percio in binario sarà uguale a 1011
+$11/2$ = 5 resto *1*, 
+	$5/2$ = 2 resto *1*, 
+		$2/2$ = 1 resto *0* , 
+			$1/2$ resto *1*
+
+perciò in binario sarà uguale a 1011
 
 Esercizi:
 - 19 decimale -> rappresentazioni in base 2 e 5
 
-*Base 2* = 19/2 = 9 resto 1, 9/2 = 4 resto 1, 4/2 = 2 resto 0, 2/2 = 1 resto 0, 1/2 resto 1 = 10011
-*Base 5* = 19/5 = 3 resto 4, 3/5 resto 3 = 34
+>*Base 2*:
+
+19/2 = 9 resto 1,
+	9/2 = 4 resto 1,
+		 4/2 = 2 resto 0,
+			  2/2 = 1 resto 0,
+				   1/2 resto 1 
+19 = **10011**
+
+>*Base 5*:
+ 
+19/5 = 3 resto 4,
+	3/5 resto 3,
+
+19 = **34**
 
 ---
 ###### Per convertire da base qualunque si passa da base 10.
@@ -48,8 +64,8 @@ Se avessi 34 in base 5 e lo volessi portare in base 2 dovrei:
 
 Data una sequenza di bit, il bit piu a sinistra si chiama #MSB e quello piu a destra #LSB.
 
-- LSB = Least Significant Bit
-- MSB = Most Significant Bit
+- **LSB** = Least Significant Bit
+- **MSB** = Most Significant Bit
 
 ---
 #### Somma in Binario
@@ -90,7 +106,7 @@ N = 4
 	
 In C gli interi occupano in genere 32 bit, = $2^{31} -1$ = 2147483647, se sommo 1 si azzera la variabile, il processore ha un registro dei flag, si alza quella di overflow.
 
-In python non c'è questo problema, adatta in automatico in modo che non ci sia overflow.
+>In **python** non c'è questo problema, adatta in automatico in modo che non ci sia overflow.
 
 --- 
 #### Sistema Ottale ed Esadecimale

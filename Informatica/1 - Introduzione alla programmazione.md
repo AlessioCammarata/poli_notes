@@ -1,50 +1,55 @@
-Introduzione alla programmazione
+I sistemi di elaborazione rappresentano l'informazione e la manipolano in forma digitale -- si trasforma l'informazione in sequenze di bit
 
-i sistemi di elaborazione rappresentano l'informazione e la manipolano in forma digitale -- si trasforma l'informazione in sequenze di bit
+>Binary Digit  - bit
 
-Binary Digit  - bit
-
-I calcolatori sono costituiti da circuiti elettronici, con componente base un transistor che funziona da interruttore -- 
-Questi componenti sono semiconduttori, aperto o chiuso (non conduce)
+---
+### Hardware
+I calcolatori sono costituiti da circuiti elettronici, con componente base un **transistor** che funziona da interruttore.
+Questi componenti sono **semiconduttori**, aperto o chiuso (non conduce).
 Questi due stati fisici vengono mappati in 0 e 1.
 
-Bisogna digitalizzare le informazioni in input
+Bisogna digitalizzare le informazioni in input.
 
-Il sistema operativo è quel componente software che permette di interfacciarsi con l'hardware
+>Il sistema operativo è quel componente software che permette di interfacciarsi con l'hardware
 
-CPU -- Central Process Unit
-RAM -- Random Access Memory --> Volatile
-ROM -- Read Only Memory     
+**CPU** -- Central Process Unit
+**RAM** -- Random Access Memory --> Volatile
+**ROM** -- Read Only Memory     
 Memorie di massa:           --> Permanente
-- HDD -- Hard Disk Drive
-- SSD -- Solid State Drive --> Utilizzano Silicio per memorizzare
+- **HDD** -- Hard Disk Drive
+- **SSD** -- Solid State Drive --> Utilizzano Silicio per memorizzare
 
-avvia il Bootstrap
-Carica il sistema operativo in RAM
+>Il computer si avvia con il Bootstrap, il SO carica il sistema operativo in RAM.
+
 I dati per essere elaborati devono essere passati in memoria RAM --> La RAM è molto piu veloce, bisogna accedere alla memoria di massa il meno possibile
 
-Bus di sistema -- Serie di connessioni elettriche - Sulla Motherboard sono disegnate delle piste elettriche
-SI divide logicamente in 3 parti
-- Bus dati          --> Permette di scambiare i dati
-- Bus indirizzi     --> Permette alla CPU di indirizzare la cella di memoria o il dispositivo che vuole lei, solo la CPU indirizza gli altri
-- Bus di controllo  --> Controlla se la richiesta è andata a buon fine, se non ci sei riuscito si crea un errore che va processato
+---
+#### Bus di sistema
+Serie di connessioni elettriche - Sulla Motherboard sono disegnate delle piste elettriche
 
+_SI divide logicamente in 3 parti:_
+- **Bus dati**          --> Permette di scambiare i dati
+- **Bus indirizzi**     --> Permette alla CPU di indirizzare la cella di memoria o il dispositivo che vuole lei, solo la CPU indirizza gli altri
+- **Bus di controllo**  --> Controlla se la richiesta è andata a buon fine, se non ci sei riuscito si crea un errore che va processato
+
+---
+#### Altri dispositivi
 Al bus di controllo si collegano altri dispositivi, la CPU può leggere e scrivere in RAM
 
-- Scheda Grafica , GPU Graphic Process Unit
+- **Scheda Grafica** , **GPU** Graphic Process Unit
 Fa i calcoli sulle primitive grafiche : Punti, Linee e poligoni
-- Scheda audio
-- Scheda di rete
-- Porte -> permette di collegare tramite un interfaccia unificata vari output -- Solitamente usb e sue varianti
+- **Scheda audio**
+- **Scheda di rete**
+- **Porte** -> permette di collegare tramite un interfaccia unificata vari output -- Solitamente usb e sue varianti
 
 Quando la CPU parla con qualcuno gli altri si mettono in stati IDLE, perciò questa architettura va bene per un numero di CPU limitato, Personal Computer.
 
-Software
---
+---
+### Software
 Microsoft Word è un esempio software, anche i giochi elettronici i sistemi operativi e i relativi driver.
-I driver sono quei moduli software dei sistemi operativi che permettono di interfacciare la nostra macchina con dispositivi diversi, Hardware non standard. Non plug and play.
+I **driver** sono quei moduli software dei sistemi operativi che permettono di interfacciare la nostra macchina con dispositivi diversi, Hardware non standard. Non plug and play.
 
-Il programma è l'insieme delle istruzioni semplice messe insieme per risolvere un problema complesso, programmare vuol dire mettere insieme le istruzioni.
+>Il programma è l'insieme delle istruzioni semplice messe insieme per risolvere un problema complesso, programmare vuol dire mettere insieme le istruzioni.
 
 Ci sono 4 stadi per programmare le cui difficoltà vanno in ordine decrescente.
 1. Capire il problema e stabilire i requisiti
@@ -52,7 +57,7 @@ Ci sono 4 stadi per programmare le cui difficoltà vanno in ordine decrescente.
 3. Soluzione formale -> Specificare le azioni mediante digrammi di flusso o una pseudo-codice
 4. Generare il codice
 
-Da ogni stadio si puo tornare indietro nei precedenti
+Da ogni stadio si può tornare indietro nei precedenti
 
 ```python
 #Considerando studenti un array di oggetti studente
@@ -67,34 +72,34 @@ for studente in studenti:
 studente_vecchio.name
 ```
 
-Algoritmo: qualsiasi cosa che aiuta a rappresentare come ordine di operazioni il lavoro da fare per il risultato.
+**Algoritmo**: qualsiasi cosa che aiuta a rappresentare come ordine di operazioni il lavoro da fare per il risultato.
 Ogni operazione può avere delle sotto operazioni e a volte possono dover eseguite piu volte.
 
-Descrizione passo-passo di un procedimento.
---
+---
+#### Descrizione passo-passo di un procedimento.
+
 I passi devono essere:
-- Deterministiche           -> Dato lo stesso stream di dati in ingresso produce sempre lo stesso output
-- Devono essere eseguibili  -> Devono produrre un output diretto
-- Deve terminare in un tempo finito
+- **Deterministici** -> Dato lo stesso stream di dati in ingresso produce sempre lo stesso output
+- Devono essere **eseguibili**  -> Devono produrre un output diretto
+- Deve terminare in un **tempo finito**
 
+#### Formalizzazione della soluzione
 
-Formalizzazione della soluzione
--- 
 SI possono utilizzare pseudo-codice o flowchart.
 
-Pseudo-codice:
-Pro
- - Molto vicino al codice
-Contro
- - Poco astratto
+- Pseudo-codice:
+	Pro
+	 - Molto vicino al codice
+	Contro
+	 - Poco astratto
 
-Flowchart:
-Pro
-- Piu intuitivo
-- Descrizione più astratta
-
-Contro
-- Troppe cose da scriver (0 sbatta)
+- Flowchart:
+	Pro
+	- Piu intuitivo
+	- Descrizione più astratta
+	
+	Contro
+	- //
 
 
 Pseudo-codice:
@@ -112,9 +117,9 @@ while saldo < 20000:
 print(anno)
 ```
 
+---
+#### Tipi di linguaggi
 
-Tipi di linguaggi
---
 Alto livello
 - Molto simile al linguaggio umano, livello di astrazione altissimo
 
@@ -140,8 +145,7 @@ livello basso
 - Indirizzo di memoria dove inserisco il valore, e per alcuni dati una sola cella di memoria potrebbe non bastare.
 
 ----------
-Istruzioni
---
+#### Istruzioni
 
 Pseudo-istruzioni, non operative:
 
