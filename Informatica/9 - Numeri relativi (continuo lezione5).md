@@ -285,8 +285,8 @@ Convertito in CA2.
 
 N = 5 bit
 
-A = 00011 CA2
-B = 01111 CA2
+A = 00011 CA2 - 3
+B = 01111  - 15
 C = A + B
 D = A - B
 

@@ -112,8 +112,8 @@ Qual è la massima memoria installabile sul sistema? (Qual è la massima indiriz
 
 >Esempio.
 
-Abus = 20
-Dbus = 16
+Abus = 20 bit
+Dbus = 16 bit
 
 mem =$2^{20}$
 max mem = $2^{20} \times 2 byte$ = 2 MB (Cella di memoria ha lo stesso parallelismo del Dbus)
@@ -134,6 +134,8 @@ $$
 $$ 
 \text {NumeroFili} = \lfloor A_{bus} \rfloor + 1
 $$
+Abus = circa 24
+Dbus = 24 bit
 #### Sistema Operativo
 
 Gestisce le risorse Hardware e Software della macchina.

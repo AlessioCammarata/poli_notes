@@ -50,7 +50,7 @@ chiedi il raggio, e in base al raggio provi ad apporossimare la forma circolare 
 
 Non si calcolano tutte le possibili soluzioni, ma campionano lo spazio delle possibili soluzioni cercando di stimare il valore della soluzione.
 Serve qualcosa che generi dei valori casuali.
-- si usa la libreria random.
+- si ua la libreria random.
 #### Random()
 
 Genera un numero compreso tra 0 ed 1 esclusi.
@@ -64,7 +64,7 @@ n = random.random() # restituisce un numero tra 0 ed 1 esclusi
 #### Randint()
 
 Genera un numero intero nell'intervallo dato.
-
+s
 ```python
 import random
 

@@ -13,27 +13,27 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Informatica/13 - Componenti computer.md",
+                "file": "Informatica/esercizi.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "13 - Componenti computer"
+              "title": "esercizi"
             }
           },
           {
-            "id": "7e18b026895bb4e9",
+            "id": "d26c245bec1a671c",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "chimica/2 - La mole.md",
+                "file": "Informatica/6 - Operatori logici booleani.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2 - La mole"
+              "title": "6 - Operatori logici booleani"
             }
           }
         ]
@@ -181,18 +181,19 @@
   "lastOpenFiles": [
     "Informatica/14 - Gestione dei files.md",
     "Informatica/13 - Componenti computer.md",
+    "Informatica/6 - Operatori logici booleani.md",
+    "Informatica/3 - Operatori numerici.md",
+    "Informatica/esercizi.md",
+    "Informatica/1 - Introduzione alla programmazione.md",
+    "Informatica/9 - Numeri relativi (continuo lezione5).md",
     "Informatica/11 - liste.md",
     "Informatica/12 - Tabelle.md",
     "Informatica/10 - Funzioni.md",
-    "Informatica/9 - Numeri relativi (continuo lezione5).md",
     "Informatica/8 - Cicli annidati.md",
     "Informatica/7 - Cicli.md",
-    "Informatica/6 - Operatori logici booleani.md",
     "Informatica/5 - Sistemi in base n per calcolatori.md",
-    "chimica/2 - La mole.md",
     "Informatica/4 - ASCII.md",
-    "Informatica/3 - Operatori numerici.md",
     "Informatica/2 - Tipi di dati.md",
-    "Informatica/1 - Introduzione alla programmazione.md"
+    "chimica/2 - La mole.md"
   ]
 }
