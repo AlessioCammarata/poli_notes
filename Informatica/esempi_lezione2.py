@@ -1,15 +1,7 @@
-lista_nomi = []
+file = "film.txt"
 
-nome = input("Introduci nome o Q per uscire: ")
-while nome.upper() != "Q":
-	lista_nomi.append((nome,len(nome)))
-	nome = input("Introduci nome o Q per uscire: ")
-      
-lista_nomi.sort()
-print(lista_nomi)
-
-from operator import itemgetter
-
-lista_nomi.sort(key = itemgetter(1))
-
-print(lista_nomi)
+with open(file,"r",encoding="utf-8") as file:
+    for row in file:
+        row = row.split(",")
+        if int(row[1]) >= 1992:
+            print(row[0])

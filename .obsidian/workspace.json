@@ -13,13 +13,13 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Informatica/esercizi per prova in itinere.md",
+                "file": "Informatica/14 - Gestione dei files.md",
                 "mode": "source",
                 "backlinks": false,
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "esercizi per prova in itinere"
+              "title": "14 - Gestione dei files"
             }
           },
           {
@@ -28,12 +28,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Informatica/4 - ASCII.md",
+                "file": "Informatica/13 - Componenti computer.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "4 - ASCII"
+              "title": "13 - Componenti computer"
             }
           }
         ]
@@ -179,18 +179,20 @@
   },
   "active": "ff1ffc77ad2d81a2",
   "lastOpenFiles": [
-    "Informatica/4 - ASCII.md",
-    "Informatica/5 - Sistemi in base n per calcolatori.md",
-    "Informatica/11 - liste.md",
+    "Informatica/film.txt",
+    "Informatica/somma_media.txt",
     "Informatica/esercizi per prova in itinere.md",
-    "Informatica/13 - Componenti computer.md",
     "Informatica/1 - Introduzione alla programmazione.md",
-    "Informatica/2 - Tipi di dati.md",
-    "Informatica/10 - Funzioni.md",
+    "Informatica/9 - Numeri relativi (continuo lezione5).md",
+    "Informatica/5 - Sistemi in base n per calcolatori.md",
     "Informatica/6 - Operatori logici booleani.md",
+    "Informatica/13 - Componenti computer.md",
+    "Informatica/4 - ASCII.md",
+    "Informatica/2 - Tipi di dati.md",
+    "Informatica/11 - liste.md",
+    "Informatica/10 - Funzioni.md",
     "Informatica/14 - Gestione dei files.md",
     "Informatica/3 - Operatori numerici.md",
-    "Informatica/9 - Numeri relativi (continuo lezione5).md",
     "Informatica/12 - Tabelle.md",
     "Informatica/8 - Cicli annidati.md",
     "Informatica/7 - Cicli.md",

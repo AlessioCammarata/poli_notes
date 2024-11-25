@@ -83,7 +83,7 @@ rappresenta il ciclo di esecuzione delle istruzioni, si compone di 4 fasi:
 
 Il program counter viene incrementato ad ogni istruzione ed indica la posizione in memoria della prossima istruzione da eseguire.
 
-L'istruction register è dove vengono
+L'istruction register è dove vengono tenute le istruzioni.
 
 - Booleane
 ' = negato
