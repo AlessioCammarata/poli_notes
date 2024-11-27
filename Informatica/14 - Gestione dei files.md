@@ -380,3 +380,115 @@ Nei CSV completi, tutti i caratteri sono divisi da "", in questo modo se la , è
 
 ### Come leggere i file csv in python
 
+Prima di tutto bisogna fare import csv.
+Le funzioni più importanti sono:
+- Reader
+- Writer
+
+Queste funzioni non leggono il file, perciò bisognerà aprirlo prima e poi usarle:
+
+```python
+import csv
+
+with open(file1,"r",encoding="utf-8") as file:
+	reader = csv.reader(file)
+	writer = csv.writer(file)
+```
+
+Il reader, gestisce meglio la creazione di un record csv, e la creazione di un dizionario associato.
+
+#Esempio 
+
+```python
+file_name = "file1.csv"
+
+with open(file_name,"r",encoding="utf-8") as file:
+
+    for row in file:
+        lista = row.strip().split(";")
+        print(lista)
+```
+
+>Si può scrivere con il Reader:
+
+```python
+with open(file_name,"r",encoding="utf-8") as file:
+
+    reader = csv.reader(file,delimiter=";") #delimiter di default è la virgola
+    for row in reader:
+        print(row)
+```
+
+Reader aiuta nella creazione dei dizionari.
+
+##### Writer
+La writer utilizza il metodo writerow(), e separa il campo con il delimitatore specificato:
+
+#Esempio 
+
+```python
+
+import csv
+
+file_name = "file1.csv"
+
+with open(file_name,"r",encoding="utf-8") as file,open(file_name,"a") as file1:
+    reader = csv.reader(file)
+    writer = csv.writer(file1)
+    print(file=file1)
+
+    for row in reader:
+        writer.writerow(row)
+        print(row)
+```
+
+
+---
+## Esercizi
+
+- Esercizio con read_files:
+Leggi delle coppie di numeri da un file che stanno su una stessa riga, in fondo metti il risultato della sottrazione di quelli sulla stessa riga.
+
+```python
+file_name = "estremi.dat"
+result = []
+
+with open(file_name,"r",encoding="utf-8") as file:
+    for row in file:
+        row = row.split()
+        result.append(int(row[0])-int(row[1]))
+
+with open(file_name,"a") as file:
+    print("\n-------------",file=file)
+    for item in result:
+        print(f"{item:>5}",file=file)
+```
+
+>Oppure
+
+```python
+file_name = "estremi.dat"
+
+with open(file_name,"r",encoding="utf-8") as file1,open(file_name,"a") as file2:
+    print("\n-------------",file=file2)
+    for row in file1:
+        row = row.split()
+        result = int(row[0])-int(row[1])
+        print(f"{result:>5}",file=file2)
+```
+
+- Esercizio read and write:
+Calcola la popolazione media di ogni luogo:
+
+```python
+file_name1 = "file1.txt"
+file_name2 = "file2.txt"
+file_name3 = "file3.txt"
+
+with open(file_name1,"r",encoding="utf-8") as file1,open(file_name2,"r",encoding="utf-8") as file2,open(file_name3,"w") as file3:
+
+    for rowfile1,rowfile2 in list(zip(file1,file2)):
+        rowfile1 = rowfile1.split()
+        rowfile2 = rowfile2.split()
+        print(f"{rowfile1[0]:<10s} {int(rowfile1[1])/int(rowfile2[1]):>5.2f}",file=file3)
+```
