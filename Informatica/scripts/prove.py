@@ -1,6 +1,4 @@
 nomi = {"Marco", "Giada", "Matteo"}
-a = {4, 1, 2, 3}
-print(a) # 
+nomi2 = nomi.copy()
 
-print(sorted(nomi))
-
+print(nomi2)

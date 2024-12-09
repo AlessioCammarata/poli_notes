@@ -1,6 +1,5 @@
 
-Le strutture dati complesse non sono altro che la combinazione di liste, insiemi e dizionari, 
-
+Le strutture dati complesse non sono altro che la combinazione di liste, insiemi e dizionari.
 ## Insieme
 
 È un contenitore mutabile non ordinato (non si può indicizzare con dei numeri) di elementi univoci.
@@ -54,18 +53,16 @@ insieme = {1, 2}
 print(len(insieme)) # 2
 ```
 
-
 ##### Minimo, massimo e somma
 
 Le funzioni `max()`, `min()` e `sum()` restituiscono, rispettivamente, il massimo, il minimo e la somma degli elementi dell'insieme
 
 ```python
-insieme = {1, 2}
+insieme = {0, 1, 2}
 print(max(insieme)) # 2
-print(min(insieme)) # 1
+print(min(insieme)) # 0
 print(sum(insieme)) # 3
 ```
-
 
 ##### Presenza di elementi
 
@@ -100,7 +97,6 @@ print(sorted(nomi)) # ['Giada', 'Marco', 'Matteo']
 
 Ma ciò produrrebbe una lista. Questo accade perché gli insieme non sono strutture dati ordinate
 
-
 ##### Aggiungere elementi
 
 ```python
@@ -124,24 +120,27 @@ clear() serve per svuotare completamente l'insieme.
 
 ```python
 nomi = {"Marco", "Giada", "Matteo"}
-
 nomi.clear() 
 
 print(nomi) # {}
 ```
 
-
 ##### Copia
 
 Se uso il metodo `copy()` su un insieme viene generato un altro insieme, non un alias
 
+```python
+nomi = {"Marco", "Giada", "Matteo"}
+nomi2 = nomi.copy()
+
+print(nomi2)
+```
 
 #### Operazioni matematiche
 
 ##### Subset
 
 Il metodo `issubset()`, restituisce vero se un insieme è un  sottoinsieme di un altro
-
 
 ```python
 nomi = {"Marco", "Giada", "Matteo"}
@@ -155,6 +154,12 @@ print(nomi_piccolo.issubset(nomi)) # True
 Contrario di `issuperset()`
 Che significa che contiene completamente l'altro insieme.
 
+```python
+nomi = {"Marco", "Giada", "Matteo"}
+nomi_piccolo = {"Marco"}
+
+print(nomi.issuperset(nomi_piccolo)) # True
+```
 ##### Uguaglianza
 
 Per verificare se due insieme sono uguali uso `==`
@@ -166,7 +171,6 @@ nomi_piccolo = {"Marco"}
 print(nomi_piccolo == nomi) # False
 ```
 
-
 ##### Unione
 
 Per unire due insiemi uso il metodo `union()`
@@ -177,7 +181,6 @@ nomi_altro = {"DJF", "Marco"}
 
 print(nomi_piccolo == nomi) # False
 ```
-
 
 ##### Intersezione
 
@@ -202,14 +205,138 @@ print("Colors that are in the Italian flag but not the British:") print(italian.
 
 ##### Differenza simmetrica
 
-Restituisce un insieme contenente gli elementi non in comune tra due insieme, quindi un unione - intersezione (unione esclusiva) 
+Restituisce un insieme contenente gli elementi non in comune tra due insieme, quindi un unione - intersezione (unione esclusiva):
 
+```python
+# ex_both: The set {"Green", "Blue"} 
+ex_both = british.symmetric_difference(italian)
+```
+---
+### Esercizio sugli insiemi
+
+Conta le parole uniche in un testo di una canzone:
+```python
+file_name = "lyrics.txt"
+
+try:
+    with open(file_name,"r",encoding="utf-8") as file:
+        try:
+            parole = set()
+            for row in file:
+                row = row.split()
+
+                for word in row:
+                    # if word[0] != "(":
+                    #     parole.add(word.strip("?!,.-_").lower())
+                    parole.add(word.strip("()?!,;:'.-_").lower())
+
+            print(parole)
+            print("il numero di parole uniche è",len(parole))
+            
+        except Exception as e:
+                print("I'm sorry, ",e)
+                
+except FileNotFoundError as m:
+    print("I'm sorry, ",m)
+```
+---
+### Dizionario
+
+Il dizionario viene anche chiamato array associativo o mappa.
+Non c'è un ordinamento per posizione, ma vengono restituite nell'ordine in cui sono state inserite.
+
+È una struttura chiave valore, con chiave univoca.
+Ogni chiave ha un valore ad esso associato, che non è per forza univoco.
+
+I dizionari si rappresentano con '{}'.
+
+```python
+dictionary = {}
+dictionary = {'luca':10,'sonia':5}
+```
+
+Le chiavi dei dizionari possono essere stringhe o numeri.
+Gli elementi invece possono essere qualsiasi tipo di oggetto.
+
+#### Copiare un dizionario
+
+Si crea una nuova copia non un alyas:
+
+```python
+dictionary = {'luca':10,'sonia':5}
+new_dict = dict(dictionary)
+```
+
+È una copia differente, si trova in un'altra parte di memoria, se voglio copiare l'alyas posso fare:
+
+```python
+dictionary = {'luca':10,'sonia':5}
+new_dict = dictionary
+```
+#### Accedere ad elementi di un dict
+
+Per accedere si utilizzano le [], all'interno di esse bisogna inserire il nome della chiave del dizionario:
+
+```python
+dictionary = {'luca':10,'sonia':5}
+
+print(dictionary['luca']) # 10
+```
+
+#### Chiave già presente nel dict
+
+Per sapere se la chiave è gia presente nel dizionario possiamo scrivere:
+
+```python
+dictionary = {'luca':10,'sonia':5}
+
+if 'luca' in dictionary:
+	print("Luca è gia presente")
+```
+
+#### Get per recuperare le informazioni
+
+Tramite il metodo get, si può recuperare un qualsiasi valore dalla chiave, e nel caso in cui la chiave non esiste da un valore di default:
+
+```python
+dictionary = {'luca':10,'sonia':5}
+
+number = dictionary.get('luca',"missing")  #10
+number = dictionary.get('marta',"missing") #'missing
+```
+
+#### Aggiungere una nuova coppia k->v
+
+Per aggiungere una nuova coppia chiave valore si fa cosi:
+
+```python
+dictionary = {'luca':10,'sonia':5}
+
+dictionary['matteo'] = 16
+```
+
+se 'matteo' è gia presente, andrò semplicemente a modificare il valore già presente.
+
+#### Cancellare elementi
+
+metodo pop cancella sia la chiave che l'elemento:
+```python
+dictionary = {'luca':10,'sonia':5}
+
+print(dictionary.pop('luca')) # {'sonia':5}
+```
+
+#### Ciclare
+
+Ad ogni iterazione con il ciclo for, ottengo la chiave come key:
+```python
+dictionary = {'luca':10,'sonia':5}
+
+for key in dictionary:
+	print(dictionary[key])
+```
 
 
 ---
-### Esercizio
-Conta le parole uniche in un testo di una canzone:
-
-
-### Dizionario
+Esercizio
 
