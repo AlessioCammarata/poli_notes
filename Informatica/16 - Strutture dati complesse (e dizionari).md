@@ -336,7 +336,137 @@ for key in dictionary:
 	print(dictionary[key])
 ```
 
+#### Metodi e funzioni dei dizionari
+
+Ci sono metodi simili ai vettori.
+- Clear() -> Cancella sia la chiave sia il valore associato
+- Copy()
+- Get() -> Permette di ottenere il valore dalla chiave, se non è presente puoi inserirlo di default
+- Items() -> Restituisce una tupla chiave valore
+- keys() -> Restituisce un vettore che contiene le chiavi del dizionario
+- values() -> Restituisce una lista dei valori associati alle chiavi
+
+Esempio **items()**:
+```python
+for (chiave,valore) in parole.items()
+	print(f"La parola {chiave} compare: {valore} volte")
+```
+
+Esempio **values()**:
+```python
+valori = dictionary.values()
+print(valori)
+```
+---
+#### Utilizzare i dizionari come array associativi
+
+Il dizionario può avere come chiave, valori immutabili:
+- **Numeri**
+- **Stringhe**
+- **Tuple**
+
+Ad una chiave posso associare qualsiasi oggetto.
 
 ---
-Esercizio
+#### Utilizzare i dizionari come record di dati
+
+In questo caso il record di dati è composto da dati differenti (eterogenei).
+
+Esempio:
+```python
+dictionary = {'Nome':'luca',
+			  'Cognome':'sonia'
+			  'eta' : 25 
+		}
+```
+
+Si possono creare anche liste di dizionari, all'interno di una lista si inseriscono dizionari in modo da poter ciclare in maniera efficace.
+
+Esercizio:
+Creare un dizionario che contiene matricola, cognome, nome ed inserirlo in una lista:
+```python
+import csv
+
+file_name = "14BHDLZ_2022_shuffled.csv"  
+
+try:
+    with open(file_name,"r",encoding="utf-8") as file:
+        try:
+            dati_studenti = []
+            reader = csv.reader(file, delimiter=",")
+
+            # n = 3 # Ad esempio, per iniziare dalla quarta riga
+            # for _ in range(n):
+            #     next(reader)
+            next(reader)
+
+            for row in reader:
+                dati_studenti.append({"matricola": row[0],
+					                  "cognome":row[1].lower(),
+						              "nome":row[2].lower()}
+						            )
+
+            print(dati_studenti[0])
+
+        except Exception as e:
+                 exit(f"I'm sorry, {e}")
+
+except FileNotFoundError as m:
+     exit(f"I'm sorry, {m}")
+```
+
+Esercizio:
+Creare un dizionario che contiene matricola, cognome, nome ed inserirlo in una lista:
+```python
+  
+from csv import DictReader
+
+file_name = "14BHDLZ_2022_shuffled.csv" 
+try:
+    with open(file_name,"r",encoding="utf-8") as file:
+        try:
+            dati_studenti = []
+            reader = DictReader(file)
+
+            for dicta in reader:
+                dati_studenti.append(dicta)
+        
+            print(dati_studenti[0])
+
+        except Exception as e:
+                exit(f"I'm sorry , {e}")
+
+except FileNotFoundError as m:
+    exit(f"I'm sorry, {m}")
+```
+
+---
+
+Esercizio:
+Conta le parole uniche del testo, per ogni parola mettere affianco il numero di ripetizioni:
+```python
+file_name = "lyrics.txt"
+
+try:
+    with open(file_name,"r",encoding="utf-8") as file:
+        try:
+            parole = {}
+            for row in file:
+                row = row.split()
+
+                for word in row:
+                    word = word.strip("()?!,;:'.-_").lower()
+                    parole[word] = parole.get(word,0) + 1
+                    # if word not in parole:
+                    #     parole[word] = 0
+                    # parole[word] +=1
+            for parola in parole:
+                print(f"La parola {parola} compare: {parole[parola]} volte")
+            
+        except Exception as e:
+                 exit(f"I'm sorry, {e}")
+
+except FileNotFoundError as m:
+     exit(f"I'm sorry, {m}")
+```
 
