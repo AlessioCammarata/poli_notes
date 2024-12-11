@@ -440,6 +440,166 @@ except FileNotFoundError as m:
     exit(f"I'm sorry, {m}")
 ```
 
+### Ordinare una lista di dizionari
+
+Se si vuole ordinare una lista di dizionari, non si può usare la funzione sort() e nemmeno la funzione sorted().
+La funzione sort:
+- Non ordina i numeri complessi
+- Non ordina i dizionari
+- Non ha senso usarla sui set (< è sinonimo di issubset)
+
+Non ordina i dizionari, poichè non è possibile confrontare singoli elementi a stessa posizione.
+
+> Bisogna dare alla sort una key, che indica il criterio in base a cosa ordinare i dizionari.
+> sort(key="key")
+
+Da quando si specifica una key, il confronto di una lista di dizionari avviene andando a prendere una ben precisa chiave, e si confronteranno i 2 valori associati a quella chiave.
+
+Si utilizza perciò **itemgetter**:
+```python
+from operator import itemgetter
+```
+
+Questo metodo specifica quale chiave del dizionario noi vogliamo utilizzare e la associa al parametro nominativo key.
+
+Esempio
+```python
+import csv
+from operator import itemgetter
+
+file_name = "14BHDLZ_2022_shuffled.csv"
+
+try:
+    with open(file_name,"r",encoding="utf-8") as file:
+        try:
+            dati_studenti = []
+            reader = csv.reader(file, delimiter=",")
+            
+            next(reader)
+            for row in reader:
+                dati_studenti.append({"matricola": row[0], "cognome":row[1].lower(), "nome":row[2].lower()})
+
+#dati_studenti.sort()|Error'<' not supported between instances of 'dict' and 'dict'
+
+            dati_studenti.sort(key=itemgetter("cognome")) # Cosi funziona, in base al cognome
+
+            print(dati_studenti[0])
+
+        except Exception as e:
+
+                print("I'm sorry , ",e)
+
+  
+
+except FileNotFoundError as m:
+
+    exit(f"I'm sorry, {m}")
+```
+
+Tramite l'itemgetter, bisogna inserire solo il nome della chiave, funziona anche il metodo reverse= True, che permette di fare l'ordinamento inverso.
+
+---
+### Utilizzare itemgetter per indicare un indice di ordinamento in una struttura bidimensionale
+
+itemgetter, puo prendere piu parametri con l'utilizzo della virgola:
+```python
+# Ordinare secondo un etichetta.
+from operator import itemgetter
+
+tabella = [
+    ["A",1],
+    ["B",3],
+    ["A",4],
+    ["B",1],
+    ["A",2],
+    ["B",1]      
+           ]
+
+print(tabella) #[['A', 1], ['B', 3], ['A', 4], ['B', 1], ['A', 2], ['B', 1]]
+tabella.sort(key=itemgetter(0))
+
+print(tabella) #[['A', 1], ['A', 4], ['A', 2], ['B', 3], ['B', 1], ['B', 1]]
+tabella.sort(key=itemgetter(0,1))
+
+print(tabella) # [['A', 1], ['A', 2], ['A', 4], ['B', 1], ['B', 1], ['B', 3]]
+```
+---
+#### Chiave di itemgetter
+
+Una chiave può essere una qualsiasi funzione definita in python.
+Per esempio len(), max() ma anche una funzione creata a mano.
+
+Esempio:
+```python
+# Ordinare secondo somma di elementi.
+
+tabella = [
+    [2,1],
+    [6,3],
+    [-2,4],
+    [-6,1],
+    [6,2],
+    [8,1]      
+           ]
+
+print(tabella) #[['A', 1], ['B', 3], ['A', 4], ['B', 1], ['A', 2], ['B', 1]]
+tabella.sort(key=sum)
+
+print(tabella)#[[-6, 1], [-2, 4], [2, 1], [6, 2], [6, 3], [8, 1]]
+```
+
+Esempio di mia funzione:
+```python
+# Ordinare secondo una funzione definita, prodotto
+def funzione(elemento):
+	return elemento[0] * elemento[1]
+
+tabella = [
+    [2,1],
+    [6,3],
+    [-2,4],
+    [-6,1],
+    [6,2],
+    [8,1]      
+           ]
+
+print(tabella) #[['A', 1], ['B', 3], ['A', 4], ['B', 1], ['A', 2], ['B', 1]]
+tabella.sort(key=funzione)
+
+print(tabella) #[[-2, 4], [-6, 1], [2, 1], [8, 1], [6, 2], [6, 3]]
+```
+
+Questo modo di scrivere le funzioni, non lo ha ritenuto molto funzionale, perciò esistono le funzioni lambda:
+```python
+# Ordinare secondo una funzione definita, prodotto con lambda
+
+tabella = [
+    [2,1],
+    [6,3],
+    [-2,4],
+    [-6,1],
+    [6,2],
+    [8,1]      
+           ]
+
+print(tabella) #[['A', 1], ['B', 3], ['A', 4], ['B', 1], ['A', 2], ['B', 1]]
+tabella.sort(key=lambda elemento:elemento[0] * elemento[1])
+
+print(tabella) #[[-2, 4], [-6, 1], [2, 1], [8, 1], [6, 2], [6, 3]]
+```
+
+### max e min sul dizionario
+
+Per utilizzare max bisogna scrivere:
+```python
+# max sul dizionario
+
+print(max(dati_studenti,key=itemgetter("cognome")))
+# {'matricola': '286678', 'cognome': 'zoto', 'nome': 'giulia'}
+```
+
+>Viene restituito tutto il dizionario relativo al cognome massimo.
+
 ---
 
 Esercizio:
@@ -469,4 +629,60 @@ try:
 except FileNotFoundError as m:
      exit(f"I'm sorry, {m}")
 ```
+---
+### Indice analitico
 
+L'indice analitico di un libro specifica su quali pagina compaia un determinato termine.
+Le parole sono univoche.
+Le pagine devono essere in ordine crescente. ed univoche
+Esercizio:
+```python
+# from sys import exit
+
+def leggi(file):
+    '''
+    Filehandle del file che deve essere letto.
+    Inserisce nel dizionario un set contenente le pagine.
+
+     dizio = dizionario che devo creare
+     return dizionario di insiemi.
+    '''
+    dizio = {}
+    for row in file:
+        row = row.rstrip().split(":")
+        if row[1] in dizio:
+            dizio[row[1]].add(int(row[0]))
+        else:
+            dizio[row[1]] = {int(row[0])}
+
+    return dizio
+
+def stampa(dizio):
+
+    for key in sorted(dizio):
+        print(key + ":", end=" ")
+        insieme = sorted(dizio[key])
+  
+        for item in insieme[:-1]:
+            print(item,end=", ")
+        print(insieme[-1])
+
+def main():
+    try:
+        file_name = "index.txt"
+        with open(file_name,'r',encoding="utf-8") as file:
+            try:
+                dizio_set = leggi(file)
+
+                stampa(dizio_set)
+  
+            except Exception as e:
+                exit(f"ERRORE, {e}")
+                
+    except FileNotFoundError as e:
+        exit(f"ERRORE, {e}")
+
+if __name__ == "__main__":
+    main()
+```
+---
