@@ -6,7 +6,9 @@ def printes(dizio):
         for j in range(len(dizio[item])):
             print(f"{dizio[item][j]:>15.2f}", end="")
         print("\t",sum(dizio[item]))
-        
+
+    print(f"{str() :>15}", end="")
+
     for i in range(len(dizio["vanilla"])):
         somma = 0
         for item in dizio:
