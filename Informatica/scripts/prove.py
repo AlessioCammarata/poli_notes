@@ -1,4 +1,5 @@
-nomi = {"Marco", "Giada", "Matteo"}
-nomi2 = nomi.copy()
+vet = ["masc","ale","alex"]
 
-print(nomi2)
+print(max(sorted(vet),key=len))
+
+print(sorted(vet))
