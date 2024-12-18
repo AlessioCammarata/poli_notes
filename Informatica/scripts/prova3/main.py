@@ -2,26 +2,32 @@ from sys import exit
 
 def calculate_points(field):
     points = 0
+    listino_punti = {
+        "Giallo":1,
+        "Verde":3,
+        "Rosso":5
+    }
+
     for item in field:
-        match item:
-            case "Giallo":
-                points+=1
-            case "Verde":
-                points+=3
-            case "Rosso":
-                points+=5
-            case _:
-                pass
+        points += listino_punti[item]
                 
     return points
 
 def dealing(file,player1,player2):
     """Do la carta con indice pari al giocatore 1 e viceversa, in questo modo la carta 0 andrà al primo"""
     for i,row in enumerate(file):
+        row = row.rstrip()
+        if row not in ["Giallo","Verde","Rosso"]:
+            raise Exception("Carta di un altro gioco presente nel mazzo")
+        
         if i % 2 == 0: 
-            player1.append(row.rstrip())
+            player1.append(row)
         else:
-            player2.append(row.rstrip())
+            player2.append(row)
+        
+    
+    if len(player1) != len(player2):
+        raise Exception("Qualcuno ha un asso nella manica")
 
 def simulate(player1,player2):
     TURNS = len(player1)
@@ -38,31 +44,28 @@ def simulate(player1,player2):
         print("Punteggio giocatore 2:", match_points[False])
         print("\n\nMano n.",i+1)
 
-        carta1 = player1.pop(0)
-        carta2 = player2.pop(0)
+        # carta1 = player1.pop(0)
+        # carta2 = player2.pop(0)
+        (carta1, carta2) =  (player1.pop(0), player2.pop(0))       
 
         print("Carta giocatore 1:", carta1)
         print("Carta giocatore 2:", carta2)
 
         # Flag che mi dice se la mano l'ha vinta il p1, 
-        p1   = False
-        draw = False
+        p1 = draw = False
         
         # Se p1 ha il rosso, e l'altro no, vince il p1
-        if carta1[0]  == "R" and carta2[0] != "R":
+        if carta1  == "Rosso" and carta2 != "Rosso":
             p1 = True
         
         # Se p1 ha il verde, e l'altro no, bisogna controllare se hanno il rosso o no
-        elif carta1[0] == "V" and carta2[0] !="V":
+        elif carta1 == "Verde" and carta2 !="Verde":
 
             # Se p2 ha il rosso, e l'altro no, vince il p2 altrimenti il contrario dato che nessuno dei due ha la verde
-            if carta2[0] == "R":
-                p1 = False
-            else:
-                p1 = True
+            p1 = not carta2 == "Rosso"
 
         # Se p1 ha il giallo, e l'altro no, vince il p2
-        elif carta1[0] == "G" and carta2[0] !="G":
+        elif carta1 == "Giallo" and carta2 !="Giallo":
             p1 = False
 
         #Altrimenti pareggio
@@ -88,8 +91,9 @@ def simulate(player1,player2):
     if match_points[True] == match_points[False]: 
         print("Pareggio. Non vince nessuno!")
     else:
+        winner = "1" if match_points[True] > match_points[False] else "2"
         #Stampo chi ha vinto, e i suoi punti.
-        print("Vince il giocatore " + "1" if match_points[True] > match_points[False] else "2" ,f"con {max(match_points[False],match_points[True])} punti.")
+        print("Vince il giocatore " + winner ,f"con {max(match_points[False],match_points[True])} punti.")
 
 
 def main():
@@ -105,6 +109,7 @@ def main():
             
             except Exception as e:
                 exit(f"Errore, {e}")
+
     except FileNotFoundError as e:
         exit(f"Errore, {e}")
 

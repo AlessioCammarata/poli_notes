@@ -1,5 +1,3 @@
-vet = ["masc","ale","alex"]
+val = "'"
 
-print(max(sorted(vet),key=len))
-
-print(sorted(vet))
+print(val.upper())

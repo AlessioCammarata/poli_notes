@@ -51,7 +51,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -192,12 +192,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "7c895c0abadac075",
+  "active": "aa35dd84028f3988",
   "lastOpenFiles": [
+    "Informatica/17 - Dizionario di liste.md",
     "Informatica/scripts/gelati/gelati.txt",
     "Informatica/scripts/gelati/gelati.py",
     "Informatica/scripts/gelati",
-    "Informatica/17 - Dizionario di liste.md",
     "Informatica/16 - Strutture dati complesse (e dizionari).md",
     "Informatica/scripts/indice_analitico/index.txt",
     "Informatica/scripts/indice_analitico/main.py",
@@ -206,7 +206,6 @@
     "Informatica/scripts/tabella/tab.py",
     "Informatica/scripts/tabella",
     "Informatica/scripts/lista_dizionari/dfsjdcd.py",
-    "Informatica/scripts/lista_dizionari/__pycache__/csv.cpython-310.pyc",
     "Informatica/11 - Liste.md",
     "Informatica/15 - Gestione delle eccezioni.md",
     "Informatica/14 - Gestione dei files.md",
