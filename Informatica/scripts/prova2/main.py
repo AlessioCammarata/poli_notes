@@ -28,11 +28,13 @@ def main():
         with open(file_name,'r',encoding="utf-8") as file:
             try:
                 dictionary = file_handle(file)
+                # dictionary["***"] = 0
                 # print(dict_list.keys())
                 end = False
                 while not end:
                     scelta= input("Inserisci il nome della regione di cui si vogliono le informazioni\n")
                     while scelta != "***" and scelta not in dictionary:
+                    # while scelta not in dictionary:
                         scelta= input("Renserisci il nome della regione di cui si vogliono le informazioni. Il nome non è presente nel database\n")
                     
                     if scelta != "***":

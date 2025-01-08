@@ -7,6 +7,7 @@ def encode(file,dictionary):
     for letter in text:
         if letter.upper() in dictionary:
             morse_text += dictionary[letter.upper()] + " "
+        # morse_text += dictionary.get(letter.upper(),"") + " "
 
     return morse_text
 
@@ -15,8 +16,8 @@ def decode(file,dictionary):
 
     text = file.readline().rstrip().split()
     for letter in text:
-        if letter in dictionary:
-            new_text += dictionary[letter]
+        # if letter in dictionary:
+        new_text += dictionary.get(letter,"")
 
     return new_text
 

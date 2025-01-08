@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from matplotlib import style
 import numpy as np
 
+
+
 L = 9
 N = 1000
 x = np.zeros(N)
