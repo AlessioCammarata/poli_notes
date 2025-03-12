@@ -18,4 +18,4 @@ Gli appunti sono organizzati in sezioni tematiche per facilitare la consultazion
 Gli appunti vengono aggiornati regolarmente per includere nuove lezioni, approfondimenti e chiarimenti.
 
 ## Autore
-**Alessio Cammarata** & **Tommaso Fatticcioni** - Studente di Ingegneria Informatica al Politecnico.
+**Alessio Cammarata** & **Tommaso Fatticcioni** - Studenti di Ingegneria Informatica al Politecnico.
