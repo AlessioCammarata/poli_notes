@@ -24,45 +24,37 @@ int max_mese(int mese, int anno){
     return max;
 }
 
-int* calcola_data(int d1[3], int g){
-    static int d2[3];  // Array statico per restituirlo
+void calcola_data(int *g1, int *m1, int *a1, int g){
 
-    // Copia la data iniziale in d2
-    d2[0] = d1[0];
-    d2[1] = d1[1];
-    d2[2] = d1[2];
-
-    while( g > max_mese(d2[1],d2[2])){
-        g = g - max_mese(d2[1],d2[2]);
-        if (d2[1] == 12){
-            d2[1] = 0; // azzero il mese
-            d2[2]++; // aumento l'anno
+    while( g > max_mese(*m1,*a1)){
+        g = g - max_mese(*m1,*a1);
+        if (*m1 == 12){
+            *m1 = 0; // azzero il mese
+            (*a1)++; // aumento l'anno
         }
-        d2[1]++; // aumento il mese
-        
+        (*m1)++; // aumento il mese 
     }
-    d2[0] = g; //assegno i giorni rimasti
+    *g1 = g; //assegno i giorni rimasti
 
-    return d2;
 }
 
 int main(void){
-    int d1[3];
+    int g1,m1,a1,g2,m2,a2;
     int g;
     printf("Inserire giorno mese e anno in ordine (gg mm aaaa)\n");
-    scanf("%d %d %d",&d1[0],&d1[1], &d1[2]);
-    while(d1[2] > 2025 || d1[2] < 1){
+    scanf("%d %d %d",&g1,&m1, &a1);
+    while(a1 > 2025 || a1 < 1){
         printf("Reinserire l'anno deve essere compreso tra 1 e 2025\n");
-        scanf("%d", &d1[2]);
+        scanf("%d", &a1);
     }
-    printf("Data inserita: %d/%d/%d\n",d1[0],d1[1],d1[2]);
+    printf("Data inserita: %d/%d/%d\n",g1,m1,a1);
 
     printf("Inserire quanti giorni sono passati:\n");
     scanf("%d",&g);
 
-    int *d2 = calcola_data(d1,g+d1[0]);
+    calcola_data(&g1,&m1,&a1,g+g1);
 
-    printf("Il giorno sara il %d/%d/%d\n",d2[0],d2[1],d2[2]);
+    printf("Il giorno sara il %d/%d/%d\n",g1,m1,a1);
 
     return 0;
 }
