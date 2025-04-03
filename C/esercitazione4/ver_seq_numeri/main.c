@@ -1,5 +1,6 @@
 #include <stdio.h>
-#define filein "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/ver_seq_numeri/seq.txt" 
+// #define filein "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/ver_seq_numeri/seq.txt" 
+#define filein "./seq.txt" 
 /*
 Occorre verificare che l’i-esimo numero xi (con i ≥2)
 sia, rispetto ai due numeri precedenti (xi-1 e xi-2), pari alla loro somma (xi-2 + xi-1), differenza (xi-2 - xi-1),
@@ -45,6 +46,7 @@ void controlla(FILE *fin){
         num1 = num;
         
     }
+    printf("%d",i);
     printf("\nNumero massimo: %d\n Numero minimo: %d\n Numeri scartati: %d",max,min,err);
 }
 
