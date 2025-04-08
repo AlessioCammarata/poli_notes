@@ -1,11 +1,19 @@
 #include <stdio.h>
+// #define nfin "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/codifica/message.txt"
+// #define nfout "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/codifica/risposta.txt"
+// #define ndefin "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/codifica/risposta.txt"
+// #define ndefout "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/codifica/messageT.txt"
+#define nfin "./message.txt"
+#define nfout "./risposta.txt"
+#define ndefin "./risposta.txt"
+#define ndefout "./messageT.txt"
 
 int codifica(FILE *fin, FILE *fout);
 int decodifica(FILE *fin, FILE *fout);
 
 int main(void){
     FILE *fin,*fout,*defin,*defout;
-    char *nfin,*nfout;
+    char *n_fin,*n_fout;
 
     // printf("Inserisci il nome del file di input:\n");
     // scanf("%s",nfin);
@@ -13,11 +21,11 @@ int main(void){
     // printf("Inserisci il nome del file di output:\n");
     // scanf("%s",nfout);
 
-    if((fin = fopen("C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/codifica/message.txt","r")) == NULL){
+    if((fin = fopen(nfin,"r")) == NULL){
         printf("Errore in apertura del file");
     }
 
-    if((fout = fopen("C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/codifica/risposta.txt","w")) == NULL){
+    if((fout = fopen(nfout,"w")) == NULL){
         printf("Errore in apertura del file");
     }
 
@@ -30,11 +38,11 @@ int main(void){
     fclose(fin);
     fclose(fout);
 
-    if((defin = fopen("C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/codifica/risposta.txt","r")) == NULL){
+    if((defin = fopen(ndefin,"r")) == NULL){
         printf("Errore in apertura del file");
     }
 
-    if((defout = fopen("C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione4/codifica/messageT.txt","w")) == NULL){
+    if((defout = fopen(ndefout,"w")) == NULL){
         printf("Errore in apertura del file");
     }
 
