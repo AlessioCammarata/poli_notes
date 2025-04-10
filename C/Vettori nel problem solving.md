@@ -26,3 +26,91 @@ Problemi su insiemi di numeri:
 
 Bisogna controllare se ogni elemento di un vettore appartiene ad un altro.
 
+---
+
+### Menu con scelta su una parola
+
+Il programma deve ottenere una stringa in input se la parola è fine termini senno chiami la funzione corrispondente.
+
+- Facciamo una conversione da parola a numero, cosi utilizziamo lo switch case sui numeri convertiti che vengono utilizzati come selettori
+
+```C
+#include 
+#include 
+#define c_cerca 0 
+#define c_modifica 1 
+#define c_stampa 2 
+#define c_fine 3 
+#define c_err 4 
+
+const int MAXL=51; 
+int leggiComando (void); 
+void menuParola (void); 
+void cerca (char r[]) { 
+	printf("cerca: %s\n", r); 
+} 
+void modifica (char r[]) { 
+	printf("modifica: %s\n", r);
+} 
+void stampa (char r[]) { 
+	printf("stampa: %s\n", r); 
+}
+
+void menuParola (void){ 
+	int comando; 
+	char riga[MAXL]; 
+	int i, continua=1; 
+	while (continua) { 
+		comando = leggiComando(); 
+		fgets(riga,MAXL,stdin); /* resto della riga */ 
+		switch (comando) { 
+			case c_cerca:
+				cerca(riga); 
+				break; 
+			
+			case c_modifica: 
+				modifica(riga); 
+				break; 
+			case c_stampa: 
+				stampa(riga); 
+				break; 
+			case c_fine: 
+				continua=0;
+				break; 
+			case c_err: 
+			default: 
+				printf("comando errato\n"); 
+		} 
+	} 
+}
+
+
+int leggiComando (void) { 
+	int c; 
+	char cmd[MAXL]; 
+	char tabella[4][9] = { 
+		"cerca","modifica","stampa","uscita" 
+	}; 
+	printf("comando (cerca/modifica"); 
+	printf("/stampa/uscita): "); 
+	scanf("%s",cmd); strToLower(cmd); 
+	
+	c=c_cerca; 
+	while(c<c_err && strcmp(cmd,tabella[c])!=0) 
+		c++; 
+	return (c); 
+}
+```
+
+### Variante che utilizza il tipo Enum
+
+È una specie di definizione che significa che tra parentesi graffe noi non mettiamo i campi come nelle struct ma i valori che puo assumere.
+Stiamo definendo un tipo di dato che puo avere solo quei valori, è un intero limitato.
+
+```c
+enum semaforo {verde,rosso,giallo}; // 0 -> verde, 1 -> rosso, 2 -> giallo
+
+//Di solito si definisce cosi:
+typedef enum semaforo {verde,rosso,giallo} semaforo_e;
+
+```
