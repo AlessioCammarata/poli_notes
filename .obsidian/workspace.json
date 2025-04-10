@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "C/Vettori nel problem solving.md",
+                "file": "C/Struct.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Vettori nel problem solving"
+              "title": "Struct"
             }
           }
         ]
@@ -165,10 +165,11 @@
   },
   "active": "6f484768f78bb4ea",
   "lastOpenFiles": [
+    "C/videolezione.exe",
+    "C/Vettori nel problem solving.md",
     "C/Argomenti al main.md",
     "C/Struct.md",
     "C/GOMOKU.md",
-    "C/Vettori nel problem solving.md",
     "C/esercitazione4/ver_seq_numeri/main.exe",
     "Vettori nel problem solving.md",
     "Informatica/17 - Dizionario di liste.md",
