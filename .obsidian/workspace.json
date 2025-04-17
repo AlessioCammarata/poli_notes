@@ -4,24 +4,67 @@
     "type": "split",
     "children": [
       {
-        "id": "3f189a365e51386e",
+        "id": "b3464050ffb33c05",
         "type": "tabs",
         "children": [
           {
-            "id": "6f484768f78bb4ea",
+            "id": "11976795b7529781",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "C/Struct.md",
+                "file": "C/Elaborazione testi a livello carattere.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Struct"
+              "title": "Elaborazione testi a livello carattere"
+            }
+          },
+          {
+            "id": "286ee44879b96d5d",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "C/Elaborazione testi a livello stringhe.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Elaborazione testi a livello stringhe"
+            }
+          },
+          {
+            "id": "6706885f7e53fb0b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "C/Problemi di verifica e selezione.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Problemi di verifica e selezione"
+            }
+          },
+          {
+            "id": "2ab2feda6d026ede",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "C/Problemi di ordinamento.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Problemi di ordinamento"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -163,12 +206,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6f484768f78bb4ea",
+  "active": "50f326ddb85c6f2e",
   "lastOpenFiles": [
-    "C/videolezione.exe",
+    "C/Problemi di verifica e selezione.md",
+    "C/Problemi di ordinamento.md",
+    "C/Elaborazione testi a livello stringhe.md",
+    "C/Elaborazione testi a livello carattere.md",
     "C/Vettori nel problem solving.md",
-    "C/Argomenti al main.md",
     "C/Struct.md",
+    "C/videolezione.exe",
+    "C/Argomenti al main.md",
     "C/GOMOKU.md",
     "C/esercitazione4/ver_seq_numeri/main.exe",
     "Vettori nel problem solving.md",
@@ -183,7 +230,6 @@
     "Informatica/scripts/indice_analitico/main.py",
     "Informatica/scripts/indice_analitico",
     "Informatica/scripts/indice_",
-    "Informatica/scripts/tabella/tab.py",
     "Informatica/11 - Liste.md",
     "Informatica/15 - Gestione delle eccezioni.md",
     "Informatica/14 - Gestione dei files.md",
@@ -197,8 +243,6 @@
     "Informatica/10 - Funzioni.md",
     "Informatica/3 - Operatori numerici.md",
     "Informatica/12 - Tabelle.md",
-    "Informatica/8 - Cicli annidati.md",
-    "Informatica/7 - Cicli.md",
-    "chimica/2 - La mole.md"
+    "Informatica/8 - Cicli annidati.md"
   ]
 }
