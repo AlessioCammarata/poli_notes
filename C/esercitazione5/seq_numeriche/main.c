@@ -56,7 +56,7 @@ void sottoSequenze(int V[], int N){
     for (int i = 0; i < N; i++) {
         if (V[i] != 0) {
             temp[c++] = V[i];  // Aggiungi il numero alla sottosequenza corrente
-            // printf("SOno qua");
+
         } else {
             c = 0;  // Reset della sequenza corrente
         }
