@@ -14,8 +14,12 @@ Si definisca un opportuno formato per il file (si fornisce un esempio di file, i
 #define nfin "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione6/campionato/mat.txt"
 // #define nfin "./mat.txt"
 
+void leggiFile(FILE *fin, int match, int Matrix[][match]);
+
+int cercaMax(int match, int team, int Matrix[team][match], int punti[team], int giornata);
+
 int main(void) {
-    int i = 0,j = 0, team, match, result;
+    int team, match;
     FILE *fin;
 
     if((fin = fopen(nfin,"r")) == NULL){
@@ -30,9 +34,33 @@ int main(void) {
         return 1;
     }
     int M[team][match];
+    leggiFile(fin,match,M);
+    
+
+    // debug per vedere la matrice
+    // for(int i=0;i<team;i++){
+    //     for(int j=0;j<match;j++){
+    //         printf("%d ",M[i][j]);
+    //     }
+    //     printf("\n");
+    // }
+            
+    
+    int punti[team],capolista;
+    for(int i=0;i<team;i++) punti[i] = 0; // azzero tutti i punteggi
+    for(int j=0;j<match;j++){
+        capolista = cercaMax(match, team, M, punti, j);
+        printf("Giornata %d, la capolista è %d\n",j+1,capolista+1);
+    }
+
+    return 0;
+}
+
+void leggiFile(FILE *fin, int match , int Matrix[][match] ){
+    int j = 0, i = 0, result;
 
     while(fscanf(fin,"%d",&result) == 1){
-        M[i][j] = result;
+        Matrix[i][j] = result;
         j++;
 
         if(j == match){
@@ -41,32 +69,21 @@ int main(void) {
         }
         
     }
+}
 
-    // debug per vedere la matrice
-    // for(i=0;i<team;i++){
-    //     for(j=0;j<match;j++){
-    //         printf("%d ",M[i][j]);
-    //     }
-    //     printf("\n");
-    // }
-            
+int cercaMax(int match, int team, int Matrix[team][match], int punti[team], int giornata){
+    int i,index = 0,max = 0;
+
     
-    int val[team],max = 0,index;
-    for(i=0;i<team;i++) val[i] = 0; // azzero tutti i punteggi
-
-    for(j=0;j<match;j++){
-        for(i=0;i<team;i++){
-            val[i] += M[i][j];
-            if(val[i] > max){ 
-                max = val[i];
-                index = i;
-            }
-            // printf("%d\t",M[i][j]);
-            // printf("%d\n",val[i]);
+    for(i=0;i<team;i++){
+        punti[i] += Matrix[i][giornata];
+        if(punti[i] > max){ 
+            max = punti[i];
+            index = i;
         }
-        printf("Giornata %d, la capolista è %d\n",j+1,index+1);
+        // printf("%d\t",M[i][j]);
+        // printf("%d\n",val[i]);
     }
 
-
-    return 0;
+    return index;
 }
