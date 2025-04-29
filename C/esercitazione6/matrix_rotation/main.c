@@ -45,7 +45,7 @@ typedef enum {
 
 void leggiFile(FILE *fin, int row, int column, int Matrix[][column]);
 void stampa_matrice(int row,int column, int Matrix[][column]);
-void ruotaMatrice(int row,int column, int Matrix[][column],int selettore,int indice,int direzione,int P);
+void ruotaMatrice(int row,int column, int Matrix[][column],int indice,int direzione,int P);
 
 int main(void){
     FILE *fin;
@@ -132,7 +132,7 @@ int main(void){
             continue;
         }
         
-        ruotaMatrice(n,m,Matrix,selettore,indice,direzione,posizioni);
+        ruotaMatrice(n,m,Matrix,indice,direzione,posizioni);
 
         stampa_matrice(n,m,Matrix);
         printf("\n");
@@ -160,12 +160,12 @@ void stampa_matrice(int row,int column, int Matrix[][column]){
     }
 }
 
-void ruotaMatrice(int row, int column, int Matrix[][column],int selettore,int indice,int direzione,int P){
+void ruotaMatrice(int row, int column, int Matrix[][column],int indice,int direzione,int P){
 
     int i,j,last;
 
-    if(selettore == 0){
-        if(direzione == 0){
+    switch(direzione){
+        case 0:
             for(i=0;i<P;i++){
                 last = Matrix[indice][column-1];
                 for(int j = 1;j<column;j++){
@@ -173,8 +173,8 @@ void ruotaMatrice(int row, int column, int Matrix[][column],int selettore,int in
                 }
                 Matrix[indice][0] = last;
             }
-            
-        }else{
+            break;
+        case 1:
             for(i=0;i<P;i++){
                 last = Matrix[indice][0];
                 for(int j = 0;j<column-1;j++){
@@ -182,9 +182,8 @@ void ruotaMatrice(int row, int column, int Matrix[][column],int selettore,int in
                 }
                 Matrix[indice][column-1] = last;
             }
-        }
-    }else{
-        if(direzione == 2){
+            break;
+        case 2:
             for(i=0;i<P;i++){
                 last = Matrix[row-1][indice];
                 for(int j = 1;j<row;j++){
@@ -192,8 +191,8 @@ void ruotaMatrice(int row, int column, int Matrix[][column],int selettore,int in
                 }
                 Matrix[0][indice] = last;
             }
-            
-        }else{
+            break;
+        case 3:
             for(i=0;i<P;i++){
                 last = Matrix[indice][0];
                 for(int j = 0;j<row-1;j++){
@@ -201,6 +200,8 @@ void ruotaMatrice(int row, int column, int Matrix[][column],int selettore,int in
                 }
                 Matrix[row-1][indice] = last;
             }
+            break;
+        default:
+            printf("Strano - controllo gia fatto prima");
         }
-    }
 }
