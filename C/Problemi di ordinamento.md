@@ -26,7 +26,7 @@ void selectionSort (int A[], int N) {
 }
 ```
 
-##### Si puo applicare a vettori di struct e a vettori di stringhe
+##### Si può applicare a vettori di struct e a vettori di stringhe
 
 supponiamo di avere:
 
