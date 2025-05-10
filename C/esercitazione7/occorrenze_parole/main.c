@@ -16,7 +16,10 @@ del testo (si usi 1 per la prima parole, 2 per la seconda e così via). Ai fini 
 identificare e visualizzare solamente le prime 10 occorrenze per ogni sequenza.
 */
 
+//VERSIONE CHE NON CONSIDERA GLI APOSTROFI
+
 #include <stdio.h>
+#include <string.h>
 #include <ctype.h>
 #define nfin "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione7/occorrenze_parole/sequenze.txt"
 #define nfin1 "C:/Users/aless/Desktop/Polito/poli_notes/C/esercitazione7/occorrenze_parole/testo.txt"
@@ -26,17 +29,13 @@ identificare e visualizzare solamente le prime 10 occorrenze per ogni sequenza.
 #define maxWORD 25
 #define maxNseq 20
 #define maxSEQ 5
-
-void toLowerStr(char *s) {
-    for (int i = 0; s[i] != '\0'; i++) {
-        s[i] = tolower((unsigned char)s[i]);
-    }
-}
+#define outputS 1000
+#define maxOCC 10
 
 void leggiFile(FILE *fin, char seq[][maxSEQ]);
 // void leggiTesto(FILE *fin, char text[][maxWORD]);
 
-int cercaParola(FILE *fin, char word[maxSEQ]);
+int cercaParola(FILE *fin, char word[maxSEQ], char output[outputS]);
 
 int main(void){
     FILE *fin,*fin1;
@@ -49,18 +48,19 @@ int main(void){
 
     fscanf(fin,"%d",&n);
     if(n>maxNseq) n=maxNseq;
-    char seq[n][maxSEQ];
+    char seq[n][maxSEQ], output[outputS] = "";
     int find = 0;
 
     leggiFile(fin, seq);
-    // for(int i = 0; i<n;i++){
-    //     printf("%s\n",seq[i]);
-    // }
+
     for(int i=0; i<n; i++){
-        printf("Analizzando %s",seq[i]);
-        toLowerStr(seq[i]);
-        find = cercaParola(fin1,seq[i]);
-        if(!find) printf("\n\nSequenza non trovata\n");
+        printf("--------------------------------------\n");
+        printf("Analizzando %s\n\n",seq[i]);
+        find = cercaParola(fin1,seq[i],output);
+        rewind(fin1);
+        if(!find) printf("Sequenza non trovata");
+        else printf("%s",output);
+
         printf("\n");
     }
 
@@ -76,23 +76,33 @@ void leggiFile(FILE *fin, char seq[][maxSEQ]){
     }
 }
 
-int cercaParola(FILE *fin, char word[maxSEQ]){
+int cercaParola(FILE *fin, char word[maxSEQ], char output[outputS]){
 
-    int i=0,f=0,len=strlen(word);
-    char act_word[maxWORD],window[len];
+    int i=0,f=0,c,len=strlen(word);
+    char act_word[maxWORD + 1];
+    sprintf(output, "La sequenza %s è contenuta in: ", word);
 
-    while(fscanf(fin,"%s",act_word) == 1){
-        int len_word = strlen(act_word);
-        for(int j=0; j<len_word; j+len){
-            for(int z=0;z>len;z++) strcat(window, word[j])    
-            word[j]
-        }
-        printf("%s -- %s",word,act_word);
-        if(act_word == word){ 
-            printf("MATCH");
-            f++;
-        }
+    // Leggo il file dall'inizio alla fine
+    while(fscanf(fin,"%s",act_word) == 1 && f < maxOCC){
         i++;
+        // printf("%s -- %s _%d\n",word,act_word,i); //DEBUG
+        int len_word = strlen(act_word),match = 0;
+
+        for(int j = 0; j< len_word && !match;j++){
+            // Controlliamo se c'è una corrispondenza
+            for(c = 0; tolower(word[c]) == tolower(act_word[j+c]);c++);
+            if (c == len){
+                // printf("MATCH\n\n"); // DEBUG
+                match++;
+                f++;
+                //Concateno la stringa temporanea all'output.
+                char temp[maxWORD + 50];
+                if (f == 1) sprintf(temp, "%s (posizione %d)", act_word, i);
+                else sprintf(temp, ", %s (posizione %d)", act_word, i);
+                strcat(output, temp);
+            }
+        }
+        
     }
 
     return f;
