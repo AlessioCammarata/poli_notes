@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "C/Dualità puntatore-vettore.md",
+                "file": "C/Vettori nel problem solving.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Dualità puntatore-vettore"
+              "title": "Vettori nel problem solving"
             }
           }
         ],
@@ -55,8 +55,7 @@
             "state": {
               "type": "file-explorer",
               "state": {
-                "sortOrder": "alphabetical",
-                "autoReveal": false
+                "sortOrder": "alphabetical"
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -178,37 +177,37 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "50f326ddb85c6f2e",
+  "active": "9e208b41897e0878",
   "lastOpenFiles": [
-    "general/main.py",
-    "general/file.exe",
-    "general/file.c",
-    "Informatica/file.c",
-    "general",
-    "Informatica/scripts/prova tommy/akinator.txt",
-    "Informatica/scripts/prova tommy/akinator.py",
-    "Informatica/scripts/prova tommy",
-    "C/esercitazione8/valuta_alg/shell_sort.c",
-    "C/esercitazione8/valuta_alg/selection_sort.c",
-    "C/esercitazione8/valuta_alg/insertion_sort.c",
+    "C/prove_esame/ospedale.exe",
+    "C/prove_esame/prestazioni.txt",
+    "C/prove_esame/pazienti.txt",
+    "C/prove_esame/test.exe",
+    "C/prove_esame/test.c",
+    "C/prove_esame/ospedale.c",
+    "C/prove_esame/magazzino.txt",
+    "C/prove_esame/magazzino.exe",
+    "C/prove_esame/magazzino.c",
+    "C/prove_esame/file1.exe",
+    "C/prove_esame/file1.c",
+    "C/Struct.md",
     "C/Prove d'esame.md",
-    "C/Dualità puntatore-vettore.md",
     "C/Puntatore.md",
+    "C/Problemi di verifica e selezione.md",
+    "C/Problemi di ordinamento.md",
+    "C/GOMOKU.md",
+    "C/Elaborazione testi a livello stringhe.md",
     "C/Elaborazione testi a livello carattere.md",
+    "C/Dualità puntatore-vettore.md",
+    "C/Argomenti al main.md",
     "README.md",
     "Analisi/07. Cenni di Topologia di R.md",
     "Analisi/01. Prodotti Cartesiani.md",
     "chimica/tommy/10. La Cinetica.md",
     "chimica/tommy/12. Acidi e Basi.md",
     "chimica/4 - La Tavola Periodica.md",
-    "C/Problemi di verifica e selezione.md",
-    "C/Problemi di ordinamento.md",
     "C/Vettori nel problem solving.md",
     "chimica/Puntatore.md",
-    "C/Struct.md",
-    "C/Elaborazione testi a livello stringhe.md",
-    "C/Argomenti al main.md",
-    "C/GOMOKU.md",
     "Vettori nel problem solving.md",
     "Informatica/17 - Dizionario di liste.md",
     "Informatica/4 - ASCII.md",
