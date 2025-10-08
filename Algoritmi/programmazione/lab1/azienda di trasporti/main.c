@@ -1,9 +1,10 @@
-#include <stdio.h>
+// #include <stdio.h>
+#include "my_lib.h" // Ensure the file is in the same directory as main.c
 #include <string.h>
-#include <stdlib.h>
+// #include <stdlib.h>
 
-#define nfin "C:/Users/aless/Desktop/Polito/poli_notes/Algoritmi e strutture dati/programmazione/lab1/azienda di trasporti/corse.txt"
-// #define nfin "./corse.txt"
+// #define nfin "C:/Users/aless/Desktop/Polito/poli_notes/Algoritmi/programmazione/lab1/azienda di trasporti/corse.txt"
+#define nfin "./corse.txt"
 #define MAXR 1000
 #define buffer 31
 #define MAXL 15
@@ -13,10 +14,10 @@ typedef enum {
     r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_stampa, r_ordina_data, r_ordina_id, r_ordina_partenza, r_ordina_arrivo, r_fine
 } comando_e;
 
-typedef struct {
-    char id[buffer], part[buffer], dest[buffer], data[buffer], ora_p[buffer], ora_a[buffer];
-    int ret;
-} pullman;
+// typedef struct {
+//     char id[buffer], part[buffer], dest[buffer], data[buffer], ora_p[buffer], ora_a[buffer];
+//     int ret;
+// } pullman;
 
 void leggiFile(FILE *fin, int n, pullman vet[n], pullman *vetp[n]);
 comando_e leggiComando(void);
@@ -220,39 +221,6 @@ int cmp_destinazione(const void *a, const void *b) {
     const pullman *pa = (const pullman *)a;
     const pullman *pb = (const pullman *)b;
     return strcmp(pa->dest, pb->dest);
-}
-
-void merge(pullman *vetp[], pullman *temp[], int left, int mid, int right, int (*cmp)(const void *, const void *)) {
-    int i = left, j = mid, k = left;
-    while (i < mid && j < right) {
-        if (cmp(vetp[i], vetp[j]) <= 0) {
-            temp[k++] = vetp[i++];
-        } else {
-            temp[k++] = vetp[j++];
-        }
-    }
-    while (i < mid) temp[k++] = vetp[i++];
-    while (j < right) temp[k++] = vetp[j++];
-    for (i = left; i < right; i++) vetp[i] = temp[i];
-}
-
-void merge_sort_rec(pullman *vetp[], pullman *temp[], int left, int right, int (*cmp)(const void *, const void *)) {
-    if (right - left > 1) {
-        int mid = (left + right) / 2;
-        merge_sort_rec(vetp, temp, left, mid, cmp);
-        merge_sort_rec(vetp, temp, mid, right, cmp);
-        merge(vetp, temp, left, mid, right, cmp);
-    }
-}
-
-void merge_sort(pullman *vetp[], int n, int (*cmp)(const void *, const void *)) {
-    pullman **temp = malloc(n * sizeof(pullman*));
-    if (!temp) {
-        printf("Errore di allocazione memoria per merge sort\n");
-        return;
-    }
-    merge_sort_rec(vetp, temp, 0, n, cmp);
-    free(temp);
 }
 
 void ordina(int param, int n, pullman *vetp[]) {
