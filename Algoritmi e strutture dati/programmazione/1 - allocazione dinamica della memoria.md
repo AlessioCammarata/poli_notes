@@ -166,3 +166,164 @@ vett = malloc(25 * sizeof(int));
 >ora la porzione di memoria allocata dalla prima malloc non è più indirizzabile né utilizzabile per ulteriori allocazioni (è ancora allocata, ma non puntata e non usata).
 
 ---
+#### La funzione realloc
+In c la dimensione della memoria allocata può essere modificata aggiungendo o togliendo una porzione in fondo tramite realloc:
+```c
+void* realloc (void* p, size_t size);
+```
+- **p** punta alla memoria precedentemente allocata
+- **size** è la nuova dimensione richiesta (maggiore o minore)
+- Il valore di ritorno è un puntatore
+>Esempio di uso tipico:
+```c
+p = malloc (oldSize); 
+... 
+p = realloc (p, newSize); 
+// si lavora sulla struttura dati espansa o ristretta 
+...
+```
+
+>_Osservazione_: 
+>La riduzione della memoria è sempre possibile.
+>L'aumtento della dimensione può:
+>	-essere impossibile e si ritorna NULL ( Non c'è abbastanza spazio)
+>	-essere possibile (esiste memoria disponibile contigua)
+>		Ritorna p (invariato)se è disponibile alla fine del blocco vecchio
+>		Ritorna newp aggiornato se l'opzione di prima non è fattibile
+
+Quando si chiama la realloc , **si alloca un nuovo spazio che possa contenere i dati effettivi,** viene effettuata **l'operazione di ricopiatura dei dati dal blocco vecchio a quello nuovo,** questa operazione nasconde una costo lineare di dimensione O(n) e si **ritorna il puntatore alla nuova allocazione di memoria.**
+
+>**La realloc quindi nasconde un costo lineare**
+---
+#### Strutture dati dinamiche
+La dimensione delle strutture dinamiche è **nota solo in fase di esecuzione** e **può variare nel tempo**.
+
+##### Vettori dinamici
+La dimensione è nota solo in fase di esecuzione del programma, può variare per riallocazione.
+Si evita il sovradimensionamento del vettore (nonché i suoi limiti):
+- è necessario conoscere la dimensione massima che è una costante, data questa e una parte iniziale del vettore effettivamente utilizzata il resto è spreco.
+Per questo motivo si utilizzano i puntatori oppure l'allocazione mediante malloc/calloc.
+
+>Esempio
+```c
+#include <stdio.h>
+#include <stdlib.h>
+int main() { 
+	float *v; int N, i; 
+	printf("N? "); scanf("%d",&N); 
+	//allocazione vettore dinamico
+	v = (float *) malloc (N*(sizeof (float)));
+	//Controllo allocazione riuscita 
+	if (v==NULL) exit(1); 
+	printf("Inserisci %d elementi\n", N); 
+	for (i=0; i<N; i++) { 
+		printf("El. %d: ", i); 
+		scanf("%f",&v[i]); 
+	}
+	printf("Dati in ordine inverso\n"); 
+	for (i=N-1; i>=0; i--) 
+		printf("El. %d: %f\n", i, v[i]); 
+	free(v); // de-allocazione
+	return 0; 
+};
+```
+
+>**ATTENZIONE**: bisogna conoscere il numero di dati per creare ed usare il vettore dinamico!
+
+Se il numero di dati (ignoto) fosse segnalato da un terminatore si puo:
+- effettuare **due letture da file**, una per calcolare la quantità di dati e l'altra per eseguire il codice
+- utilizzare la **realloc**, tenendo presente che potrebbe avere un costo lineare
+
+Ovviamente se usiamo la realloc non aumentiamo di 1 per risparmiare il massimo dello spazio, ma di un tot costante o che aumenta in modo che bisogna farne meno possibili, in ogni caso lo spreco di spazio è minore di quello che si ha con strutture di dati statiche.
+>L'ottimizzazione che utilizzeremo noi è di **raddoppiare ogni volta lo spazio quando questo è esaurito _O(NlogN) invece che O(N^2)_.**
+
+>Esempio (modificato)
+```c
+#include <stdio.h>
+#include <stdlib.h>
+int main() { 
+	float *v; int N, MAXN=1, i=0; 
+	v = malloc (MAXN*(sizeof (float))); 
+	printf("Inserisci elementi\n"); 
+	printf("Elemento 0: "); 
+	while (scanf("%f", &d)>0) { 
+		if (i==MAXN) { 
+			// numero logaritmico di attivazioni 
+			MAXN = MAXN*2; 
+			v = realloc(v,MAXN*sizeof(float)); 
+			// controllo di errore omesso
+		} 
+		v[i++] = d; 
+		printf("Elemento %d: ", i) ; 
+	}
+	N = i; // compreso tra MAXN/2 e MAXN 
+	printf("Dati in ordine inverso\n"); 
+	for (i=N-1; i>=0; i--) 
+		printf("El. %d: %f\n", i, v[i]); 
+	free(v); 
+	return 0; 
+}
+```
+---
+##### Matrici dinamici
+Ci sono due possibilità:
+- Usare un vettore MONODIMENSIONALE dinamico di $nr \cdot nc$ elementi, in questo caso si ha un organizzazione **manuale** di righe e colonne su vettore: l'elemento (i,j) si trova in posizione $nc \cdot i + j$.
+- Usare un vettore BIDIMENSIONALE dinamico di **nr puntatori** **a righe**      in questo caso si itera sulle nr righe per allocare un vettore di tipo desiderato di $nr \cdot nc$ elementi. Il resto è identico alla matrice sovradimensionata in modo statico.
+
+>Esempio ( vettore monodimensionale)
+```c
+...
+float *v; 
+int nr,nc,i,j; 
+
+printf("nr nc: "); scanf("%d%d", &nr, &nc); 
+v = (float *) malloc(nr*nc*(sizeof (float))); //allocazione
+if (v==NULL) exit(1); 
+for (i=0; i<nr; i++) { 
+	printf("Inserisci riga %d\n", i); 
+	for (j=0; j<nc; j++) 
+		scanf("%f", &v[nc*i+j]); //Gestione manuale: [nc*i+j]
+}
+
+printf("Matrice trasposta\n"); 
+for (j=0; j<nc; j++) { 
+	for (i=0; i<nr; i++) 
+		printf("%6.2f", v[nc*i+j]);//Gestione manuale: [nc*i+j]
+	printf("\n"); 
+} 
+free(v); 
+...
+```
+
+>Esempio ( matrice dinamica bidimensionale)
+```c
+... 
+//float **: vettore di puntatori
+float **m; int nr,nc,i,j; 
+
+printf("nr nc: "); scanf("%d%d", &nr, &nc);
+//allocazione di vettore di nr puntatori a riga
+m = (float **) malloc(nr*(sizeof (float *))); 
+if (m==NULL) exit(1); 
+for (i=0; i<nr; i++) { 
+	printf("Inserisci riga %d\n", i);
+	//vettore di float: uno per riga
+	m[i] = (float *) malloc(nc*sizeof (float)); 
+	if (m[i]==NULL) exit(1);
+	for (j=0; j<nc; j++) 
+		scanf("%f", &m[i][j]); 
+} 
+
+printf("Matrice trasposta\n");
+for (j=0; j<nc; j++) { 
+	for (i=0; i<nr; i++) 
+		printf("%6.2f", m[i][j]); 
+	printf("\n"); 
+} 
+
+//liberazione memoria dinamica (niente di automatico)
+for (i=0; i<nr; i++) 
+	free(m[i]); //Prima le singole righe (una alla volta)
+free(m); //Poi il vettore dei puntatori alle righe
+...
+```

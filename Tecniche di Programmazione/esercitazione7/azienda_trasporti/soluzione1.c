@@ -5,7 +5,7 @@
 #define MAXR    1000
 #define STR     31
 #define CMD     6
-#define FILE_IN "log.txt"
+#define FILE_IN "C:/Users/aless/Desktop/Polito/poli_notes/Algoritmi e strutture dati/programmazione/lab1/azienda di trasporti/corse.txt"
 
 typedef struct {
   int a;
