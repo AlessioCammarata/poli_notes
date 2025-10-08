@@ -327,3 +327,92 @@ for (i=0; i<nr; i++)
 free(m); //Poi il vettore dei puntatori alle righe
 ...
 ```
+---
+#### Vettori e matrici creati da funzioni
+Un vettore o matrice dinamici sono accessibili da un puntatore. Il puntatore è un dato, che può quindi essere passato e/o ritornato da funzioni come pure copiato tra variabili.
+Le varaibili puntatore esistono finche è in essere la funzione dove sono dichiarate e sono visibili in essa. Di solito le matrici e vettori creati in una funzione vengono utilizzati solamente li oppure può essere necessario che siano accessibili da altre funzioni.
+Per fare in modo che un'altra funzione usi il vettore puntatore è sufficiente **passare il puntatore per valore:**
+>Esempio (Puntatore come valore di ritorno della funzione)
+```c
+typedef ... Item; 
+Item **malloc2dR(int nr, int nc); //funzione di tipo puntatore a vettore di Item
+void free2d(Item **m, int nr); 
+... 
+void h (/* parametri formali */) { 
+	Item **matr; //matrice di Item
+	int nr, nc; 
+	... 
+	matr = malloc2dR(nr, nc); 
+	... /* lavoro su matr */ 
+	free2d(matr,nr); 
+}
+
+Item **malloc2dR(int nr, int nc) { //funzione di tipo puntatore a vettore di Item
+	Item **m; //m variabile locale (doppio puntatore): puntatore a vettore di puntatori (righe)
+	int i; 
+	m = malloc (nr*sizeof (Item *)); 
+	for (i=0; i<nr; i++) { 
+		m[i] = malloc (nc*sizeof (Item)); 
+	} 
+	return m; //m ritornato come risultato
+} 
+
+/*
+Free più facile: 
+	• riceve puntatore /by value) 
+	• non restituisce risultato
+*/
+void free2d(Item **m, int nr) { 
+	int i; 
+	for (i=0; i<nr; i++) { 
+		free(m[i]); // Prima libera le singole righe, poi il vettore di puntatori
+	} 
+	free(m); 
+}
+```
+
+>Esempio (Puntatore come parametro by pointer/reference)
+```c
+typedef ... Item; 
+//funzione di tipo void, con parametro puntatore a a matrice di Item
+void malloc2dP(Item ***mp, int nr, int nc); 
+void free2d(Item **m, int nr); 
+... 
+void h (/* parametri formali */) { 
+	Item **matr; //matrice di Item
+	int nr, nc; 
+	... 
+	malloc2dP(&matr, nr, nc); 
+	... /* lavoro su matr */ 
+	free2d(matr,nr); 
+}
+
+void malloc2dP(Item ***mp, int nr, int nc) { 
+	Item **m; //m variabile locale (doppio puntatore): non obbligatoria ma comoda «dentro» alla funzione
+	int i; 
+	m = (Item **)malloc (nr*sizeof(Item *)); 
+	for (i=0; i<nr; i++) 
+		m[i] = (Item *)malloc (nc*sizeof(Item)); 
+	*mp = m; //m copiata in *mp (risultato) al termine della funzione (equivale a matr = m)
+} 
+
+void free2d(Item **m, int nr) { 
+	int i; 
+	for (i=0; i<nr; i++) { 
+		free(m[i]); 
+	} 
+	free(m); 
+}
+```
+
+>mp: puntatore a matrice di Item **puntatore (triplo):** puntatore a un puntatore a un vettore (puntatore a Item) di righe, **punta a variabile del programma chiamante (puntatore doppio) in cui occorre trasferire il risultato**.
+---
+#### Vettori a dimensione variabile
+Se serve solo dimensionare vettori e matrici in fase di esecuzione esistono anche i varaible length arrays.
+Si dichiara un vettore/matrice come variabile locale usando come dimensioni variabili o espressioni al posto delle costanti, allocazione e deallocazione sono automatiche e implicite.
+L'uso di questo tipo di vettori è scoraggiato in quanto:
+- Sono un sottoinsieme dell'allocazione dinamica
+- **Presentano svantaggi:**
+	- Non si può controllare se l’allocazione è andata a buon fine : l’effetto è un crash, quando lo stack è troppo piccolo.
+	- Il vettore è cancellato all’uscita dalla funzione, ma il programmatore può pensare che esista ancora e continua a farvi riferimento
+---
