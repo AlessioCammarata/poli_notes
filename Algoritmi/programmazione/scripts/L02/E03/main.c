@@ -16,201 +16,247 @@ typedef enum {
 typedef enum{
     ord_id, ord_data, ord_partenza, ord_arrivo
 } ord;
+
 // typedef struct {
 //     char id[buffer], part[buffer], dest[buffer], data[buffer], ora_p[buffer], ora_a[buffer];
 //     int ret;
 // } pullman;
 
 FILE *nuovo_file();
-void leggiFile(FILE *fin, int n, pullman vet[n], pullman *vetp_orig[n], pullman *vetp_id[n], pullman *vetp_data[n], pullman *vetp_part[n], pullman *vetp_arr[n]);
+void leggiFile(FILE *fin, int n, pullman *vet, pullman **vetp_orig, pullman **vetp_id, pullman **vetp_data, pullman **vetp_part, pullman **vetp_arr);
 comando_e leggiComando(void);
 void stampaVoce(const pullman *v);
 int stampaDati(char *path, int n, pullman **vetp);
-int date(char* data1, char* data2, int n, pullman *vetp[]);
+int date(char* data1, char* data2, int n, pullman **vetp);
 void ordina_date(char* data1, char* data2, char* dmin, char* dmax);
-void ordina(ord param, int n, pullman *vetp[]);
-int cerca_dico_id(char *id, int n, pullman *vetp[]);
-int cerca_linea_id(char *id, int n, pullman *vetp[]);
-int cerca_dico_pre(char *fermata, int n, pullman *vetp[]);
-int cerca_linea_pre(char *fermata, int n, pullman *vetp[]);
-int partenza(char *fermata, int n, pullman *vetp[]);
-int destinazione(char *fermata,int n,pullman *vetp[]);
-int ritardo(char* data1, char* data2,int n, pullman *vetp[]);
-int ritardo_tot(char *id, int n, pullman *vetp[]);
+void ordina(ord param, int n, pullman **vetp);
+int cerca_dico_id(char *id, int n, pullman **vetp);
+int cerca_linea_id(char *id, int n, pullman **vetp);
+int cerca_dico_pre(char *fermata, int n, pullman **vetp);
+int cerca_linea_pre(char *fermata, int n, pullman **vetp);
+int partenza(char *fermata, int n, pullman **vetp);
+int destinazione(char *fermata,int n,pullman **vetp);
+int ritardo(char* data1, char* data2,int n, pullman **vetp);
+int ritardo_tot(char *id, int n, pullman **vetp);
 
 int main(void){
     FILE *fin;
-    int n, end = 0, count, res;
+    int n, end = 0, count, res = 1;
 
-    if ((fin = nuovo_file()) == NULL) {
+    while ((fin = nuovo_file()) == NULL) {
         printf("Errore in apertura del file\n");
-        return 1;
+        // return 1;
     }
     
-    fscanf(fin, "%d", &n);
-    if (n > MAXR) {
+    if (fscanf(fin, "%d", &n) != 1 || n > MAXR) {
         printf("Errore, ci sono piu campi di quanti ce ne dvorebbero\n.");
+        fclose(fin);
         return 1;
     }
 
-    pullman vet[n] ,**vetp , *vetp_orig[n], *vetp_id[n], *vetp_data[n], *vetp_part[n], *vetp_arr[n]; // puntatori ordinati (id/data/partenza/arrivo)
-    leggiFile(fin, n, vet, vetp_orig, vetp_id, vetp_data, vetp_part, vetp_arr);
-    vetp = vetp_orig;
+    // Dopo aver letto n dal nuovo file:
+    pullman *vet = malloc(n * sizeof(pullman));
+    pullman **vetp;
+    pullman **vetp_orig = malloc(n * sizeof(pullman *));
+    pullman **vetp_id   = malloc(n * sizeof(pullman *));
+    pullman **vetp_data = malloc(n * sizeof(pullman *));
+    pullman **vetp_part = malloc(n * sizeof(pullman *));
+    pullman **vetp_arr  = malloc(n * sizeof(pullman *));
 
-    comando_e act;
-    char str[buffer], ans, ch;
+    if(!vet || !vetp_orig || !vetp_id || !vetp_data || !vetp_part || !vetp_arr){
+        printf("Errore di malloc per il path\n");
+    }else{
+        leggiFile(fin, n, vet, vetp_orig, vetp_id, vetp_data, vetp_part, vetp_arr);
+        vetp = vetp_orig;
 
-    while (!end) {
+        comando_e act;
+        char str[buffer], ans, ch;
 
-        char data1[max_data], data2[max_data];
+        while (!end) {
 
-        printf("Inserisci la tua scelta:\n");
-        act = leggiComando();
-        while ((ch = getchar()) != '\n' && ch != EOF);
+            char data1[max_data], data2[max_data];
 
-        switch (act) {
-            case r_date:
+            printf("Inserisci la tua scelta:\n");
+            act = leggiComando();
+            // Consuma e scarta tutti i caratteri rimanenti nel buffer di input fino al carattere di nuova linea ('\n') o alla fine del file (EOF).
+            while ((ch = getchar()) != '\n' && ch != EOF);
 
-                printf("Inserisci due date nel formato (yyyy/mm/dd) :\n");
-                scanf("%s %s", data1, data2);
-                count = date(data1, data2, n, vetp);
+            switch (act) {
+                case r_date:
 
-                if (count == 0) printf("Nessuna corrispondenza\n\n");
-                break;
-            case r_partenza:
+                    printf("Inserisci due date nel formato (yyyy/mm/dd) :\n");
+                    scanf("%s %s", data1, data2);
+                    count = date(data1, data2, n, vetp);
 
-                printf("Inserisci il nome della fermata:\n");
-                scanf("%s", str);
-                count = partenza(str, n, vetp);
+                    if (count == 0) printf("Nessuna corrispondenza\n\n");
+                    break;
+                case r_partenza:
 
-                if (count == 0) printf("Nessuna corrispondenza\n\n");
-                break;
-            case r_capolinea:
+                    printf("Inserisci il nome della fermata:\n");
+                    scanf("%s", str);
+                    count = partenza(str, n, vetp);
 
-                printf("Inserisci il nome della fermata:\n");
-                scanf("%s", str);
-                count = destinazione(str, n, vetp);
+                    if (count == 0) printf("Nessuna corrispondenza\n\n");
+                    break;
+                case r_capolinea:
 
-                if (count == 0) printf("Nessuna corrispondenza\n\n");
-                break;
-            case r_ritardo:
+                    printf("Inserisci il nome della fermata:\n");
+                    scanf("%s", str);
+                    count = destinazione(str, n, vetp);
 
-                printf("Inserisci due date nel formato (yyyy/mm/dd) :\n");
-                scanf("%s %s", data1, data2);
-                count = ritardo(data1, data2, n, vetp);
+                    if (count == 0) printf("Nessuna corrispondenza\n\n");
+                    break;
+                case r_ritardo:
 
-                if (count == 0) printf("Nessuna corrispondenza\n\n");
-                break;
-            case r_ritardo_tot:
-    
-                printf("Inserisce l'id che si vuole controllare:\n");
-                scanf("%s", str);
-                count = ritardo_tot(str, n, vetp);
+                    printf("Inserisci due date nel formato (yyyy/mm/dd) :\n");
+                    scanf("%s %s", data1, data2);
+                    count = ritardo(data1, data2, n, vetp);
 
-                if (count == 0) printf("Nessuna corrispondenza\n\n");
-                else printf("Il ritardo accumulato dalla tratta %s è pari a: %d minuti\n\n", str, count);
+                    if (count == 0) printf("Nessuna corrispondenza\n\n");
+                    break;
+                case r_ritardo_tot:
+        
+                    printf("Inserisce l'id che si vuole controllare:\n");
+                    scanf("%s", str);
+                    count = ritardo_tot(str, n, vetp);
 
-                break;
-            case r_stampa:
-                int ch, len_str = 0, start = 0, size_str = STANDARD_SIZE;
-                char *path = malloc(size_str*sizeof(char));
+                    if (count == 0) printf("Nessuna corrispondenza\n\n");
+                    else printf("Il ritardo accumulato dalla tratta %s è pari a: %d minuti\n\n", str, count);
 
-                printf("Inserire il path assoluto del file dove si vuole stampare o 'video' per stampare a video:\n");
-                while((ch = getchar()) != '\n' && ch != EOF){
-                    if (len_str >= size_str -1){
-                        size_str *= 2;
-                        path = (char *)realloc(path, size_str*sizeof(char));
-                        if(!path){
-                            printf("Errore di realloc per il path\n");
-                            free(path);
-                            return 1;
+                    break;
+                case r_stampa:
+                    int c, len_str = 0, start = 0, size_str = STANDARD_SIZE;
+                    char *path = malloc(size_str*sizeof(char));
+
+                    printf("Inserire il path assoluto del file dove si vuole stampare o 'video' per stampare a video:\n");
+                    while((c = getchar()) != '\n' && c != EOF){
+                        if (len_str >= size_str -1){
+                            size_str *= 2;
+                            path = (char *)realloc(path, size_str*sizeof(char));
+                            if(!path){
+                                printf("Errore di realloc per il path\n");
+                                free(path);
+                                end = 1; //Equivale return ma cosi dealloco i vettori
+                            }
                         }
+                        path[len_str++] = (char)c;
                     }
-                    path[len_str++] = (char)ch;
-                }
-                path[len_str] = '\0';
+                    path[len_str] = '\0';
 
-                while (path[start] == ' ' || path[start] == '\t') start++;
-                // Rimuovi spazi/tab finali
-                while (len_str > 0 && (path[len_str - 1] == ' ' || path[len_str - 1] == '\t'))
-                    path[--len_str] = '\0';
+                    while (path[start] == ' ' || path[start] == '\t') start++;
+                    // Rimuovi spazi/tab finali
+                    while (len_str > 0 && (path[len_str - 1] == ' ' || path[len_str - 1] == '\t'))
+                        path[--len_str] = '\0';
 
-                if (strcmp(path + start, "video") == 0) {
-                    printf("%d\n", n);
-                    for (int i = 0; i < n; i++) printf("%s %s %s %s %s %s %d\n", vetp[i]->id, vetp[i]->part, vetp[i]->dest, vetp[i]->data, vetp[i]->ora_p, vetp[i]->ora_a, vetp[i]->ret);
-                } else if (stampaDati(path + start, n, vetp) == 1) return 1;
+                    if (strcmp(path + start, "video") == 0) {
+                        printf("%d\n", n);
+                        for (int i = 0; i < n; i++) printf("%s %s %s %s %s %s %d\n", vetp[i]->id, vetp[i]->part, vetp[i]->dest, vetp[i]->data, vetp[i]->ora_p, vetp[i]->ora_a, vetp[i]->ret);
+                    } else if (stampaDati(path + start, n, vetp) == 1) end = 1;
 
-                free(path);
-                printf("\nStampa effettuata!\n\n");
-                break;
-            case r_ordina_data:
-                vetp = vetp_data;
-                break;
-            case r_ordina_id:
-                vetp = vetp_id;
-                break;
-            case r_ordina_partenza:
-                vetp = vetp_part;
-                break;
-            case r_ordina_arrivo:
-                vetp = vetp_arr;
-                break;
-            case r_cerca_tratta_c:
-                printf("Ricerca dicotomica o no? (s\\n)\n");
-                scanf(" %c", &ans);
+                    free(path);
+                    printf("\nStampa effettuata!\n\n");
+                    break;
+                case r_ordina_data:
+                    vetp = vetp_data;
+                    printf("\nOrdine per data effettuato!\n\n");
+                    break;
+                case r_ordina_id:
+                    vetp = vetp_id;
+                    printf("\nOrdine per codice effettuato!\n\n");
+                    break;
+                case r_ordina_partenza:
+                    vetp = vetp_part;
+                    printf("\nOrdine per stazione di partenza effettuato!\n\n");
+                    break;
+                case r_ordina_arrivo:
+                    vetp = vetp_arr;
+                    printf("\nOrdine per stazione d'arrivo effettuato!\n\n");
+                    break;
+                case r_cerca_tratta_c:
+                    printf("Ricerca dicotomica o no? (s\\n)\n");
+                    scanf(" %c", &ans);
 
-                printf("Inserire il codice:\n");
-                scanf("%s", str);
+                    if (ans == 's'){
+                        printf("Inserire il codice:\n");
+                        scanf("%s", str);
+                        cerca_dico_id(str, n, vetp_id);
 
-                if (ans == 's'){
-                    cerca_dico_id(str, n, vetp_id);
+                    } else if(ans == 'n'){
+                        printf("Inserire il codice:\n");
+                        scanf("%s", str);
+                        cerca_linea_id(str, n, vetp);
+                    }
 
-                } else{
-                    cerca_linea_id(str, n, vetp);
-                }
+                    break;
+                case r_cerca_tratta_sp:
+                    printf("Ricerca dicotomica o no? (s\\n)\n");
+                    scanf(" %c", &ans);
 
-                break;
-            case r_cerca_tratta_sp:
-                printf("Ricerca dicotomica o no? (s\\n)\n");
-                scanf(" %c", &ans);
+                    if (ans == 's'){
+                        printf("Inserire la stazione di partenza:\n");
+                        scanf("%s", str);
+                        res = cerca_dico_pre(str, n, vetp_part);
 
-                printf("Inserire la stazione di partenza:\n");
-                scanf("%s", str);
+                    } else if(ans == 'n'){
+                        printf("Inserire la stazione di partenza:\n");
+                        scanf("%s", str);
+                        res = cerca_linea_pre(str, n, vetp);
+                    }
 
-                if (ans == 's'){
-                    res = cerca_dico_pre(str, n, vetp_part);
+                    if (!res) printf("Nessuna corrispondenza trovata\n");
+                    break;
+                case r_nuovo_file:
+                    if ((fin = nuovo_file()) != NULL) {
+                    
+                        if (fscanf(fin, "%d", &n) == 1 && n <= MAXR) {
+                            // Prima di leggere un nuovo file:
+                            free(vet);
+                            free(vetp_orig);
+                            free(vetp_id);
+                            free(vetp_data);
+                            free(vetp_part);
+                            free(vetp_arr);
 
-                } else{
-                    res = cerca_linea_pre(str, n, vetp);
-                }
+                            // Dopo aver letto n dal nuovo file:
+                            vet = malloc(n * sizeof(pullman));
+                            vetp_orig = malloc(n * sizeof(pullman *));
+                            vetp_id   = malloc(n * sizeof(pullman *));
+                            vetp_data = malloc(n * sizeof(pullman *));
+                            vetp_part = malloc(n * sizeof(pullman *));
+                            vetp_arr  = malloc(n * sizeof(pullman *));
 
-                if (!res) printf("Nessuna corrispondenza trovata\n");
-                break;
-            case r_nuovo_file:
-                if ((fin = nuovo_file()) == NULL) {
-                    printf("Errore in apertura del file\n");
-                    return 1;
-                }
-                
-                fscanf(fin, "%d", &n);
-                if (n > MAXR) {
-                    printf("Errore, ci sono piu campi di quanti ce ne dvorebbero\n.");
-                    return 1;
-                }
-                printf("%d\n",n);
-                leggiFile(fin, n, vet, vetp_orig, vetp_id, vetp_data, vetp_part, vetp_arr);
-                vetp = vetp_orig;
+                            if(vet && vetp_orig && vetp_id && vetp_data && vetp_part && vetp_arr){
+                                leggiFile(fin, n, vet, vetp_orig, vetp_id, vetp_data, vetp_part, vetp_arr);
+                                vetp = vetp_orig;
+                                
+                            }else{
+                                printf("Errore di malloc per il path\n");                                                            fclose(fin);
+                                fclose(fin);
+                                end = 1;
+                            }
+                        }else{
+                            printf("Errore, ci sono piu campi di quanti ce ne dvorebbero\n.");
+                            fclose(fin);
+                            end = 1;
+                        }
+                    }else printf("Errore in apertura del file\n");
 
-                break;
-            case r_fine:
-                end = 1;
-                break;
-            default:
-                printf("Errore, comando non valido.\n");
+                    break;
+                case r_fine:
+                    end = 1;
+                    break;
+                default:
+                    printf("Errore, comando non valido.\n");
+            }
         }
     }
 
-    fclose(fin);
+    free(vet);
+    free(vetp_orig);
+    free(vetp_id);
+    free(vetp_data);
+    free(vetp_part);
+    free(vetp_arr);
     return 0;
 }
 
@@ -244,14 +290,8 @@ FILE *nuovo_file(){
     return fin;
 }
 
-void leggiFile(FILE *fin, int n, pullman vet[n], pullman *vetp_orig[n], pullman *vetp_id[n], pullman *vetp_data[n], pullman *vetp_part[n], pullman *vetp_arr[n]){
+void leggiFile(FILE *fin, int n, pullman *vet, pullman **vetp_orig, pullman **vetp_id, pullman **vetp_data, pullman **vetp_part, pullman **vetp_arr){
     int i = 0;
-
-    // fscanf(fin, "%d", &n);
-    // if (n > MAXR) {
-    //     printf("Errore, ci sono piu campi di quanti ce ne dvorebbero\n.");
-    //     return 1;
-    // }
 
     while(fscanf(fin, "%s %s %s %s %s %s %d", vet[i].id, vet[i].part, vet[i].dest, vet[i].data, vet[i].ora_p, vet[i].ora_a, &vet[i].ret) == 7 && i < n){
         vetp_orig[i] = &vet[i];
@@ -261,6 +301,7 @@ void leggiFile(FILE *fin, int n, pullman vet[n], pullman *vetp_orig[n], pullman 
         vetp_arr[i] = &vet[i];
         i++;
     }
+    fclose(fin);
     ordina(ord_id,n,vetp_id);
     ordina(ord_data,n,vetp_data);
     ordina(ord_partenza,n,vetp_part);
@@ -326,6 +367,8 @@ int cmp_data(const void *a, const void *b) {
 
     if (cmp != 0)
         return cmp;
+    
+    return 0;
 }
 
 
@@ -347,7 +390,7 @@ int cmp_destinazione(const void *a, const void *b) {
     return strcmp(pa->dest, pb->dest);
 }
 
-void ordina(ord param, int n, pullman *vetp[]) {
+void ordina(ord param, int n, pullman **vetp) {
     int (*cmp)(const void *, const void *);
 
     switch(param) {
@@ -360,7 +403,7 @@ void ordina(ord param, int n, pullman *vetp[]) {
     merge_sort(vetp, n, cmp);
 }
 
-int date(char* data1, char* data2, int n, pullman *vetp[]){
+int date(char* data1, char* data2, int n, pullman **vetp){
     char dmin[max_data], dmax[max_data];
     int c=0;
 
@@ -378,7 +421,7 @@ int date(char* data1, char* data2, int n, pullman *vetp[]){
     return c;
 }
 
-int partenza(char *fermata, int n, pullman *vetp[]){
+int partenza(char *fermata, int n, pullman **vetp){
     int c=0;
 
     printf("\nfermata di partenza: %s\n",fermata);
@@ -393,7 +436,7 @@ int partenza(char *fermata, int n, pullman *vetp[]){
     return c;
 }
 
-int destinazione(char *fermata,int n,pullman *vetp[]){
+int destinazione(char *fermata,int n,pullman **vetp){
     int c=0;
 
     printf("\nfermata di capolinea: %s\n",fermata);
@@ -408,7 +451,7 @@ int destinazione(char *fermata,int n,pullman *vetp[]){
     return c;
 }
 
-int ritardo(char* data1, char* data2,int n, pullman *vetp[]){
+int ritardo(char* data1, char* data2,int n, pullman **vetp){
     char dmin[max_data], dmax[max_data];
     int c=0;
 
@@ -426,7 +469,7 @@ int ritardo(char* data1, char* data2,int n, pullman *vetp[]){
     return c;
 }
 
-int ritardo_tot(char *id, int n, pullman *vetp[]){
+int ritardo_tot(char *id, int n, pullman **vetp){
     int sum=0;
     
     for(int i=0;i<n;i++){
@@ -438,7 +481,7 @@ int ritardo_tot(char *id, int n, pullman *vetp[]){
     return sum;
 }
 
-int cerca_dico_id(char *id, int n, pullman *vetp[]) {
+int cerca_dico_id(char *id, int n, pullman **vetp) {
     int l = 0, r = n - 1, m, cmp;
     while (l <= r) {
         m = (l + r) / 2;
@@ -456,7 +499,7 @@ int cerca_dico_id(char *id, int n, pullman *vetp[]) {
     return -1; // non trovato
 }
 
-int cerca_linea_id(char *id, int n, pullman *vetp[]){
+int cerca_linea_id(char *id, int n, pullman **vetp){
     int i = 0;
     while(i<n && strcmp(vetp[i]->id,id) != 0) i++;
 
@@ -469,7 +512,7 @@ int cerca_linea_id(char *id, int n, pullman *vetp[]){
     }
 }
 
-int cerca_dico_pre(char *fermata, int n, pullman *vetp[n]){
+int cerca_dico_pre(char *fermata, int n, pullman **vetp){
     int l = 0, r = n - 1, m, cmp, found = 0, maxn = strlen(fermata);
 
     while (l <= r) {
@@ -496,7 +539,7 @@ int cerca_dico_pre(char *fermata, int n, pullman *vetp[n]){
     return 0;
 }
 
-int cerca_linea_pre(char *fermata, int n, pullman *vetp[n]){
+int cerca_linea_pre(char *fermata, int n, pullman **vetp){
     int i = 0,found = 0, nmax = strlen(fermata);
     while(i<n){
         if(strncmp(vetp[i]->part,fermata,nmax) == 0){ 

@@ -48,8 +48,7 @@ int main(void){
         return 1;
     }
     
-    fscanf(fin, "%d", &n);
-    if (n > MAXR) {
+    if (fscanf(fin, "%d", &n) != 1 || n > MAXR) {
         printf("Errore, ci sono piu campi di quanti ce ne dvorebbero\n.");
         return 1;
     }
@@ -140,14 +139,16 @@ int main(void){
                 printf("Ricerca dicotomica o no? (s\\n)\n");
                 scanf(" %c", &ans);
 
-                printf("Inserire il codice:\n");
-                scanf("%s", str);
-
                 if (ans == 's'){
+                    printf("Inserire il codice:\n");
+                    scanf("%s", str);
+
                     ordina(0, n, vetp);
                     cerca_dico_id(str, n, vetp);
 
-                } else{
+                } else if(ans == 'n'){
+                    printf("Inserire il codice:\n");
+                    scanf("%s", str);
                     cerca_linea_id(str, n, vetp);
                 }
 
@@ -156,17 +157,18 @@ int main(void){
                 printf("Ricerca dicotomica o no? (s\\n)\n");
                 scanf(" %c", &ans);
 
-                printf("Inserire la stazione di partenza:\n");
-                scanf("%s", str);
-
                 if (ans == 's'){
+                    printf("Inserire la stazione di partenza:\n");
+                    scanf("%s", str);
+
                     ordina(2, n, vetp);
                     res = cerca_dico_pre(str, n, vetp);
 
-                } else{
+                } else if(ans == 'n'){
+                    printf("Inserire la stazione di partenza:\n");
+                    scanf("%s", str);
                     res = cerca_linea_pre(str, n, vetp);
                 }
-
                 if (!res) printf("Nessuna corrispondenza trovata\n");
                 break;
             case r_fine:
@@ -177,7 +179,7 @@ int main(void){
         }
     }
 
-    fclose(fin);
+    // fclose(fin);
     return 0;
 }
 
@@ -188,6 +190,8 @@ void leggiFile(FILE *fin, int n, pullman vet[n], pullman *vetp[n]){
         vetp[i] = &vet[i];
         i++;
     }
+
+    fclose(fin);
 }
 
 comando_e leggiComando (void) {
@@ -249,6 +253,8 @@ int cmp_data(const void *a, const void *b) {
 
     if (cmp != 0)
         return cmp;
+
+    return 0;
 }
 
 

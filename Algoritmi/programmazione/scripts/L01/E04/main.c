@@ -47,9 +47,9 @@ int main(void){
         return 1;
     }
     
-    fscanf(fin, "%d", &n);
-    if (n > MAXR) {
+    if (fscanf(fin, "%d", &n) != 1 || n > MAXR) {
         printf("Errore, ci sono piu campi di quanti ce ne dvorebbero\n.");
+        fclose(fin);
         return 1;
     }
 
@@ -131,33 +131,38 @@ int main(void){
                 if (strcmp(str, "video") == 0) {
                     printf("%d\n", n);
                     for (int i = 0; i < n; i++) printf("%s %s %s %s %s %s %d\n", vetp[i]->id, vetp[i]->part, vetp[i]->dest, vetp[i]->data, vetp[i]->ora_p, vetp[i]->ora_a, vetp[i]->ret);
-                } else if (stampaDati(str, n, vetp) == 1) return 1;
+                } else if (stampaDati(str, n, vetp) == 1) end = 1;
 
                 printf("\nStampa effettuata!\n\n");
                 break;
             case r_ordina_data:
                 vetp = vetp_data;
+                printf("\nOrdine per data effettuato!\n\n");
                 break;
             case r_ordina_id:
                 vetp = vetp_id;
+                printf("\nOrdine per codice effettuato!\n\n");
                 break;
             case r_ordina_partenza:
                 vetp = vetp_part;
+                printf("\nOrdine per stazione di partenza effettuato!\n\n");
                 break;
             case r_ordina_arrivo:
                 vetp = vetp_arr;
+                printf("\nOrdine per stazione d'arrivo effettuato!\n\n");
                 break;
             case r_cerca_tratta_c:
                 printf("Ricerca dicotomica o no? (s\\n)\n");
                 scanf(" %c", &ans);
 
-                printf("Inserire il codice:\n");
-                scanf("%s", str);
-
                 if (ans == 's'){
+                    printf("Inserire il codice:\n");
+                    scanf("%s", str);
                     cerca_dico_id(str, n, vetp_id);
 
-                } else{
+                } else if(ans == 'n'){
+                    printf("Inserire il codice:\n");
+                    scanf("%s", str);
                     cerca_linea_id(str, n, vetp);
                 }
 
@@ -166,13 +171,14 @@ int main(void){
                 printf("Ricerca dicotomica o no? (s\\n)\n");
                 scanf(" %c", &ans);
 
-                printf("Inserire la stazione di partenza:\n");
-                scanf("%s", str);
-
                 if (ans == 's'){
+                    printf("Inserire la stazione di partenza:\n");
+                    scanf("%s", str);
                     res = cerca_dico_pre(str, n, vetp_part);
 
-                } else{
+                } else if(ans == 'n'){
+                    printf("Inserire la stazione di partenza:\n");
+                    scanf("%s", str);
                     res = cerca_linea_pre(str, n, vetp);
                 }
 
@@ -186,7 +192,7 @@ int main(void){
         }
     }
 
-    fclose(fin);
+    // fclose(fin);
     return 0;
 }
 
@@ -200,6 +206,8 @@ void leggiFile(FILE *fin, int n, pullman vet[n], pullman *vetp[n], pullman *vetp
         vetp_arr[i] = &vet[i];
         i++;
     }
+
+    fclose(fin);
 }
 
 comando_e leggiComando (void) {
@@ -261,6 +269,8 @@ int cmp_data(const void *a, const void *b) {
 
     if (cmp != 0)
         return cmp;
+
+    return 0;
 }
 
 
