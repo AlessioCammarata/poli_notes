@@ -11,7 +11,7 @@
 #define max_data 11
 
 typedef enum {
-    r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_stampa, r_cerca_tratta_c, r_cerca_tratta_sp, r_fine
+    r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_stampa, r_ordina_data, r_ordina_id, r_ordina_partenza, r_ordina_arrivo, r_cerca_tratta_c, r_cerca_tratta_sp, r_fine
 } comando_e;
 
 typedef enum{
@@ -22,7 +22,7 @@ typedef enum{
 //     int ret;
 // } pullman;
 
-void leggiFile(FILE *fin, int n, pullman vet[n], pullman *vetp[n], pullman *vetp_id[n], pullman *vetp_data[n], pullman *vetp_part[n], pullman *vetp_arr[n]);
+void leggiFile(FILE *fin, int n, pullman vet[n], pullman *vetp_orig[n], pullman *vetp_id[n], pullman *vetp_data[n], pullman *vetp_part[n], pullman *vetp_arr[n]);
 comando_e leggiComando(void);
 void stampaVoce(const pullman *v);
 int stampaDati(char *path, int n, pullman **vetp);
@@ -54,17 +54,19 @@ int main(void){
     }
 
     pullman vet[n];
-    pullman *vetp[n];
+    pullman **vetp;
+    pullman *vetp_orig[n];
     pullman *vetp_id[n];   // puntatori ordinati per codice
     pullman *vetp_data[n]; // puntatori ordinati per data
     pullman *vetp_part[n]; // puntatori ordinati per partenza
     pullman *vetp_arr[n];  // puntatori ordinati per arrivo
 
-    leggiFile(fin, n, vet, vetp, vetp_id, vetp_data, vetp_part, vetp_arr);
+    leggiFile(fin, n, vet, vetp_orig, vetp_id, vetp_data, vetp_part, vetp_arr);
     ordina(ord_id,n,vetp_id);
     ordina(ord_data,n,vetp_data);
     ordina(ord_partenza,n,vetp_part);
     ordina(ord_arrivo,n,vetp_arr);
+    vetp = vetp_orig;
     
     comando_e act;
     char str[buffer], ans;
@@ -80,7 +82,7 @@ int main(void){
 
                 printf("Inserisci due date nel formato (yyyy/mm/dd) :\n");
                 scanf("%s %s", data1, data2);
-                count = date(data1, data2, n, vetp_data);
+                count = date(data1, data2, n, vetp);
 
                 if (count == 0) printf("Nessuna corrispondenza\n\n");
                 break;
@@ -88,7 +90,7 @@ int main(void){
 
                 printf("Inserisci il nome della fermata:\n");
                 scanf("%s", str);
-                count = partenza(str, n, vetp_part);
+                count = partenza(str, n, vetp);
 
                 if (count == 0) printf("Nessuna corrispondenza\n\n");
                 break;
@@ -96,7 +98,7 @@ int main(void){
 
                 printf("Inserisci il nome della fermata:\n");
                 scanf("%s", str);
-                count = destinazione(str, n, vetp_arr);
+                count = destinazione(str, n, vetp);
 
                 if (count == 0) printf("Nessuna corrispondenza\n\n");
                 break;
@@ -104,7 +106,7 @@ int main(void){
 
                 printf("Inserisci due date nel formato (yyyy/mm/dd) :\n");
                 scanf("%s %s", data1, data2);
-                count = ritardo(data1, data2, n, vetp_data);
+                count = ritardo(data1, data2, n, vetp);
 
                 if (count == 0) printf("Nessuna corrispondenza\n\n");
                 break;
@@ -112,7 +114,7 @@ int main(void){
     
                 printf("Inserisce l'id che si vuole controllare:\n");
                 scanf("%s", str);
-                count = ritardo_tot(str, n, vetp_id);
+                count = ritardo_tot(str, n, vetp);
 
                 if (count == 0) printf("Nessuna corrispondenza\n\n");
                 else printf("Il ritardo accumulato dalla tratta %s è pari a: %d minuti\n\n", str, count);
@@ -133,7 +135,18 @@ int main(void){
 
                 printf("\nStampa effettuata!\n\n");
                 break;
-
+            case r_ordina_data:
+                vetp = vetp_data;
+                break;
+            case r_ordina_id:
+                vetp = vetp_id;
+                break;
+            case r_ordina_partenza:
+                vetp = vetp_part;
+                break;
+            case r_ordina_arrivo:
+                vetp = vetp_arr;
+                break;
             case r_cerca_tratta_c:
                 printf("Ricerca dicotomica o no? (s\\n)\n");
                 scanf(" %c", &ans);
@@ -193,11 +206,11 @@ comando_e leggiComando (void) {
     comando_e c;
     char cmd[MAXL];
     char tabella[r_fine + 1][MAXL] = {
-        "date","partenza","destinazione","ritardo","ritardo_tot","stampa","cerca_tratta_c","cerca_tratta_sp","fine"
+        "date","partenza","destinazione","ritardo","ritardo_tot","stampa","ordina_data", "ordina_id", "ordina_partenza", "ordina_arrivo","cerca_tratta_c","cerca_tratta_sp","fine"
     };
 
     printf("comando (date");
-    printf("/partenza/destinazione/ritardo/ritardo_tot/stampa/cerca_tratta_c/cerca_tratta_sp/fine): ");
+    printf("/partenza/destinazione/ritardo/ritardo_tot/stampa/ordina_data/ordina_id/ordina_partenza/ordina_arrivo/cerca_tratta_c/cerca_tratta_sp/fine): ");
     scanf("%s",cmd); 
     c=r_date;
 
