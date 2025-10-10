@@ -3,7 +3,7 @@
 #include <string.h>
 // #include <stdlib.h>
 
-#define nfin "C:/Users/aless/Desktop/Polito/poli_notes/Algoritmi/programmazione/lab1/azienda di trasporti/corse.txt"
+#define nfin "C:/Users/aless/Desktop/Polito/poli_notes/Algoritmi/programmazione/scripts/L01/E03/corse.txt"
 // #define nfin "./corse.txt"
 #define MAXR 1000
 #define buffer 31
@@ -13,6 +13,10 @@
 typedef enum {
     r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_stampa, r_ordina_data, r_ordina_id, r_ordina_partenza, r_ordina_arrivo, r_cerca_tratta_c, r_cerca_tratta_sp, r_fine
 } comando_e;
+
+typedef enum{
+    ord_id, ord_data, ord_partenza, ord_arrivo
+} ord;
 
 // typedef struct { gia definita dalla libreria
 //     char id[buffer], part[buffer], dest[buffer], data[buffer], ora_p[buffer], ora_a[buffer];
@@ -121,16 +125,16 @@ int main(void){
                 printf("\nStampa effettuata!\n\n");
                 break;
             case r_ordina_data:
-                ordina(1, n, vetp);
+                ordina(ord_data, n, vetp);
                 break;
             case r_ordina_id:
-                ordina(0, n, vetp);
+                ordina(ord_id, n, vetp);
                 break;
             case r_ordina_partenza:
-                ordina(2, n, vetp);
+                ordina(ord_partenza, n, vetp);
                 break;
             case r_ordina_arrivo:
-                ordina(3, n, vetp);
+                ordina(ord_arrivo, n, vetp);
                 break;
             case r_cerca_tratta_c:
                 printf("Ricerca dicotomica o no? (s\\n)\n");

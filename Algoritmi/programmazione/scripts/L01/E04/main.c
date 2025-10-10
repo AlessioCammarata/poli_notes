@@ -3,7 +3,7 @@
 #include <string.h>
 // #include <stdlib.h>
 
-#define nfin "C:/Users/aless/Desktop/Polito/poli_notes/Algoritmi/programmazione/lab1/azienda di trasporti/corse.txt"
+#define nfin "C:/Users/aless/Desktop/Polito/poli_notes/Algoritmi/programmazione/scripts/L01/E03/corse.txt"
 // #define nfin "./corse.txt"
 #define MAXR 1000
 #define buffer 31
@@ -11,9 +11,12 @@
 #define max_data 11
 
 typedef enum {
-    r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_stampa, r_ordina_data, r_ordina_id, r_ordina_partenza, r_ordina_arrivo, r_cerca_tratta_c, r_cerca_tratta_sp, r_fine
+    r_date, r_partenza, r_capolinea, r_ritardo, r_ritardo_tot, r_stampa, r_cerca_tratta_c, r_cerca_tratta_sp, r_fine
 } comando_e;
 
+typedef enum{
+    ord_id, ord_data, ord_partenza, ord_arrivo
+} ord;
 // typedef struct {
 //     char id[buffer], part[buffer], dest[buffer], data[buffer], ora_p[buffer], ora_a[buffer];
 //     int ret;
@@ -25,7 +28,7 @@ void stampaVoce(const pullman *v);
 int stampaDati(char *path, int n, pullman **vetp);
 int date(char* data1, char* data2, int n, pullman *vetp[]);
 void ordina_date(char* data1, char* data2, char* dmin, char* dmax);
-void ordina(int param, int n, pullman *vetp[]);
+void ordina(ord param, int n, pullman *vetp[]);
 int cerca_dico_id(char *id, int n, pullman *vetp[]);
 int cerca_linea_id(char *id, int n, pullman *vetp[]);
 int cerca_dico_pre(char *fermata, int n, pullman *vetp[]);
@@ -58,10 +61,10 @@ int main(void){
     pullman *vetp_arr[n];  // puntatori ordinati per arrivo
 
     leggiFile(fin, n, vet, vetp, vetp_id, vetp_data, vetp_part, vetp_arr);
-    ordina(0,n,vetp_id);
-    ordina(1,n,vetp_data);
-    ordina(2,n,vetp_part);
-    ordina(3,n,vetp_arr);
+    ordina(ord_id,n,vetp_id);
+    ordina(ord_data,n,vetp_data);
+    ordina(ord_partenza,n,vetp_part);
+    ordina(ord_arrivo,n,vetp_arr);
     
     comando_e act;
     char str[buffer], ans;
@@ -101,7 +104,7 @@ int main(void){
 
                 printf("Inserisci due date nel formato (yyyy/mm/dd) :\n");
                 scanf("%s %s", data1, data2);
-                count = ritardo(data1, data2, n, vetp);
+                count = ritardo(data1, data2, n, vetp_data);
 
                 if (count == 0) printf("Nessuna corrispondenza\n\n");
                 break;
@@ -109,7 +112,7 @@ int main(void){
     
                 printf("Inserisce l'id che si vuole controllare:\n");
                 scanf("%s", str);
-                count = ritardo_tot(str, n, vetp);
+                count = ritardo_tot(str, n, vetp_id);
 
                 if (count == 0) printf("Nessuna corrispondenza\n\n");
                 else printf("Il ritardo accumulato dalla tratta %s è pari a: %d minuti\n\n", str, count);
@@ -190,11 +193,11 @@ comando_e leggiComando (void) {
     comando_e c;
     char cmd[MAXL];
     char tabella[r_fine + 1][MAXL] = {
-        "date","partenza","destinazione","ritardo","ritardo_tot","stampa","ordina_data", "ordina_id", "ordina_partenza", "ordina_arrivo","cerca_tratta_c","cerca_tratta_sp","fine"
+        "date","partenza","destinazione","ritardo","ritardo_tot","stampa","cerca_tratta_c","cerca_tratta_sp","fine"
     };
 
     printf("comando (date");
-    printf("/partenza/destinazione/ritardo/ritardo_tot/stampa/ordina_data/ordina_id/ordina_partenza/ordina_arrivo/cerca_tratta_c/cerca_tratta_sp/fine): ");
+    printf("/partenza/destinazione/ritardo/ritardo_tot/stampa/cerca_tratta_c/cerca_tratta_sp/fine): ");
     scanf("%s",cmd); 
     c=r_date;
 
@@ -266,7 +269,7 @@ int cmp_destinazione(const void *a, const void *b) {
     return strcmp(pa->dest, pb->dest);
 }
 
-void ordina(int param, int n, pullman *vetp[]) {
+void ordina(ord param, int n, pullman *vetp[]) {
     int (*cmp)(const void *, const void *);
 
     switch(param) {
