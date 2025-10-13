@@ -150,3 +150,461 @@ void listRevTravR(link h) {
 	ITEMdisplay(h->val); 
 }
 ```
+---
+#### Operazioni su liste
+**Creazione nodo**, nelle Liste non ordinate: 
+- inserimento in testa 
+- inserimento in coda 
+- ricerca di chiave 
+- cancellazione dalla testa 
+- estrazione dalla testa 
+- cancellazione di nodo con chiave data.
+Nelle Liste ordinate: 
+- Inserimento 
+- ricerca di chiave 
+- cancellazione di nodo con chiave data.
+
+##### Creazione nodo
+```c
+link newNode(Item val, link next) { 
+	link x = malloc(sizeof *x); 
+	if (x==NULL) return NULL; 
+	else { 
+		x->val = val; 
+		x->next = next; 
+	} 
+	return x; 
+}
+```
+##### Liste non ordinate
+
+###### Inserzione in testa
+1. parametri di ingresso: val e puntatore alla testa h.                                                               Valore di ritorno: **nuovo puntatore alla testa**, che il main assegnerà a head:
+```c
+link listInsHead (link h, Item val) { 
+	h = newNode(val,h); 
+	return h; // Nuovo puntatore alla testa della lista
+} 
+/* main */ 
+.. 
+link head = NULL; 
+Item d; 
+... 
+head = listInsHead(head, d);
+```
+
+2. parametri di ingresso: val e puntatore al puntatore alla testa hp.                                               La funzione modifica direttamente il puntatore alla testa \*hp. 
+>In chiamata si passa l’indirizzo del puntatore alla testa &head
+```c
+void listInsHeadP(link *hp, Item val) {
+	*hp = newNode(val, *hp); // SI modifica il tramite il puntatore
+}
+/* main */ 
+... 
+link head = NULL; 
+Item d; 
+... 
+listInsHead(&head, d);
+```
+---
+###### Inserzione in coda
+Serve il puntatore all’ultimo nodo che si può con un attraversamento di costo O(n) oppure è
+mantenuto con costo O(1) (MEGLIO!!!).
+1. O(N):
+lista vuota: inserzione in testa con modifica di head 
+lista non vuota: ciclo di attraversamento per raggiungere l’ultimo nodo, creazione di un nuovo nodo e aggancio come successore dell’ultimo nodo, head rimane invariato.
+```c
+link listInsTail(link h, Item val) { 
+	link x; 
+	if (h==NULL) 
+		return newNode(val, NULL); 
+	for (x=h; x->next!=NULL; x=x->next); //cerca ultimo nodo
+	
+	x->next = newNode(val, NULL); //crea nuovo nodo e aggancialo all'ultimo
+	return h; 
+} 
+/* main */ 
+... 
+link head=NULL; 
+Item d; 
+... 
+head = listInsTail(head, d);
+```
+2. O(N)
+parametri di ingresso: val e puntatore al puntatore alla testa hp 
+x = \*hp identfica la **testa della lista** 
+lista vuota: inserzione in testa con modifica di \*hp 
+lista non vuota: ciclo di attraversamento per raggiungere l’ultimo nodo, creazione di un nuovo nodo e aggancio come successore dell’ultimo nodo, \*hp rimane invariato.
+```c
+void listInsTailP(link *hp, Item val) { 
+	link x=*hp; 
+	if (x==NULL) *hp = newNode(val, NULL); 
+	else { 
+		for (; x->next!=NULL; x=x->next); //cerca ultimo nodo
+		x->next = newNode(val, NULL); //crea nuovo nodo e aggancialo all'ultimo
+	} 
+} 
+/* main */ 
+... 
+link head=NULL; 
+Item d; 
+... 
+listInsTailP(&head, d);
+```
+>In questo caso non restituisco ma si fa tutto by reference.
+
+3. O(N)
+attraversamento con **variabile xp** di tipo puntatore a puntatore a nodo che punta al campo puntatore a successore della struct, si ha l'unificazione dei casi di inserimento in lista vuota e non vuota.
+```c
+void listInsTailP(link *hp, Item val) { 
+	link *xp = hp; 
+	while (*xp != NULL) xp = &((*xp)->next); 
+	*xp = newNode(val, NULL); 
+} 
+/* main */ 
+... 
+link head=NULL; 
+Item d; 
+... 
+listInsTailP(&head, d);
+```
+4. **O(1)**
+Uso di 2 variabili di tipo puntatore a puntatore a nodo **hp e tp** per accedere a primo e ultimo nodo. \*hp identifica la testa della lista, \*tp la coda.
+lista vuota: inserzione in testa con modifica di \*hp e di \*tp 
+lista non vuota: creazione di un nuovo nodo e aggancio come successore dell’ultimo nodo, \*hp rimane invariato, \*tp viene aggiornato.
+```c
+void listInsTFast(link *hp,link *tp,Item val) { 
+	if (*hp==NULL) 
+		*hp = *tp = newNode(val, NULL); 
+	else { 
+		(*tp)->next = newNode(val, NULL); 
+		*tp = (*tp)->next; 
+	} 
+} 
+/* main */ 
+... 
+link head=NULL, tail=NULL; 
+Item d; 
+... 
+listInsTailFast(&head, &tail, d); //Passo i puntatori sia a head che a tail
+```
+>Passando i due puntatori ho tolto la ricerca della testa.
+>---
+###### Ricerca di una chiave
+Non essendo modificata la lista, basta un solo puntatore per l’attraversamento. 
+Se la chiave c’è, si ritorna il dato che la contiene.
+Se la chiave non c’è, si ritorna il dato nullo tramite chiamata alla funzione #ITEMsetvoid.
+```c
+Item listSearch(link h, Key k) { 
+	link x; 
+	for (x=h; x!=NULL; x=x->next) 
+		if (KEYeq(KEYget(x->val), k)) //Funzione per eguagliare le chiavi
+			return x->val; 
+	return ITEMsetvoid(); // Funzione che mette NULL in tutti i campi della struct
+} 
+/* main */ 
+... 
+link head=NULL; 
+Item d; 
+Key k; 
+... 
+d = listSearch(head,k);
+```
+---
+###### Cancellazione dalla testa
+Se la **lista non è vuota**, aggiorna la testa della lista con il puntatore al secondo dato che diventa il primo. Ricorda il primo dato per poi liberarlo con free, il main assegna a head il nuovo puntatore alla testa.
+```c
+link listDelHead(link h) { 
+	link t = h; // Creo una copia di h,serve per rimuovere h, dopo che la sposto
+	if (h == NULL ) return NULL; 
+	h = h ->next; // Sposto la testa 
+	free(t); // Libero lo spazio occupato da h
+	return h; 
+} 
+/* main */ 
+... 
+link head = NULL; 
+... 
+head = listDelHead(head);
+```
+---
+###### Estrazione dalla testa
+Per aggiornare la testa della lista si deve usare il puntatore al puntatore alla testa hp poiché il valore di ritorno della funzione è il dato.
+Se la lista è vuota, si ritorna il dato nullo tramite chiamata alla funzione ITEMsetvoid, altrimenti si memorizza il primo dato per poi ritornarlo. **Si ricorda il primo dato per poi liberarlo con free.**
+```c
+Item listExtrHeadP(link *hp) { 
+	link t = *hp ; 
+	Item tmp ; 
+	if (t == NULL ) 
+		return ITEMsetvoid(); 
+
+	tmp = t ->val; 
+	*hp = t - >next; 
+	free(t); 
+	
+	return tmp; 
+} 
+/* main */ 
+... 
+link head = NULL; 
+Item d; 
+... 
+d = listExtrHeadP(&head);
+```
+---
+###### Cancellazione di nodo con chiave data
+A seguito della cancellazione, il puntatore alla testa della lista può essere: 
+- NULL perché la lista era vuota 
+- il puntatore al secondo dato, se la chiave si trovava nel primo 
+- invariato se la lista non è vuota, la chiave non è il primo dato o non c’è in lista. Un ciclo di attraversamento con 2 puntatori identifica il nodo da cancellare.
+
+```c
+link listDelKey(link h, Key k) { 
+	link x, p; 
+	if (h == NULL) 
+		return NULL; 
+	for (x=h, p=NULL; x!=NULL; p=x, x=x->next) { 
+		if (KEYeq(KEYget(x->val),k)) { 
+			if (x==h) // Controllo solo se era la testa
+				h = x->next; // ritorno cio che punta h
+			else 
+				p->next = x->next; //Punto p a quello dopo
+			free(x); 
+			break; 
+		}
+	} 
+	return h; 
+}
+```
+
+**Versione ricorsiva:** 
+- terminazione: si punta al nodo vuoto, 
+- se il nodo corrente non contiene la chiave, si ricorre sulla lista che ha come testa il nodo successore, 
+- se il nodo corrente contiene la chiave, si salva il puntatore al suo successore, si cancella il nodo corrente e si ritorna il puntatore al successore che nell’istanza ricorsiva chiamante viene assegnato come successore del nodo corrente realizzando il bypass.
+```c
+link listDelKeyR(link x, Key k) { 
+	link t; 
+	if (x == NULL) return NULL; 
+	if (KEYeq(KEYget(x->val), k)) { 
+		t = x->next; 
+		free(x); //Cancello x, ma tengo t che è x->next
+		return t; //Ferma perche ha trovato
+	} 
+	x->next = listDelKeyR(x->next, k); //Vai avanti di 1 elemento, ritorna il valore di x, che sarebbe x->next
+	return x; 
+}
+```
+>La funzione non tocca x->next se non trova l'elemento con chiave uguale, in quel caso ritorna t.
+###### Estrazione di nodo con chiave data
+L’estrazione può alterare il puntatore alla testa nel caso la chiave di ricerca sia nel primo dato. 
+La funzione deve: 
+- ritornare: 
+	- il dato nullo tramite chiamata alla funzione #ITEMsetvoid se la lista è vuota o la chiave non è presente 
+	- il dato se la chiave è presente 
+- aggiornare il puntatore alla testa della lista se si estrae il primo dato. 
+Si propone la tecnica del puntatore a puntatore xp, inizializzato al puntatore al puntatore alla testa della lista hp (non è l’unica possibile). 
+Nel ciclo di attraversamento si verifica se si trova la chiave, in caso affermativo se ne salva il puntatore e il dato, si avanza nella lista ed infine si libera il nodo estratto.
+```c
+Item listExtrKeyP(link *hp, Key k) { 
+	link *xp, t; 
+	Item i = ITEMsetvoid(); 
+	for (xp=hp;(*xp)!=NULL;xp=&((*xp)->next)) { 
+		if (KEYeq(KEYget((*xp)->val),k)){ 
+			t = *xp; // Copio per cancellare
+			*xp = (*xp)->next; // Sposto all'elemento successivo
+			i = t->val; // Prendo il valore di t (cioe *xp)
+			free(t); 
+			break; 
+		}
+	} 
+	return i; //Ritorno il valore che è NULL se non sono entrato nel ciclo o se non ho trovato la chiave.
+}
+```
+---
+##### Liste ordinate
+Trattiamo dati di tipo Item ordinati in base a chiave, **l'inserimento (O(N)) con ricerca** della posizione e **cancellazione** **(O(N)) con ricerca**, *può decidere “non trovato” senza percorrere tutta la lista.*
+###### Inserzione
+Richiede l'aggiornamento del puntatore alla testa per inserzione in lista vuota o inserzione di dato con chiave minima (massima), e la ricerca della posizione in cui inserire, cioè identificazione nodo predecessore con tecnica del doppio puntatore.
+```c
+link SortListIns(link h, Item val) { 
+	link x, p; 
+	Key k = KEYget(val); 
+	if (h==NULL || KEYgreater(KEYget(h->val),k)) 
+		return newNode(val, h); //inserimento in testa
+		
+	for (x=h->next, p=h; // attraversamento per ricerca posizione
+		x!=NULL && KEYgreater(k,KEYget(x->val)); // piu grande della chiave -> esco
+		p=x, x=x->next); 
+	
+	p->next = newNode(val, x);
+	return h; 
+}
+```
+---
+###### Ricerca
+Essendo l’accesso ai dati della lista lineare, anche se sono ordinati, non si usa la ricerca dicotomica. La ricerca è identica a quella in lista non ordinata con eventuale interruzione anticipata.
+```c
+Item SortListSearch(link h, Key k) { 
+	link x; 
+	for (x=h; x!=NULL && KEYgeq(k, KEYget(x->val)); x=x->next) // Uscita anticipata
+		if (KEYeq(KEYget(x->val), k)) 
+			return x->val; 
+	return ITEMsetvoid(); 
+}
+```
+---
+###### Cancellazione di nodo con chiave data 
+Si aggiunge una condizione di interruzione anticipata al ciclo di attraversamento.
+```c
+link SortListDel(link h, Key k) { 
+	link x, p; 
+	if (h == NULL) return NULL; 
+	for (x=h, p=NULL; x!=NULL && KEYgeq(k,KEYget(x->val)); p=x, x=x->next) { 
+		if (KEYeq(KEYget(x->val),k)){ 
+			if (x==h) 
+				h = x->next; 
+			else 
+				p->next = x->next;
+				
+			free(x); 
+			break; 
+		} 
+	} 
+	return h; 
+}
+```
+---
+##### Liste concatenate particolari (Linked List)
+Uso di **nodi fittizi** per semplificare i test di lista vuota.
+**Adiacenza logica di nodo in testa e in coda** per ottenere una **lista circolare**, è possibile **l'attraversamento in entrambe le direzioni** con operazioni tipo cancellazione semplificate: liste concatenate doppie.
+###### Liste con nodi fittizi (sentinelle) 
+Nodo con dato fittizio (in testa e/o coda), usato per rimuovere casi speciali: 
+- lista vuota 
+- inserimento/cancellazione del primo o ultimo nodo
+
+>Lista con nodo fittizio in testa
+```c
+//inizializza 
+h = malloc(sizeof *h); 
+h->next = NULL; 
+
+//inserisci t dopo x 
+t->next = x->next; 
+x->next = t; 
+
+//cancella dopo x 
+t = x->next; 
+x->next = t->next; 
+
+//ciclo di attraversamento 
+for (t = h->next; t != NULL; t = t->next ) 
+
+//testa se lista vuota 
+if (h->next == NULL)
+```
+
+>Lista con nodi fittizi in testa e in coda
+```c
+//inizializza 
+h = malloc(sizeof *h); 
+z = malloc(sizeof *z); 
+h->next = z; 
+z->next = z; 
+
+//inserisci t dopo x 
+t->next = x->next; 
+x->next = t; 
+
+//cancella dopo x 
+x->next = x->next->next; 
+
+//ciclo di attraversamento 
+for (t = h->next; t != z; t = t->next ) 
+
+//testa se lista vuota 
+if (h->next == z)
+```
+---
+###### Lista circolare
+L’ultimo nodo punta al primo, viene utilizzata per gestire casi di servizi a “rotazione” 
+```c
+// prima inserzione 
+h->next = h; 
+
+//inserisci t dopo x 
+t->next = x->next; 
+x->next = t; 
+
+//cancella dopo x 
+x->next = x->next->next; 
+
+//ciclo di attraversamento 
+t = h; 
+do {
+	... 
+	t = t->next; 
+} while (t != h) 
+
+//testa singolo elemento 
+if (h->next == h)
+```
+---
+###### Lista concatenata doppia
+Un puntatore in più (al nodo precedente), questo tipo di liste facilita cancellazione (senza ricerca) dato il puntatore al nodo da cancellare:
+```c
+typedef struct node *link, node_t; 
+struct node { 
+	Item val; 
+	link next; 
+	link prev; 
+};
+```
+### Problemi semplici su liste
+- Inversione di lista 
+- Insertion sort su lista (Lo trovi sulle slide)
+- Elenchi di canzoni (Lo trovi sulle slide)
+###### Inversione di lista 
+Data una lista, invertirla Versione con funzioni su liste:
+due liste, vecchia e nuova
+- si estrae in testa dalla lista vecchia, 
+- si inserisce in testa nella lista nuova 
+
+Algoritmo: finché esiste una porzione non vuota di lista y da invertire (iterazione): 
+- estrai nodo da testa della lista y 
+- inserisci nodo in testa alla lista r invertita
+
+>Finché esiste una porzione non vuota di lista y da invertire (iterazione): estrai nodo da testa della lista y e inserisci nodo in testa alla lista r invertita.
+```c
+link listReverseF(link x) { 
+	link y = x, r = NULL; 
+	Item tmp; 
+	while (y != NULL) { 
+		tmp = listExtrHeadP(&y); 
+		r = listInsHead(r, tmp); 
+	} 
+	return r; 
+}
+```
+>ATTENZIONE: si distrugge una lista, se ne crea un’altra. NON SI RICICLANO I NODI! Si estrae un Item, si inserisce un Item.
+
+VERSIONE 2:
+Versione con operazioni direttamente sulla lista: si «girano» i puntatori (ma concettualmente resta «estrai in testa, inserisci in testa») 
+- x: puntatore alla testa della lista 
+- r: puntatore alla testa della lista già invertita (ultimo nodo già sistemato). Inizialmente r=NULL
+- y: puntatore alla porzione di lista da invertire (primo nodo ancora da sistemare). Inizialmente y=x 
+- t: puntatore al nodo successivo al primo nodo ancora da sistemare (puntato da y)
+
+>Finché esiste una porzione non vuota di lista y da invertire (iterazione): inserire il nodo puntato da y in testa alla lista puntata da r, aggiornare la testa della lista invertita r con y e aggiornare y con il suo successore
+```c
+link listReverseF(link x) { 
+	link t, y = x, r = NULL; 
+	while (y != NULL) { 
+		t = y->next; 
+		y->next = r; 
+		r = y; 
+		y = t; 
+	} 
+	return r; 
+}
+```
+---
