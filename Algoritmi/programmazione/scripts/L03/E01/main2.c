@@ -17,7 +17,6 @@ int main(void){
     for(i=0; i<N; i++){
         scanf("%d", &a[i]);
     }
-    // a[i] = -1; //Condizione di terminazione
     
     int result = majority(a, N);
     if(result != -1)
@@ -30,28 +29,33 @@ int main(void){
 }
 
 int majority(int *a, int N){
+
     if (N <= 0) return -1;
+
     /* base case */
     if (N == 1) return a[0];
 
     int leftN = N / 2;
     int rightN = N - leftN;
 
+    /* recursive calls on subarrays using same function signature */
     int left = majority(a, leftN);
     int right = majority(a + leftN, rightN);
 
-    if (left == right) return left; // Se i valori sono uguali tipo 1 1 2 3, torna 1
+    if (left == right) return left;
 
-    int cL = 0, cR = 0;
-    for(int i = 0; i<N; i++){
-        if(a[i] == left) cL++;
-        if(a[i] == right) cR++;
+    /* count occurrences of left and right in the whole segment */
+    int countL = 0, countR = 0;
+    for (int i = 0; i < N; ++i) {
+        if (a[i] == left) ++countL;
+        if (a[i] == right) ++countR;
     }
 
-    int cand = cL > cR ? left : right;
+    int cand = (countL > countR) ? left : right;
 
+    /* final verification: candidate must appear > N/2 times */
     int occ = 0;
-    for(int i = 0; i<N; i++) if (a[i] == cand) occ++;
+    for (int i = 0; i < N; ++i) if (a[i] == cand) ++occ;
 
-    return occ>N/2 ? cand : -1;
+    return (occ > N / 2) ? cand : -1;
 }
