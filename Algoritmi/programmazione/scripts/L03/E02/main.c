@@ -45,15 +45,45 @@ int main(void){
         switch (act) {
             case r_insert_key:
 
-                printf("Inserisci due date nel formato (yyyy/mm/dd) :\n");
+                printf("Inserisci i dati da tastiera nell'ordine: () :\n");
 
                 break;
             case r_insert_file:
+                if ((fin = nuovo_file()) != NULL) {
+                        
+                    if (fscanf(fin, "%d", &n) == 1 && n <= MAXR) {
+                        // Prima di leggere un nuovo file:
+                        // free(vet);
+                        // free(vetp_orig);
+                        // free(vetp_id);
+                        // free(vetp_data);
+                        // free(vetp_part);
+                        // free(vetp_arr);
 
-                printf("Inserisci il nome della fermata:\n");
-                scanf("%s", str);
+                        // // Dopo aver letto n dal nuovo file:
+                        // vet = malloc(n * sizeof(pullman));
+                        // vetp_orig = malloc(n * sizeof(pullman *));
+                        // vetp_id   = malloc(n * sizeof(pullman *));
+                        // vetp_data = malloc(n * sizeof(pullman *));
+                        // vetp_part = malloc(n * sizeof(pullman *));
+                        // vetp_arr  = malloc(n * sizeof(pullman *));
 
-                if (count == 0) printf("Nessuna corrispondenza\n\n");
+                        if(vet && vetp_orig && vetp_id && vetp_data && vetp_part && vetp_arr){
+                            leggiFile(fin, n, vet, vetp_orig, vetp_id, vetp_data, vetp_part, vetp_arr);
+                            vetp = vetp_orig;
+                            
+                        }else{
+                            printf("Errore di malloc per il path\n");                                                            fclose(fin);
+                            fclose(fin);
+                            end = 1;
+                        }
+                    }else{
+                        printf("Errore, ci sono piu campi di quanti ce ne dvorebbero\n.");
+                        fclose(fin);
+                        end = 1;
+                    }
+                }else printf("Errore in apertura del file\n");
+
                 break;
             case r_search_id:
 
