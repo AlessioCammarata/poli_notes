@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
+                "file": "Algoritmi/programmazione/2 - Le liste.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "3 - Problemi di ricerca e Ottimizzazione"
+              "title": "2 - Le liste"
             }
           }
         ]
@@ -166,8 +166,9 @@
   },
   "active": "8799c5c3f12cabf9",
   "lastOpenFiles": [
-    "Untitled.base",
+    "Algoritmi/programmazione/scripts/L03/E02/main.exe",
     "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
+    "Untitled.base",
     "Algoritmi/programmazione/2 - Le liste.md",
     "Algoritmi/programmazione/1 - allocazione dinamica della memoria.md",
     "Algoritmi/img/linked list.png",
