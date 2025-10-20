@@ -150,3 +150,213 @@ Una combinazione con ripetizione C’n, k di n oggetti distinti di classe k (a k
 $$
  C'_{n,k} = \frac {(n+k-1)!}{k!(n-1)!}
 $$
+>Le soluzioni sono diverse se uno di essi contiene almeno un oggetto che non figura nell’altro oppure se gli oggetti che figurano in uno figurano anche nell’altro ma sono ripetuti un numero diverso di volte.
+
+Esempio:
+	Lanciando contemporaneamente 2 dadi, quante sono le composizioni con cui si possono presentare le facce?
+	Modello: combinazioni con ripetizione:
+		C’6, 2 = (6 + 2 - 1)!/2!(6-1)! = 21
+
+---
+##### Insieme delle parti
+Dato un insieme S di k elementi (k=|S|), l’insieme delle parti (o powerset) phi(S) è l’insieme dei sottoinsiemi di S, incluso S stesso e l’insieme vuoto.
+
+Esempio: 
+	S = {1, 2, 3, 4 } e k = 4 
+	phi(S) = {{}, {4}, {3}, {3,4}, {2}, {2,4}, {2,3}, {2,3,4}, {1}, {1,4}, {1,3}, {1,3,4}, {1,2}, {1,2,4}, {1,2,3}, {1,2,3,4} }
+
+##### Partizione di un insieme
+Dato un insieme I di n elementi, una collezione S = {$S_i$} di blocchi forma una partizione di I se e solo se valgono tutte le seguenti condizioni:
+- I blocchi non sono vuoti
+- I blocchi sono a coppie disgiunti
+- La loro unione è I
+Il numero di blocchi k varia da 1 (blocco = insieme I) a n (ogni blocco contiene un solo elemento di I).
+
+Esempio
+	I = {1, 2, 3, 4 } n = 4 
+	(k = 1, 1 partizione) (k = 2 7 partizioni) (k = 3 6 partizioni)  (k = 4 1 partizione)
+	1 partizione:   {1, 2, 3, 4} 
+	7 partizioni:{1, 2, 3}, {4} {1, 2, 4}, {3} {1, 2}, {3, 4} {1, 3, 4}, {2} {1, 3}, {2, 4} {1, 4}, {2, 3} {1}, {2, 3, 4}
+	 6 partizioni:  ({1, 2}, {3}, {4}) ({1, 3},{2},{4}) ({1},{2 ,3}, {4}) ({1, 4}, {2}, {3}) ({1},{2, 4},{3}) ({1},{2},{3,4})
+	 1 partizione:  ({1}, {2}, {3}, {4})
+
+###### Numero di partizioni
+Il numero complessivo delle partizioni di un insieme I di n oggetti in k blocchi con 1 ≤ k ≤ n è dato dai **numeri di Bell** definiti dalla seguente ricorrenza:
+$$ 
+\begin{align}
+	& B_0 = 1 \\
+	& B_{N+1} = \sum_{k=0}^{n} \binom n k \cdot B_k
+\end{align}
+$$
+I primi numeri di Bell sono: B0 = 1, B1 = 1 , B2 = 2, B3 = 5 , B4 = 15 , B5 = 52, ecc...
+
+#### Esplorazione esaustiva dello spazio delle soluzioni
+##### Scomposizione in sottoproblemi
+È il passo più importante del progetto di una soluzione ricorsiva: 
+- bisogna identificare il problema risolto dalla singola ricorsione 
+- cioè suddividere il lavoro tra varie chiamate ricorsive. 
+Si opera in maniera distribuita, senza visione unitaria della soluzione.
+###### Approcci:
+- ogni ricorsione sceglie un elemento della soluzione. Terminazione: la soluzione ha raggiunto la dimensione richiesta oppure non ci sono più scelte 
+- la ricorsione esamina uno degli elementi dell’insieme di partenza per decidere se e dove andrà aggiunto alla soluzione.
+
+>Si segue il primo approccio perché è più intuitivo
+##### Strutture dati
+Strutture dati possono essere **globali o locali**:
+Locale significa che la struttura locale la vede solo la singola chiamata ricorsiva mentre le globali sono comuni a tutte le chiamate.
+Globali: cioè comuni a tutte le istanze della funzione ricorsiva
+Esempi: 
+	dati del problema (matrice, mappa, grafo), vincoli, scelte disponibil.i, soluzione
+Locali: cioè locali a ciascuna delle istanze 
+Esempi: 
+	indici di livello di chiamata ricorsiva, copie locali di strutture dati, indici o puntatori a parti di strutture dati globali
+
+>Globale e locale le stiamo valutando come visibilità ma non c'entrano con l'implementazione in c di globale e locale.
+>L'uso di variabili globali C per strutture dati globali è sconsigliato ma non vietato.
+>La soluzione adattata è quella di passare come parametro tutti i dati, ed è possibile racchiuderli in #struct per leggibilità
+
+###### Tipologie Strutture dati per oggetti interi
+Le strutture dati possono essere:
+- Oggetti non interi: Tabelle di simboli per ricondursi ad interi
+- Insiemi o insiemi di oggetti di partenza: 
+	- **Unico**: vettore #val
+	- **molteplici**: sottovettori di tipo Livello
+	- **alternativa**: liste
+- Soluzioni, che non si chiede di memorizzarle tutte, ma di elencarle.
+	- vettore #sol
+	- variabile scalare passata by value e ritornata
+- Indici:
+	- #pos identifica il livello della ricorsione e serve per decidere quali caselle di scelta usare o soluzioni riempire
+	- #n e #k indicano la dimensione del problema e della soluzione cercata
+- Vincoli, non tutte le scelte sono lecite
+	- **Statici**, dati dal problema solitamente
+	- **Dinamici**, dati dal problema (se devo pescare un elemento dal vettore dopo non c'è più)
+---
+###### Principio di moltiplicazione
+Si effettuano **n** **scelte in successione**, rappresentate mediante un albero.
+I nodi hanno un numero di figli variabile livello per livello. Ognuno dei figli può essere visto come una delle **scelte possibili a quel livello**.
+Il **massimo numero di figli determina il grado dell’albero**, **L’altezza dell’albero è n**. 
+Le **soluzioni** sono le etichette degli archi che si incontrano in ogni cammino **radice-foglia**.
+
+Esempio:
+	Menu con scelta tra 2 antipasti (A0 , A1 ), 3 primi (P0 , P1 , P2 ) e 2 secondi (S0 ,S1 ) (n=k=3). Albero di grado 3 e altezza 3, 12 percorsi radice-foglie.
+##### Principi base dell'esplorazione
+
+>Slide 74 modulo 3.
+
+\*val è una struttura dati globale, perche passata a tutte le istanze della funzione ricorsiva.
+pos = cnt = 0 all'inizio.
+pos indica il livello della ricorsione, se è >= n significa che ho già fatto tutte le scelte nei livelli precedenti. Quindi stampo le soluzioni.
+cnt alla fine deve valere 12.
+
+---
+##### BackTracking
+Il backtracking non è un paradigma vero e proprio, come il divide et impera, il greedy o la programmazione dinamica in quanto non vi è uno schema generale. È piuttosto una tecnica algoritmica per **esaminare ordinatamente le possibili istanze** (soluzioni ammissibili o valide) di uno spazio di ricerca. 
+Un’applicazione che dimostra l’importanza del backtracking è il Puzzle di Einstein. 
+(Slide 85 modulo 3 di ricerca e ottimizzazione)
+###### Puzzle di Einstein
+>Sulle slide c'è l'esempio completo tipo 50 pagina a partire dalla 85.
+###### Backtracking nelle disposizioni semplici
+Per non generare elementi ripetuti: 
+- un vettore mark registra gli elementi già presi (mark\[i]\==0 -> elemento i-esimo non ancora preso, 1 altrimenti) 
+- la cardinalità di mark è pari al numero di elementi di val(tutti distinti, essendo un insieme)  
+- in fase di scelta l’elemento i-esimo viene preso solo se mark\[i]\==0, mark\[i] viene assegnato con 1 
+- in fase di backtrack, mark[i] viene assegnato con 0 
+- cnt registra il numero di soluzioni.
+```C
+val = malloc(n * sizeof(int));
+sol = malloc(k * sizeof(int));
+mark = calloc(n, sizeof(int));
+
+int disp(int pos,int *val,int *sol,int *mark, int n, int k,int cnt){
+	int i; 
+	if (pos >= k){ // Condizione di terminazione
+		for (i=0; i<k; i++) printf("%d ", sol[i]); 
+		printf("\n"); 
+		return cnt+1; 
+	} 
+	for (i=0; i<n; i++){ // iterazione sulle n scelte
+		if (mark[i] == 0) { // Controllo ripetizione
+			mark[i] = 1; //marcamento e scelta
+			sol[pos] = val[i]; 
+			cnt = disp(pos+1, val, sol, mark, n, k,cnt); //Ricorsione
+			mark[i] = 0; //Smarcamento
+		} 
+	} 
+	return cnt; 
+}
+```
+---
+###### Backtracking nelle disposizioni ripetute
+Ogni elemento può essere ripetuto fino a k volte. Non c’è un vincolo imposto da n su k,
+Per ognuna delle posizioni si enumerano esaustivamente tutte le scelte possibili, #cnt registra il numero di soluzioni.
+```c
+int disp_rip(int pos,int *val,int *sol,int n,int k,intcnt){
+	int i; 
+	if (pos >= k) { //Condizione di terminazione
+		for (i=0; i<k; i++) printf("%d ", sol[i]); 
+		printf("\n"); 
+		return cnt+1; 
+	} 
+	for (i = 0; i < n; i++) { //Iterazione sulle n scelte
+		sol[pos] = val[i]; //scelta
+		cnt = disp_rip(pos+1, val, sol, n, k, cnt); //Ricorsione
+	} 
+	return cnt; 
+}
+```
+---
+###### Backtracking nelle permutazioni semplici
+Per non generare elementi ripetuti: 
+- un vettore mark registra gli elementi già presi (mark\[i]\==0 -> elemento i-esimo non ancora preso, 1 altrimenti) 
+- la cardinalità di mark è pari al numero di elementi di val(tutti distinti, essendo un insieme) 
+- in fase di scelta l’elemento i-esimo viene preso solo se mark\[i]\==0, mark\[i] viene assegnato con 1 
+- in fase di backtrack, mark\[i] viene assegnato con 0 
+- cnt registra il numero di soluzioni.
+```c
+int perm(int pos,int *val,int *sol,int *mark, int n, int cnt){
+	int i; 
+	if (pos >= n){ //Condizione di terminazione
+		for (i=0; i<n; i++) printf("%d ", sol[i]); 
+		printf("\n"); 
+		return cnt+1; 
+	} 
+	for (i=0; i<n; i++) //Itero sulle n scelte
+		if (mark[i] == 0) { //controllo ripetizione
+			mark[i] = 1; 
+			sol[pos] = val[i]; 
+			cnt = perm(pos+1, val, sol, mark, n, cnt); //ricorsione
+			mark[i] = 0; // Smarcamento
+		} 
+		return cnt; 
+	}
+```
+###### Backtracking nelle permutazioni ripetute
+Si procede in maniera analoga alle permutazioni semplici, con le seguenti variazioni: 
+- n è la cardinalità del multiinsieme 
+- si memorizzano nel vettore dist_val di n_dist celle gli elementi distinti del multiinsieme 
+	- si ordina il vettore val con un algoritmo O(nlogn) 
+	- si «compatta» val eliminando gli elementi duplicati e lo si memorizza in dist_val con un algoritmo O(n)
+- il vettore mark di n_dist elementi registra all’inizio il numero di occorrenze degli elementi distinti del multiset 
+- l’elemento dist_val[i] viene preso se mark[i]>0, mark[i] viene decrementato 
+- al ritorno dalla ricorsione mark[i] viene incrementato
+- cnt registra il numero di soluzioni.
+```c
+int perm_r(int pos, int *dist_val, int *sol,int *mark, int n, int n_dist, int cnt) { 
+	int i; 
+	if (pos >= n) { 
+		for (i=0; i<n; i++) printf("%d ", sol[i]); 
+		printf("\n"); 
+		return cnt+1; 
+	} 
+	for (i=0; i<n_dist; i++) { 
+		if (mark[i] > 0) { 
+			mark[i]--; 
+			sol[pos] = dist_val[i]; 
+			cnt=perm_r(pos+1,dist_val,sol,mark,n, n_dist,cnt);
+			mark[i]++; 
+		} 
+	} 
+	return cnt; 
+}
+```
