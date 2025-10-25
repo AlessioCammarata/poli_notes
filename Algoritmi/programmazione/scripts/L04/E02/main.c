@@ -2,7 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L04/E02/brani.txt"
+// #define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L04/E02/brani.txt"
+#define nfin "./brani.txt"
 #define NMAX 5 //Numero di proposte massimo
 #define TITLE_LEN 256
 
@@ -11,7 +12,7 @@ typedef struct{
     char (*title)[TITLE_LEN];
 } prop;
 
-void leggiFile(FILE *fin, prop *vet, int n);
+int leggiFile(FILE *fin, prop *vet, int n);
 
 int main(void){
     FILE *fin;
@@ -36,41 +37,64 @@ int main(void){
         return 1;
     }
 
-    leggiFile(fin,playlists, n);
+    if(leggiFile(fin,playlists, n)){
+
+        for(int i = 0; i<n; i++) free(playlists[i].title);
+    }
+    free(playlists);
+    fclose(fin);
+
     // for(int i = 0; i<n; i++){
     //     for(int j = 0; j<playlists[i].n; j++){
     //         printf("%s\n",playlists[i].title[j]);
     //     }
     // }
-    val = malloc(n * sizeof(int));
-    sol = malloc(k * sizeof(int));
+    // val = malloc(n * sizeof(int));
+    // sol = malloc(k * sizeof(int));
 
     return 0;
 }
 
-void leggiFile(FILE *fin, prop *vet, int n){
+int leggiFile(FILE *fin, prop *vet, int n){
     int i,j;
     for(i = 0; i < n; i++){
-        if (fscanf(fin, "%d", &vet[i].n) != 1) {
+        if (fscanf(fin, "%d", &vet[i].n) != 1 ) {
             vet[i].n = 0;
             vet[i].title = NULL;
-            continue; //Scarto questa opzione perche scritta male
+            return 0; //Scarto questa opzione perche scritta male
+        }
+
+        if (vet[i].n <= 0) { // nessun titolo per questa playlist
+            vet[i].title = NULL;
+            continue;
         }
 
         vet[i].title = malloc(vet[i].n*TITLE_LEN*sizeof(char));
         if (vet[i].title == NULL) {
             perror("malloc");
-            vet[i].n = 0;
-            continue; //Scarto questa opzione perche scritta male
+            for(int k = 0; k<i; k++) { 
+                free(vet[k].title); 
+                vet[k].title = NULL; 
+                vet[k].n = 0; 
+            }
+            return 0; //Fermo la lettura e do errore.
         }
 
         // leggeo i titoli
-        for (j = 0; j < vet[i].n; j++){
+        for (j = 0; j < vet[i].n; j++) {
             if (fscanf(fin, "%255s", vet[i].title[j]) != 1) {
-                vet[i].title[j][0] = '\0';
+                fprintf(stderr, "Titolo mancante alla playlist %d voce %d\n", i, j);
+                // cleanup completo (incl. corrente i)
+                for (int k = 0; k <= i; k++) { 
+                    free(vet[k].title); 
+                    vet[k].title = NULL; 
+                    vet[k].n = 0; 
+                }
+                return 0;
             }
         }
     }
+    return 1;
 }
 
 int disp_rip(int pos,int *val,int *sol,int n,int k,int cnt){
