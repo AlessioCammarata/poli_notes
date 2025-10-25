@@ -4,17 +4,18 @@
 #define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L04/E01/grafo.txt"
 
 typedef struct{
-    int *neighbours;
-    int n;
-} node;
+    int l,r;
+}edge;
 
-void leggiFile(FILE *fin, node **vet);
-int powerset(int pos, int *val, int *sol, int n, int start, int cnt, node **vet);
-void find_vertex_cover(node **vet, int n);
+void leggiFile(FILE *fin, edge *vet);
+int is_vertex_cover(int *in_cover, edge *edges, int E);
+void print_cover(int *in_cover, int N);
+void find_vertex_cover(edge *edges, int E, int N, int pos, int *in_cover);
+
 
 int main(void){
     FILE *fin;
-    node **vet;
+    edge *vet;
     int N, E;
 
     if ((fin = fopen(nfin,"r")) == NULL){
@@ -28,123 +29,69 @@ int main(void){
         return 1;
     }
 
-    //Preparo i nodi
-    vet = malloc(N * sizeof(node *));
+    //Preparo gli archi
+    vet = malloc(E * sizeof(edge));
     if (vet == NULL) {
-        perror("malloc");
+        perror("malloc"); //Stampa -> malloc: "Cannot allocate memory"
         fclose(fin);
         return 1;
     }
-    for (int i = 0; i < N; ++i) {
-        vet[i] = malloc(sizeof(node));
-        if (vet[i] == NULL) {
-            for(int j = 0; j<i; j++){
-                free(vet[j]->neighbours);
-                free(vet[j]);
-            }
-            free(vet);
-            perror("malloc");
-            fclose(fin);
-            return 1;
-        }
-        vet[i]->neighbours = malloc(E*sizeof(int));
-        if (vet[i]->neighbours == NULL) {
-            int j;
-            for(j = 0; j<i; j++){
-                free(vet[j]->neighbours);
-                free(vet[j]);
-            }
-            free(vet[j+1]);
-            free(vet);
-            perror("malloc");
-            fclose(fin);
-            return 1;
-        }
-        vet[i]->n = 0; //Nessun vicino per ora
-    }
 
     leggiFile(fin, vet);
-    // for(int i = 0; i<N; i++) printf("%d\n",vet[i]->n);
-    // find_vertex_cover(vet, N);
-    int *sol = malloc(N*sizeof(int));
-    int *val = malloc(N*sizeof(int));
-    for(int i = 0; i<N; i++) val[i] = i;
-    int n = powerset(0, val, sol, N, 0, 0, vet); 
+    fclose(fin);
 
+    int *in_cover = calloc(N, sizeof(int)); // (0, 0, 0, 0)
+    find_vertex_cover(vet, E, N, 0, in_cover);
+
+    free(in_cover);
     return 0;
 }
 
-void leggiFile(FILE *fin, node **vet){
-    int val1,val2;
-    while(fscanf(fin,"%d %d",&val1,&val2) == 2){
-        vet[val1]->neighbours[vet[val1]->n++] = val2;
-        vet[val2]->neighbours[vet[val2]->n++] = val1;
+void leggiFile(FILE *fin, edge *vet){
+    int i = 0;
+    while(fscanf(fin,"%d %d",&vet[i].l,&vet[i].r) == 2){
+        i++;
     }
 }
 
-int powerset(int pos, int *val, int *sol, int n, int start, int cnt, node **vet) {
-    int i;
-    if (start >= n) {
-        int m = 0;
-        printf("( ");
-        for (i = 0; i < pos; i++){
-            printf("%d, ", sol[i]);
+//Controllo se è un vertex-cover
+int is_vertex_cover(int *in_cover, edge *edges, int E) {
+    for (int e = 0; e < E; e++) {
+        if (!in_cover[edges[e].l] && !in_cover[edges[e].r]) 
+            return 0; // Se trovo un valore non contenuto significa che non è un Vertex Cover
+    }
+    return 1;
+}
+
+//Stampa, l'indice
+void print_cover(int *in_cover, int N) {
+    printf("{");
+    int first = 1;
+    for (int i = 0; i < N; i++) 
+        if (in_cover[i]) {
+            if (!first) printf(",");
+            printf("%d", i);
+            first = 0;
         }
-        printf(")\n");
-        return cnt+1;
-    }
-    for (i = start; i < n; i++) {
-        sol[pos] = val[i];
-        cnt = powerset(pos+1, val, sol, n, i+1, cnt, vet);
-    }
-    cnt = powerset(pos, val, sol, n, n, cnt, vet);
-    return cnt;
+    printf("}\n");
 }
 
+/*
+Funzione ricorsiva che in generale crea l'insieme delle parti e stampa i vertex-cover
+Ordine:
+    0000 - 0001 - 0010 - 0011 - 0100 - 0101 - 0110 - 0111
+    1000 - 1001 - 1010 - 1011 - 1100 - 1101 - 1110 - 1111 
+*/
+void find_vertex_cover(edge *edges, int E, int N, int pos, int *in_cover) {
+    if (pos == N) {
+        if (is_vertex_cover(in_cover, edges, E)) 
+            print_cover(in_cover, N); //Stampo soluzione
+        return;
+    }
 
-// void find_vertex_cover(node **vet, int n){
-//     for(int i = 0; i<n; i++){
-//         for(int j = 0; j<vet[i]->n; j++){
-//             if(vet[i]->neighbours[j] != i){ // Controllo che sia diverso da i
+    in_cover[pos] = 0; // Escludo il valore il nodo pos
+    find_vertex_cover(edges, E, N, pos + 1, in_cover);
 
-//             }
-//         }
-//     }
-// }
-
-// void find_vertex_cover(node **vet, int n){
-//     if (n <= 0) return;
-//     if (n > 30) {
-//         printf("n troppo grande per brute-force (%d)\n", n);
-//         return;
-//     }
-
-//     long long limit = 1LL << n;
-//     int *in_cover = malloc(n * sizeof(int));
-//     if (!in_cover) return;
-
-//     for (long long mask = 0; mask < limit; ++mask) {
-//         for (int i = 0; i < n; ++i) in_cover[i] = (mask >> i) & 1;
-
-//         int ok = 1;
-//         for (int u = 0; u < n && ok; ++u) {
-//             for (int k = 0; k < vet[u]->n && ok; ++k) {
-//                 int v = vet[u]->neighbours[k];
-//                 if (!in_cover[u] && !in_cover[v]) ok = 0;
-//             }
-//         }
-
-//         if (ok) {
-//             printf("{");
-//             int first = 1;
-//             for (int i = 0; i < n; ++i) if (in_cover[i]) {
-//                 if (!first) printf(",");
-//                 printf("%d", i);
-//                 first = 0;
-//             }
-//             printf("}\n");
-//         }
-//     }
-
-//     free(in_cover);
-// }
+    in_cover[pos] = 1; // includo il valore il nodo pos
+    find_vertex_cover(edges, E, N, pos + 1, in_cover);
+}

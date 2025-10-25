@@ -255,7 +255,7 @@ Il backtracking non è un paradigma vero e proprio, come il divide et impera, il
 Un’applicazione che dimostra l’importanza del backtracking è il Puzzle di Einstein. 
 (Slide 85 modulo 3 di ricerca e ottimizzazione)
 ###### Puzzle di Einstein
->Sulle slide c'è l'esempio completo tipo 50 pagina a partire dalla 85.
+>Sulle slide c'è l'esempio completo tipo 50 pagine a partire dalla 85.
 ###### Backtracking nelle disposizioni semplici
 Per non generare elementi ripetuti: 
 - un vettore mark registra gli elementi già presi (mark\[i]\==0 -> elemento i-esimo non ancora preso, 1 altrimenti) 
@@ -291,7 +291,7 @@ int disp(int pos,int *val,int *sol,int *mark, int n, int k,int cnt){
 Ogni elemento può essere ripetuto fino a k volte. Non c’è un vincolo imposto da n su k,
 Per ognuna delle posizioni si enumerano esaustivamente tutte le scelte possibili, #cnt registra il numero di soluzioni.
 ```c
-int disp_rip(int pos,int *val,int *sol,int n,int k,intcnt){
+int disp_rip(int pos,int *val,int *sol,int n,int k,int cnt){
 	int i; 
 	if (pos >= k) { //Condizione di terminazione
 		for (i=0; i<k; i++) printf("%d ", sol[i]); 
@@ -333,8 +333,8 @@ int perm(int pos,int *val,int *sol,int *mark, int n, int cnt){
 ```
 ###### Backtracking nelle permutazioni ripetute
 Si procede in maniera analoga alle permutazioni semplici, con le seguenti variazioni: 
-- n è la cardinalità del multiinsieme 
-- si memorizzano nel vettore dist_val di n_dist celle gli elementi distinti del multiinsieme 
+- n è la cardinalità del multi-insieme 
+- si memorizzano nel vettore **dist_val** di **n_dist** celle gli elementi distinti del multi-insieme 
 	- si ordina il vettore val con un algoritmo O(nlogn) 
 	- si «compatta» val eliminando gli elementi duplicati e lo si memorizza in dist_val con un algoritmo O(n)
 - il vettore mark di n_dist elementi registra all’inizio il numero di occorrenze degli elementi distinti del multiset 
@@ -358,5 +358,229 @@ int perm_r(int pos, int *dist_val, int *sol,int *mark, int n, int n_dist, int cn
 		} 
 	} 
 	return cnt; 
+}
+```
+###### Combinazioni semplici
+Rispetto alle disposizioni semplici si tratta di «forzare» uno dei possibili ordinamenti: 
+- un indice start determina a partire da quale valore di val si inizia a riempire sol. Il vettore val viene scandito tramite indice i a partire da start 
+- il vettore sol viene riempito a partire dall’indice pos con i valori possibili di val da start in poi 
+- una volta assegnato a sol il valore val[i], si ricorre con i+1 e pos+1 
+- non serve il vettore mark 
+- cnt registra il numero di soluzioni.
+```c
+int comb(int pos, int *val, int *sol, int n, int k, int start, int cnt) {
+	int i, j; 
+	if (pos >= k) { //Condizione di terminazione
+		for (i=0; i<k; i++) 
+			printf("%d ", sol[i]); printf("\n"); 
+		return cnt+1; 
+	} 
+	for (i=start; i<n; i++) { //iterazione sulle scelte
+		sol[pos] = val[i]; //scelta: sol[pos] riempito con i valori possibili di val da start in poi // i + 1 -> prossima scelta
+		cnt = comb(pos+1, val, sol, n, k, i+1, cnt); //pos+1 prossima posizione
+	} 
+	return cnt; 
+}
+```
+###### Combinazioni ripetute
+Come per le combinazioni semplici ma: 
+- la ricorsione avviene solo per pos+1 e non per i+1 
+- l’indice start viene incrementato quando termina la ricorsione 
+- cnt registra il numero di soluzioni.
+```c
+int comb_r(int pos,int *val,int *sol,int n,int k,int start,intcnt) {
+	int i, j; 
+	if (pos >= k) { 
+		for (i=0; i<k; i++) 
+			printf("%d ", sol[i]); 
+		printf("\n"); 
+		return cnt+1; 
+	} 
+	for (i=start; i<n; i++) { 
+		sol[pos] = val[i]; 
+		cnt = comb_r(pos+1, val, sol, n, k, start, cnt); 
+		start++; 
+	} 
+	return cnt; 
+}
+```
+###### Insieme delle parti
+Dato un insieme S di n elementi, si può calcolare l’insieme delle parti ricorrendo a 3 modelli: 
+1. paradigma divide et impera 
+2. disposizioni ripetute 
+3. combinazioni semplici
+
+>1. **Divide et impera**
+ caso terminale: insieme il cui unico elemento è l’insieme vuoto {$\emptyset$}. 
+ caso ricorsivo: insieme formato dall’unione: 
+	dall’insieme delle parti ${\phi}(S_{n-1})$ per n-1 elementi 
+	${\forall}$i con gli insiemi che risultano dall’unione di ognuno degli insiemi $\psi_i$ che appartengono all’insieme delle parti per n-1 elementi ${\phi}(S_{n-1})$ con l’insieme che contiene l’elemento i-esimo {$S_i$}.
+
+$$ 
+{\phi}(S_n) =
+\begin{cases}
+\{\emptyset\} & \text{se } n = 0 \\
+S_{n-1} \cup \{ \psi_i \cup \{S_i\} | \psi_i \in \{S_{n-1}\} \} & \text{se } n > 0
+\end{cases}
+$$
+Si usano 2 rami ricorsivi distinti, a seconda che l’elemento corrente sia **incluso o meno nella soluzione**.
+In sol si memorizza direttamente l’elemento, non un flag di presenza/assenza, l’indice start serve per escludere soluzioni simmetriche (quindi già calcolate) e il valore di ritorno cnt rappresenta il numero totale di insiemi.
+```c
+int powerset(int pos,int *val,int *sol,int n,int start,int cnt) {
+	int i; 
+	if (start >= n) { //Terminazione: non ci sono piu elementi
+		for (i = 0; i < pos; i++) 
+			printf("%d ", sol[i]); printf("\n"); 
+		return cnt+1; 
+	} 
+	for (i = start; i < n; i++) { //per tutti gli elementi da start in poi
+		sol[pos] = val[i]; //includi elementoe ricorri
+		cnt = powerset(pos+1, val, sol, n, i+1, cnt); 
+	} 
+	cnt = powerset(pos, val, sol, n, n, cnt); //non aggiungere nulla e ricorri
+	return cnt; 
+}
+```
+
+>2. **Disposizioni Ripetute**
+
+Ogni sottoinsieme è rappresentato dal vettore della soluzione sol di n elementi: 
+- l’insieme delle scelte possibili per ogni posizione del vettore è {0, 1}, quindi k = 2. Il ciclo for è sostituito da 2 assegnazioni esplicite 
+- sol\[pos]=0 se l’oggetto pos-esimo non appartiene al sottoinsieme 
+- sol\[pos]=1 se l’oggetto pos-esimo appartiene al sottoinsieme 
+- nella stessa soluzione 0 e 1 possono comparire più volte 
+È scambiato il ruolo di n e k rispetto alla definizione di disposizioni ripetute (dove n era il numero di scelte e k la dimensione della soluzione).
+```c
+int powerset(int pos,int *val,int *sol,int n,int cnt) {
+	int j; 
+	if (pos >= n) { //Terminazione: stampa soluzione
+		printf("{ \t"); 
+		for (j=0; j<n; j++) 
+			if (sol[j]!=0) 
+				printf("%d \t", val[j]); 
+		printf("} \n"); 
+		return cnt+1; 
+	} 
+	sol[pos] = 0; //non prendere l’elemento pos
+	cnt = powerset(pos+1, val, sol, n, cnt); //ricorri su pos+1
+	
+	sol[pos] = 1; //backtrack: prendi l’elemento pos
+	cnt = powerset(pos+1, val, sol, n, cnt); //ricorri su pos+1
+	return cnt; 
+}
+```
+
+>3. **Combinazioni Semplici**
+
+- Unione di insieme vuoto e insieme delle parti degli insiemi con j = 1, 2, 3, …., n elementi 
+- Trattandosi di insiemi l’ordine non conta 
+- Modello: combinazioni semplici di n elementi presi a gruppi di j 
+$$
+{\phi}(S_n) = \{\emptyset\} \cup \bigcup_{j = 1}^{n} \{ \binom n j \}
+
+$$
+- il **wrapper** si occupa dell’unione dell’insieme vuoto (non generato dalle combinazioni) e dell’iterare la chiamata alla funzione ricorsiva delle combinazioni.
+```c
+int powerset(int *val, int n, int *sol){ //Wrapper 
+	int cnt = 0, j; 
+	printf("{ }\n"); //Insieme vuoto
+	cnt++; 
+	for(j = 1; j <= n; j++){ 
+		cnt += powerset_r(val, n, sol, j, 0, 0); //iterazione delle chiamate ricorsive
+	} 
+	return cnt; 
+}
+
+int powerset_r(int* val, int n, int *sol, int j, int pos,int start){
+	int cnt = 0, i; 
+	if (pos >= j){ //caso terminale: raggiunto numero prefissato di elementi
+		printf("{ "); 
+		for (i = 0; i < j; i++) 
+			printf("%d ", sol[i]); 
+		printf(" }\n"); 
+		return 1; 
+	} 
+	for (i = start; i < n; i++){ //per tutti gli elementi da start in poi
+		sol[pos] = val[i]; 
+		cnt += powerset_r(val, n, sol, j, pos+1, i+1); 
+	} 
+	return cnt; 
+}
+```
+---
+###### Partizione di un insieme
+Rappresentazione delle partizioni: 
+- dato l’elemento, si indica il blocco a cui appartiene univocamente 
+- dato il blocco, si elencano gli elementi (anche più d’uno) che vi appartengono. 
+La prima soluzione è preferita in quanto permette di usare vettori di interi.
+
+Dati I e n=card(I), determinare: 
+- una partizione qualsiasi (Disposizioni ripetute) 
+- tutte le partizioni in k blocchi con k tra 1 e n e tutte le partizioni in k blocchi. (algoritmo er)
+
+>**Disposizioni ripetute**
+
+- Il numero di oggetti memorizzati nel vettore val è **n** 
+- Il numero di decisioni da prendere è **n**, quindi il vettore sol contiene **n celle** 
+- Il numero delle scelte possibili per ogni oggetto è il numero di blocchi, che **varia tra 1 e k**  
+- Ogni blocco è identificato da un indice i compreso tra **0 e k-1** 
+- sol[pos] contiene l’indice i del blocco cui appartiene l’oggetto di indice corrente pos.
+- È scambiato il ruolo di n e k rispetto agli altri esempi (dove n era il numero di scelte e k la dimensione della soluzione) 
+- Si tratta di una generalizzazione del powerset **rimuovendo il vincolo della scelta limitata a 0 oppure 1** 
+- Necessità di un **controllo nella condizione di terminazione** per evitare blocchi vuoti (calcolo delle occorrenze di ciascun blocco) 
+- La funzione calcola tutte le partizioni. In seguito si vedrà come fermarsi alla prima.
+```c
+void disp_ripet(int pos,int *val,int *sol,int n,int k) {
+	int i, j, ok=1, *occ; 
+	if (pos >= n) { 
+		occ = calloc(k, sizeof(int)); // vettore delleoccorrenze dei blocchi 
+		for (j=0; j<n; j++) 
+			occ[sol[j]]++; //Calcolo occorrenze
+		i=0; 
+		while ((i < k) && ok) { 
+			if (occ[i]==0) ok = 0; //controllo occorrenze
+			i++; 
+		} 
+		free(occ); 
+		if (ok == 0) return; // Soluzione scartata 
+		else { /*STAMPA SOLUZIONE */ } 
+	} 
+	for (i = 0; i < k; i++) { 
+		sol[pos] = i; 
+		disp_ripet(pos+1, val, sol, n, k); //Ricorsione
+	} 
+}
+```
+
+>Algoritmo Er
+
+Calcolo di tutte le partizioni di n oggetti memorizzati nel vettore val in k blocchi con k compreso tra 1 e n: 
+- indice **pos** per scorrere gli n oggetti e terminare la ricorsione quando pos >= n 
+- indice **i** per scorrere gli m blocchi utilizzabili in quel passo 
+- vettore sol di n elementi per la soluzione
+2 ricorsioni: 
+- si attribuisce l’oggetto corrente a uno dei blocchi utilizzabili nel passo corrente (indice i tra 0 e m-1) e si ricorre sul prossimo oggetto (pos+1) 
+- si attribuisce l’oggetto corrente al blocco m e si ricorre sul prossimo oggetto (pos+1) e su un numero di blocchi utilizzabili incrementato di 1 (m+1).
+```c
+void SP_rec(int n,int m,int pos,int *sol,int *val) {
+	int i, j; 
+	if (pos >= n) { // condizione di terminazione
+		printf("partizione in %d blocchi: ", m); 
+		for (i=0; i<m; i++) { 
+			printf("{ "); 
+			for (j=0; j<n; j++) 
+				if (sol[j]==i) 
+					printf("%d ", val[j]); 
+			printf("} "); 
+		} 
+		printf("\n"); 
+		return; 
+	} 
+	for (i=0; i<m; i++) {  //ricorsione sugli oggetti
+		sol[pos] = i; 
+		SP_rec(n, m, pos+1, sol, val); 
+	} 
+	sol[pos] = m; //ricorsione su oggetti e blocchi
+	SP_rec(n, m+1, pos+1, sol, val); 
 }
 ```
