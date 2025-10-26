@@ -2,8 +2,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// #define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L04/E02/brani.txt"
-#define nfin "./brani.txt"
+#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L04/E02/brani.txt"
+// #define nfin "./brani.txt"
 #define NMAX 5 //Numero di proposte massimo
 #define TITLE_LEN 256
 
@@ -13,10 +13,12 @@ typedef struct{
 } prop;
 
 int leggiFile(FILE *fin, prop *vet, int n);
+int disp_rip(int pos, int nfriend, prop *val, int *choice);
+void free_vet(prop *vet, int n);
 
 int main(void){
     FILE *fin;
-    int *val, *sol,n;
+    int *choice, n;
     prop *playlists;
 
     if ((fin = fopen(nfin,"r")) == NULL){
@@ -37,20 +39,28 @@ int main(void){
         return 1;
     }
 
-    if(leggiFile(fin,playlists, n)){
-
-        for(int i = 0; i<n; i++) free(playlists[i].title);
+    if (!leggiFile(fin, playlists, n)) { // Leggo i dati e li metto in playlist
+        free(playlists);
+        fclose(fin);
+        return 1;
     }
+
+    choice = malloc(n * sizeof(int)); // Vettore di interi, che serve a controllare le scelte
+    if (choice == NULL) {
+        perror("malloc");
+        free_vet(playlists, n);
+        free(playlists);
+        fclose(fin);
+        return 1;
+    }
+
+    int total = disp_rip(0, n, playlists, choice);
+    printf(total != 0 ? "Totale combinazioni: %d\n" : "Nessuna playlist possibile (almeno un amico ha %d proposte)\n", total);
+    
+    free(choice);
+    free_vet(playlists, n);
     free(playlists);
     fclose(fin);
-
-    // for(int i = 0; i<n; i++){
-    //     for(int j = 0; j<playlists[i].n; j++){
-    //         printf("%s\n",playlists[i].title[j]);
-    //     }
-    // }
-    // val = malloc(n * sizeof(int));
-    // sol = malloc(k * sizeof(int));
 
     return 0;
 }
@@ -58,38 +68,36 @@ int main(void){
 int leggiFile(FILE *fin, prop *vet, int n){
     int i,j;
     for(i = 0; i < n; i++){
-        if (fscanf(fin, "%d", &vet[i].n) != 1 ) {
-            vet[i].n = 0;
-            vet[i].title = NULL;
-            return 0; //Scarto questa opzione perche scritta male
+        if (fscanf(fin, "%d", &vet[i].n) != 1) {
+            free_vet(vet, i);
+            return 0; // formato sbagliato
         }
 
-        if (vet[i].n <= 0) { // nessun titolo per questa playlist
-            vet[i].title = NULL;
+        //Si possono proporre da 0 a NMAX brani
+        if (vet[i].n < 0 || vet[i].n > NMAX) {
+            printf("Numero di brani non valido per playlist %d: %d\n", i, vet[i].n);
+            free_vet(vet, i);
+            return 0;
+        }
+
+        if (vet[i].n == 0) {
+            vet[i].title = NULL; //No titoli
             continue;
         }
 
-        vet[i].title = malloc(vet[i].n*TITLE_LEN*sizeof(char));
+        vet[i].title = malloc(vet[i].n * sizeof *vet[i].title); /* vet[i].n righe da TITLE_LEN */
         if (vet[i].title == NULL) {
             perror("malloc");
-            for(int k = 0; k<i; k++) { 
-                free(vet[k].title); 
-                vet[k].title = NULL; 
-                vet[k].n = 0; 
-            }
+            free_vet(vet, i);
             return 0; //Fermo la lettura e do errore.
         }
 
         // leggeo i titoli
         for (j = 0; j < vet[i].n; j++) {
             if (fscanf(fin, "%255s", vet[i].title[j]) != 1) {
-                fprintf(stderr, "Titolo mancante alla playlist %d voce %d\n", i, j);
+                printf("Titolo mancante alla playlist %d voce %d\n", i, j);
                 // cleanup completo (incl. corrente i)
-                for (int k = 0; k <= i; k++) { 
-                    free(vet[k].title); 
-                    vet[k].title = NULL; 
-                    vet[k].n = 0; 
-                }
+                free_vet(vet, i + 1);
                 return 0;
             }
         }
@@ -97,16 +105,38 @@ int leggiFile(FILE *fin, prop *vet, int n){
     return 1;
 }
 
-int disp_rip(int pos,int *val,int *sol,int n,int k,int cnt){
-	int i; 
-	if (pos >= k) { //Condizione di terminazione
-		for (i=0; i<k; i++) printf("%d ", sol[i]); 
-		printf("\n"); 
-		return cnt+1; 
-	} 
-	for (i = 0; i < n; i++) { //Iterazione sulle n scelte
-		sol[pos] = val[i]; //scelta
-		cnt = disp_rip(pos+1, val, sol, n, k, cnt); //Ricorsione
-	} 
-	return cnt; 
+int disp_rip(int pos, int nfriend, prop *val, int *choice){
+    int i;
+    if (pos >= nfriend) {
+        //Stampo la soluzione
+        for (i = 0; i < nfriend; i++) {
+            if (val[i].title == NULL) {
+                printf("(n/a)");
+            } else {
+                int idx = choice[i];
+                if (idx < 0 || idx >= val[i].n) {
+                    printf("(idx?)");
+                } else {
+                    printf("%s", val[i].title[idx]);
+                }
+            }
+            if (i + 1 < nfriend) printf(" ");
+        }
+        printf("\n");
+        return 1; //1 combinazione trovata
+    }
+
+    int count = 0;
+    //Cerco tutte le possibili soluzioni per l'amico
+    for (i = 0; i < val[pos].n; i++) {
+        choice[pos] = i; // (0,0,0,0,0) - (1,0,0,0,0) - (2,0,0,0,0) - (3,0,0,0,0) - (4,0,0,0,0), x ogni di questa sviluppo
+        count += disp_rip(pos + 1, nfriend, val, choice);
+    }
+    return count;
+}
+
+void free_vet(prop *vet, int n){
+    for (int i = 0; i < n; i++) { 
+        free(vet[i].title); 
+    }
 }
