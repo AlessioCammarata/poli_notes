@@ -69,7 +69,7 @@ void free_vet(int **vet, int n){
 }
 
 int leggiFile(FILE *fin, int **all_stones, int n){
-    int i, j, sum;
+    int i, j;
     for(i = 0; i < n; i++){
 
         all_stones[i] = malloc(Nstones*sizeof(int));
@@ -108,18 +108,13 @@ int next_stones_avaibility(int *stones, int pos){
 //Parto o dai rubini o dai topazi perche formano un ciclo tra di loro, se non ci sono il caso è banale
 int necklace_maker(int *stones, int pos){
     int len = 0;
-    //stones[next_stones_avaibility(stones,pos)]
+
     if(stones[pos] <= 0){
-        // printf("\n%d %d",stones[pos],pos);
-        printf("\n");
-        for(int j = 0; j<Nstones;j++) printf("%d ",stones[j]);
-        printf("\n");
         return len;
     }
     stones[pos]--;
-    // printf("%d ",pos);
-    pos = next_stones_avaibility(stones,pos);
 
+    pos = next_stones_avaibility(stones,pos);
     len = necklace_maker(stones, pos) + 1;
 
     return len;
