@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Algoritmi/programmazione/3 - Modularità.md",
+                "file": "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "3 - Modularità"
+              "title": "3 - Problemi di ricerca e Ottimizzazione"
             }
           },
           {
@@ -195,9 +195,12 @@
   },
   "active": "0899c2fcd792894a",
   "lastOpenFiles": [
-    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
-    "Algoritmi/programmazione/2 - Le liste.md",
+    "Algoritmi/programmazione/scripts/L05/E01/main.exe",
+    "Algoritmi/programmazione/scripts/L05/E02/main.c",
+    "Algoritmi/programmazione/scripts/L05/E02/main.exe",
     "Algoritmi/programmazione/3 - Modularità.md",
+    "Algoritmi/programmazione/2 - Le liste.md",
+    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
     "Algoritmi/programmazione/scripts/L04/E03/main.exe",
     "Untitled.canvas",
     "Algoritmi/programmazione/scripts/L04/E03/main.c",
@@ -215,7 +218,6 @@
     "Algoritmi e strutture dati/programmazione/1 - allocazione dinamica della memoria.md",
     "Algoritmi e strutture dati/img",
     "Algoritmi e strutture dati/programmazione/scripts",
-    "Algoritmi e strutture dati/programmazione",
     "Algoritmi e strutture dati/img/torri di hanoi.png",
     "Algoritmi e strutture dati/Lezione  1.md",
     "Algoritmi e strutture dati/Ricorsione e paradigma divide et impera.md",
@@ -228,7 +230,6 @@
     "Tecniche di Programmazione/Argomenti al main.md",
     "Tecniche di Programmazione/Problemi di ordinamento.md",
     "Tecniche di Programmazione/Vettori nel problem solving.md",
-    "Algoritmi e strutture dati",
     "Tecniche di Programmazione/Struct.md",
     "Tecniche di Programmazione/Puntatore.md",
     "Tecniche di Programmazione/Problemi di verifica e selezione.md",
