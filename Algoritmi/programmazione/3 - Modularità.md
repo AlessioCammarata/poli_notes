@@ -194,6 +194,139 @@ Esempi:
 - volo aereo caratterizzato da compagnia, orario, costo, aeroporti di origine e destinazione
 	- Compagnia ed aeroporti esistono al di là del volo.
 
+>Esempio con puntatore:
+
+i campi di creatura_t sono puntatori a nomi e punti esterni e predeterminati tra i quali l’utente può scegliere. Ulteriore variazione: Non c’è obbligo di passaggio per tutti i punti, sullo stesso punto è lecito passare più volte.
+```c
+//Non si capisce
+```
+
+>Esempio con indici
+
+- Il dato esterno esiste al di fuori del dato che lo contiene 
+- Il dato esterno è contenuto in un vettore 
+- Ci si riferisce tramite nome del vettore ed indice. 
+
+Esempio: creatura_t contiene una struct posizione i cui campi sono il vettore dei punti ammessi (punti) e il suo indice (indice).
+```c
+typedef struct { 
+	int X, Y; 
+} punto_t; 
+
+typedef struct { 
+	char *nome; 
+	struct { punto_t *punti; int indice; } posizione; 
+	float percorsoTot; 
+} creatura_t; 
+
+void puntoScan(FILE *fp, punto_t *pP) { 
+	fscanf(fp, "%d %d", &pP->X, &pP->Y); 
+} 
+void puntoPrint(FILE *fp, punto_t *pP) { 
+	fprintf(fp, "%d %d", pP->X, pP->Y); 
+}
+
+float puntoDist(punto_t *p0P, punto_t *p1P) { 
+	int d2 = (p1P->X-p0P->X)*(p1P->X-p0P->X) + (p1P->Y-p0P->Y)*(p1P->Y-p0P->Y);
+	return ((float) sqrt((double)d2)); 
+} 
+
+void creaturaNew(creatura_t *cp, char *nome, punto_t *punti, int id) { 
+	cp->nome = nome; 
+	cp->posizione.punti = punti; 
+	cp->posizione.indice = id; 
+	cp->percorsoTot = 0.0; 
+} 
+
+void creaturaSposta(creatura_t *cp, int id) { 
+	int id0 = cp->posizione.indice; 
+	cp->percorsoTot += puntoDist(&cp->posizione.punti[id0],&cp->posizione.punti[id]); 
+	cp->posizione.indice = id; 
+}
+
+int main(void) { 
+	char *nome; 
+	punto_t punto; 
+	creatura_t cr; 
+	int fine=0, i, np; 
+	char *nomi_a_scelta[5]={"Spiderman", "Superman","Batman","Ironman","Hulk"};
+	punto_t *punti_ammessi; 
+	float distTot = 0.0; 
+	printf("Nome creatura a scelta tra:\n"); 
+	for (i=0; i<5; i++) 
+		printf("%d) %s\n", i+1, nomi_a_scelta[i]);
+		
+	creaturaNew(&cr,nome,punti_ammessi,i); 
+	while (!fine) { 
+		printf("Nuova posizione: "); 
+		scanf("%d", &i); i--; 
+		if (i<0) 
+			fine = 1; 
+		else { 
+			creaturaSposta(&cr,i); 
+			printf("%s e' nel punto: ", cr.nome);
+			puntoPrint(stdout,&punti_ammessi[i]); 
+			printf("\n"); 
+		} 
+	} 
+	printf("%s ha percorso: %f\n", cr.nome, cr.percorsoTotale); 
+	return 0; 
+}
+```
+---
+##### Strutture dati contenitore
+==Tipo contenitore==: involucro che contiene diversi oggetti: 
+- **omogenei** 
+- che si possono **aggiungere** o **rimuovere**. 
+Le struct non sono contenitori, in quanto i loro dati non sono necessariamente omogenei. 
+I ***vettori sono contenitori*** se: 
+- il contenitore ha **capienza massima** e il vettore è **compatibile** con la capienza 
+- il vettore è **allocato/riallocato dinamicamente**.
+
+>Esempi di tipo contenitore: 
+>- vettori, liste, pile, code, tabelle di simboli, alberi, grafi 
+
+Funzioni che operano su tipi contenitore: 
+- ==creazione== di contenitore vuoto 
+- ==inserimento== di elemento nuovo 
+- ==cancellazione== di elemento 
+- ==conteggio== degli elementi 
+- ==accesso== agli elementi 
+- ==ordinamento== degli elementi 
+- ==distruzione== del contenitore.
+###### Struttura involucro (Wrapper)
+Un involucro (wrapper) o struttura di più alto livello che racchiude tutti i dati. 
+Una volta definito un **wrapper**, esso è la sola informazione necessaria a rappresentare la struttura e ad accedervi. 
+
+>Esempio: 
+>- wrapper per vettore dinamico di interi int \*v caratterizzato da puntatore al primo dato e dimensione allocate 
+```c
+typedef struct { // Wrapper
+	int *v; 
+	int n; 
+} ivet_t;
+
+void ordinaVettoreConWrapper(ivet_t *w); //Esempio d'uso
+```
+
+>Esempio 2:
+```c
+typedef struct {  //wrapper per lista con puntatore a head e tail:
+	link head; 
+	link tail; 
+} LIST;
+
+void listWrapInsTailFast(LIST *l,Item val) { //inserimento in coda
+	if (l->head==NULL) 
+		l->head = l->tail = newNode(val, NULL); 
+	else { 
+		l->tail->next = newNode(val, NULL); 
+		l->tail = l->tail->next; 
+	} 
+}
+```
+>***NOTA***: In pratica è come se passassi piu parametri in una volta, per esempio per il vettore passi sia il vettore che la lunghezza, invece per la lista passo sia la testa che la coda.
+---
 #### Programmi multi-file
 Ragionare su file multipli, devo poter spezzare il programma in vari moduli e i moduli in più file.
 
@@ -210,5 +343,4 @@ Nel .h si mettono solo i prototipi.
 
 Per utilizzare l'header bisogna usare #include.
 
-
-
+---

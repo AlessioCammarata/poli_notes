@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L05/E01/att1.txt"
+// #define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L05/E01/att1.txt"
+#define nfin "./att1.txt"
 
 typedef struct {
     int start_t, end_t;
 } att;
 
 int leggiFile(FILE *fin, att *activities, int n);
+int intercept(att *act1, att *act2);
+void comp_seq(int pos, int sum, int len, int last_idx, att *V, att *seq, int n, int *b_len, att *b_seq, int *b_sum);
 void attSel(int N, att *V); 
 
 int main(void){
@@ -41,8 +44,7 @@ int main(void){
     }
     fclose(fin);
 
-    // for(int i = 0; i<n; i++) printf("%d - %d\n",activities[i].end_t,activities[i].start_t);
-    attSel(n, activities);
+    attSel(n, activities); //Lancio il wrapper
 
     free(activities);
     return 0;
@@ -59,9 +61,9 @@ int leggiFile(FILE *fin, att *activities, int n){
     return n==i;
 }
 
-//Controllo l'intersezione
-int intercept(att act1, att act2){
-    return act1.start_t < act2.end_t && act2.start_t < act1.end_t;
+//Controllo l'intersezione, implementata per modularità
+int intercept(att *act1, att *act2){
+    return act1->start_t < act2->end_t && act2->start_t < act1->end_t;
 }
 
 /*
@@ -85,24 +87,20 @@ void comp_seq(int pos, int sum, int len, int last_idx, att *V, att *seq, int n, 
             *b_len = len;
             for(int i = 0; i<len; i++){
                 b_seq[i] = seq[i]; //Copio la sequenza
-                printf("%d - %d\n",b_seq[i].start_t,b_seq[i].end_t);
             }
-            printf("\n\n");
         }
         return;
     }
 
     comp_seq(pos+1, sum, len, last_idx, V, seq, n, b_len, b_seq, b_sum);
     
-    if(last_idx == -1 || !intercept(V[last_idx],V[pos])){
+    if(last_idx == -1 || !intercept(&V[last_idx],&V[pos])){
         seq[len] = V[pos]; // Inserisco in ordine nella seq che sto analizzando
 
         sum += (V[pos].end_t-V[pos].start_t);
         comp_seq(pos+1, sum, len + 1, pos, V, seq, n, b_len, b_seq, b_sum);
     }
 }
-
-
 
 //Wrapper
 void attSel(int N, att *V){
