@@ -18,12 +18,13 @@ typedef struct{
 int leggiFile_tiles(FILE *fin, int n, piece *v);
 int leggiFile_board(FILE *fin, int r, int c, ceil **b, int *count);
 int calcola_punteggio(ceil **b, piece *p, int r, int c);
+void calcola_max(ceil **b, piece *p, int pos, int *best, ceil **cur_b, int **mark, int *used, int r, int c, int n);
 
 int main(void){
     FILE *fin;
-    int n, r, c, count = 0;
-    piece *pieces, *seq, *best_seq;
-    ceil **board;
+    int n, r, c, count = 0, *used, **mark;
+    piece *pieces;
+    ceil **board, **cur_b;
 
     if((fin = fopen(nfin1,"r")) == NULL){
         printf("Errore in apertura del file: %s", nfin1);
@@ -85,23 +86,51 @@ int main(void){
         for(int j = 0; j<c;j++) printf("%d/%d, ",board[i][j].idx,board[i][j].rot);
         printf("\n");
     }
-    int best;
-    seq = malloc(count*sizeof(piece));
-    best_seq = malloc(count*sizeof(piece));
-    if(seq != NULL && best_seq != NULL){
-        
-        int val = calcola_punteggio(board, pieces, r, c);
-        printf("%d\n",val);
-        // board, pieces, cur_val, best_value,
-        // calcola_max(board, pieces, 0, 0, &best, best_seq);
+
+    int best = 0;
+    // seq = malloc(count*sizeof(piece));
+    // best_seq = malloc(count*sizeof(piece));
+    mark = malloc(r*sizeof(int *));
+    cur_b = malloc(r*sizeof(ceil *));
+    used = calloc(n,sizeof(int));
+
+    if(mark != NULL && cur_b != NULL && used != NULL){
+        for(int i = 0; i<r; i++){
+            mark[i] = calloc(c,sizeof(int));
+            cur_b[i] = malloc(c*sizeof(ceil));
+            if(!mark[i] || !cur_b[i]){
+                for(int k = 0; k<i; k++) free(cur_b[k]);
+                for(int k = 0; k<i; k++) free(mark[k]);
+                break;
+            }
+            for(int j = 0; j<c; j++){
+                if(board[i][j].idx == -1){
+                    mark[i][j] = 1;
+                } else {
+                    cur_b[i][j] = board[i][j];
+                }
+            }
+        }
+
+        // board, pieces, cur_val, best_value, count
+        calcola_max(board, pieces, 0, &best, cur_b, mark, used, r, c, count);
+        printf("%d\n",best);
 
     }else perror("malloc");
     
+    for(int i = 0; i<r;i++){
+        for(int j = 0; j<c;j++) printf("%d/%d, ",board[i][j].idx,board[i][j].rot);
+        printf("\n");
+    }
 
     //Pulisco tutto
-    free(seq);
-    free(best_seq);
-    for(int k = 0; k<r; k++) free(board[k]);
+    for(int k = 0; k<r; k++){ 
+        free(board[k]);
+        free(mark[k]);
+        free(cur_b[k]);
+    }
+    free(cur_b);
+    free(mark);
     free(board);
     free(pieces);
     return 0;
@@ -129,7 +158,7 @@ int leggiFile_board(FILE *fin, int r, int c, ceil **b, int *count){
                 for(int k = 0; k<=i; k++) free(b[k]);
                 break;
             }
-            if(b[i][j].idx == -1) b[i][j].idx = 0;//(*count)++; //Conto i valori non inseriti
+            if(b[i][j].idx == -1) (*count)++; //Conto i valori non inseriti
         }
     }
 
@@ -165,10 +194,46 @@ int calcola_punteggio(ceil **b, piece *p, int r, int c){
 }
 
 //Funzione ricorsiva, disposizioni semplici n(pieces) in k(posizioni) con backtracking
-void calcola_max(ceil **b, piece *p, int pos, int cur_val, int *best, ceil **best_b, int k){ //K = n*c
+void calcola_max(ceil **b, piece *p, int pos, int *best, ceil **cur_b, int **mark, int *used, int r, int c, int n){ //K = n*c
 
-    if(pos >= k){ //Condizione di terminazione
+    // trova prima cella libera
+    int i0=-1, j0=-1;
+    for (int i=0;i<r && i0==-1;i++)
+        for (int j=0;j<c;j++)
+            if (mark[i][j]) { i0=i; j0=j; break; }
+    if(i0 == -1){ //Condizione di terminazione
+        int score = calcola_punteggio(cur_b, p, r, c);
+        printf("%d - %d, %d\n",pos,n,score);
+        if(score > *best){
+            *best = score;
+            //Copio la board in b
+            for(int i = 0; i<r; i++){
+                for(int j = 0; j<c; j++){
+                    b[i][j] = cur_b[i][j];
+                }
+            }
+        }
+        return;
+    }
 
+    // prova tutti i pezzi non ancora usati
+    for (int piece_idx = 0; piece_idx < n; piece_idx++) {
+        if (!used[piece_idx])
+            // prova le rotazioni se rilevanti (es. rot = 0,1)
+            for (int rot = 0; rot < 2; ++rot) {
+                // applica scelta
+                cur_b[i0][j0].idx = piece_idx;
+                cur_b[i0][j0].rot = rot;
+                used[piece_idx] = 1;
+                mark[i0][j0] = 0; // ora è occupata
+
+                // ricorri al prossimo slot
+                calcola_max(b, p, pos + 1, best, cur_b, mark, used, r, c, n);
+
+                // undo
+                used[piece_idx] = 0;
+                mark[i0][j0] = 1;
+            }
     }
 
 }
