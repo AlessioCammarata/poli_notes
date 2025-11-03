@@ -16,13 +16,14 @@ typedef struct{
 } ceil;
 
 int leggiFile_tiles(FILE *fin, int n, piece *v);
-int leggiFile_board(FILE *fin, int r, int c, ceil **b, int *count);
+int leggiFile_board(FILE *fin, int r, int c, ceil **b, ceil **cur_b, int **mark, int *used);
+void get_segment(piece *p, int idx, int rot, int horiz, char *out_col, int *out_val);
 int calcola_punteggio(ceil **b, piece *p, int r, int c);
 void calcola_max(ceil **b, piece *p, int pos, int *best, ceil **cur_b, int **mark, int *used, int r, int c, int n);
 
 int main(void){
     FILE *fin;
-    int n, r, c, count = 0, *used, **mark;
+    int n, r, c, *used, **mark, best = 0;
     piece *pieces;
     ceil **board, **cur_b;
 
@@ -51,7 +52,7 @@ int main(void){
     }
     fclose(fin);
 
-    for(int i = 0; i<n; i++) printf("%c %d %c %d\n", pieces[i].col_o, pieces[i].val_o, pieces[i].col_v, pieces[i].val_v);
+    // for(int i = 0; i<n; i++) printf("%c %d %c %d\n", pieces[i].col_o, pieces[i].val_o, pieces[i].col_v, pieces[i].val_v);
 
     if((fin = fopen(nfin2,"r")) == NULL){
         printf("Errore in apertura del file: %s", nfin2);
@@ -66,58 +67,37 @@ int main(void){
     }
 
     board = malloc(r*sizeof(ceil *));
-    if(!board){
+    mark = malloc(r*sizeof(int *));
+    cur_b = malloc(r*sizeof(ceil *));
+    used = calloc(n,sizeof(int));
+    if(!board || !mark || !cur_b || !used){
         perror("malloc");
         free(pieces);
+        free(board); free(mark); free(cur_b); free(used);
         fclose(fin);
         return 1;
     }
 
-    if (!leggiFile_board(fin, r, c, board, &count)){
+    //Inizializzo tutto cio che riguarda la board mentre leggo i dati dal file
+    /*
+        board -> campo effettivo
+        mark  -> matrice significativa associata
+        cur_b -> campo utilizzato per valutare le soluzioni
+        used -> vettore significativo associato, lo passo perche metto ad 1 quelli gia usati 
+    */
+    if (!leggiFile_board(fin, r, c, board, cur_b, mark, used)){
         printf("Errore in lettura del file: %s", nfin1);
         fclose(fin);
         free(pieces);
-        free(board);
+        free(board); free(mark); free(cur_b); free(used);
         return 1;
     }
     fclose(fin);
 
-    for(int i = 0; i<r;i++){
-        for(int j = 0; j<c;j++) printf("%d/%d, ",board[i][j].idx,board[i][j].rot);
-        printf("\n");
-    }
+    // board, pieces, pos, best_value, cur_b, mark, used, rows, columns, n tails
+    calcola_max(board, pieces, 0, &best, cur_b, mark, used, r, c, n);
+    printf("%d\n",best);
 
-    int best = 0;
-    // seq = malloc(count*sizeof(piece));
-    // best_seq = malloc(count*sizeof(piece));
-    mark = malloc(r*sizeof(int *));
-    cur_b = malloc(r*sizeof(ceil *));
-    used = calloc(n,sizeof(int));
-
-    if(mark != NULL && cur_b != NULL && used != NULL){
-        for(int i = 0; i<r; i++){
-            mark[i] = calloc(c,sizeof(int));
-            cur_b[i] = malloc(c*sizeof(ceil));
-            if(!mark[i] || !cur_b[i]){
-                for(int k = 0; k<i; k++) free(cur_b[k]);
-                for(int k = 0; k<i; k++) free(mark[k]);
-                break;
-            }
-            for(int j = 0; j<c; j++){
-                if(board[i][j].idx == -1){
-                    mark[i][j] = 1;
-                } else {
-                    cur_b[i][j] = board[i][j];
-                }
-            }
-        }
-
-        // board, pieces, cur_val, best_value, count
-        calcola_max(board, pieces, 0, &best, cur_b, mark, used, r, c, count);
-        printf("%d\n",best);
-
-    }else perror("malloc");
-    
     for(int i = 0; i<r;i++){
         for(int j = 0; j<c;j++) printf("%d/%d, ",board[i][j].idx,board[i][j].rot);
         printf("\n");
@@ -129,9 +109,7 @@ int main(void){
         free(mark[k]);
         free(cur_b[k]);
     }
-    free(cur_b);
-    free(mark);
-    free(board);
+    free(cur_b); free(mark); free(board); free(used);
     free(pieces);
     return 0;
 }
@@ -145,49 +123,96 @@ int leggiFile_tiles(FILE *fin, int n, piece *v){
     return i==n;
 }
 
-int leggiFile_board(FILE *fin, int r, int c, ceil **b, int *count){
+
+int leggiFile_board(FILE *fin, int r, int c, ceil **b, ceil **cur_b, int **mark, int *used){
     int i,j;
-    for(i = 0;i<r;i++){
+    for(i = 0, j = 0;i<r;i++){
         b[i] = malloc(c*sizeof(ceil));
-        if(!b[i]){
-            for(int k = 0; k<i; k++) free(b[k]);
-            break;
+        mark[i] = calloc(c,sizeof(int));
+        cur_b[i] = malloc(c*sizeof(ceil));
+        if(!b[i] || !mark[i] || !cur_b[i]){
+            for(int k = 0; k<i; k++){
+                free(b[k]);
+                free(cur_b[k]);
+                free(mark[k]);
+            }break;
         }
+
         for(j = 0; j<c; j++){
+            //Leggo da file i dati
             if (fscanf(fin,"%d/%d",&b[i][j].idx, &b[i][j].rot ) != 2){
-                for(int k = 0; k<=i; k++) free(b[k]);
+                for(int k = 0; k<=i; k++){
+                    free(b[k]);
+                    free(cur_b[k]);
+                    free(mark[k]);
+                }
                 break;
             }
-            if(b[i][j].idx == -1) (*count)++; //Conto i valori non inseriti
+            //Se la casella è vuota me lo segno in mark, altrimenti segno che la casella è presente in used e la metto gia in cur_b
+            if(b[i][j].idx == -1){
+                mark[i][j] = 1;
+            } else {
+                used[b[i][j].idx] = 1;
+                cur_b[i][j] = b[i][j];
+            }
+
         }
     }
 
     return i==r && j == c;
 }
 
+void get_segment(piece *p, int idx, int rot, int horiz, char *out_col, int *out_val){
+    /* 
+        horiz==1 -> voglio il segmento orizzontale della tessera
+        horiz==0 -> voglio il segmento verticale 
+    */
+    if(rot == 0){
+        if(horiz){ 
+            *out_col = p[idx].col_o; 
+            *out_val = p[idx].val_o; 
+        } else{ 
+            *out_col = p[idx].col_v; 
+            *out_val = p[idx].val_v; 
+        }
+    }else {
+        if(horiz){ 
+            *out_col = p[idx].col_v; 
+            *out_val = p[idx].val_v; 
+        } else{ 
+            *out_col = p[idx].col_o; 
+            *out_val = p[idx].val_o; 
+        }
+    }
+}
+
 int calcola_punteggio(ceil **b, piece *p, int r, int c){
-    int i, j, sum_o, sum_v, score = 0;
-    char color;
+    int i, j, sum, val_j, score = 0;
+    char color, col_j;
+    int val;
+
     //Punteggio orizzontale
     for(i = 0; i<r; i++){
-        color = p[b[i][0].idx].col_o; //Prendo il colore iniziale
-        sum_o = p[b[i][0].idx].val_o; //Inizializzo la somma
+        get_segment(p, b[i][0].idx, b[i][0].rot, 1, &color, &val);
+        sum = val; //Inizializzo la somma
         for(j = 1; j<c; j++){
-            if(p[b[i][j].idx].col_o != color) break;
-            sum_o += p[b[i][j].idx].val_o;
+            get_segment(p, b[i][j].idx, b[i][j].rot, 1, &col_j, &val_j);
+            if(col_j != color){ sum = 0; break; }
+            sum += val_j;
         }
-        if(j == c) score += sum_o;
+        score += sum;
     }
 
     //Punteggio verticale
-    for(i = 0; i<c;i++){
-        color = p[b[0][i].idx].col_v; //Prendo il colore iniziale
-        sum_v = p[b[0][i].idx].val_v; //Inizializzo la somma
+    for(i = 0; i<c; i++){
+        get_segment(p, b[0][i].idx, b[0][i].rot, 0, &color, &val);
+        sum = val; //Inizializzo la somma
         for(j = 1; j<r; j++){
-            if(p[b[j][i].idx].col_v != color) break;
-            sum_v += p[b[j][i].idx].val_v;
+            get_segment(p, b[j][i].idx, b[j][i].rot, 0, &col_j, &val_j);
+            if(col_j != color){ sum = 0; break; }
+            sum += val_j;
         }
-        if(j == c) score += sum_v;
+        score += sum;
     }
 
     return score;
@@ -203,7 +228,7 @@ void calcola_max(ceil **b, piece *p, int pos, int *best, ceil **cur_b, int **mar
             if (mark[i][j]) { i0=i; j0=j; break; }
     if(i0 == -1){ //Condizione di terminazione
         int score = calcola_punteggio(cur_b, p, r, c);
-        printf("%d - %d, %d\n",pos,n,score);
+
         if(score > *best){
             *best = score;
             //Copio la board in b
