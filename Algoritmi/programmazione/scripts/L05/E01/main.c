@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// #define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L05/E01/att1.txt"
-#define nfin "./att1.txt"
+#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L05/E01/att.txt"
+// #define nfin "./att1.txt"
 
 typedef struct {
     int start_t, end_t;
