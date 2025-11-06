@@ -584,3 +584,151 @@ void SP_rec(int n,int m,int pos,int *sol,int *val) {
 	SP_rec(n, m+1, pos+1, sol, val); 
 }
 ```
+
+Calcolo di tutte le partizioni di n oggetti memorizzati nel vettore val esattamente in k blocchi:
+come prima, passando il parametro k usato nella condizione di terminazione per “filtrare” le soluzioni accettate.
+```c
+void SP_rec(int n, int k, int m,int pos,int *sol,int *val) {
+	int i, j; 
+	if (pos >= n) { // condizione di terminazione
+		if (m == k) {
+			printf("partizione in %d blocchi: ", m); 
+			for (i=0; i<m; i++) { 
+				printf("{ "); 
+				for (j=0; j<n; j++) 
+					if (sol[j]==i) 
+						printf("%d ", val[j]); 
+				printf("} "); 
+			} 
+			printf("\n");
+		}
+		return; 
+	} 
+	for (i=0; i<m; i++) {  //ricorsione sugli oggetti
+		sol[pos] = i; 
+		SP_rec(n, k, m, pos+1, sol, val); 
+	} 
+	sol[pos] = m; //se entro con (1,1,1) ed m = 2 avro: (2,1,1)
+	SP_rec(n, k, m+1, pos+1, sol, val); 
+}
+```
+---
+#### Esplorazione esaustiva dello spazio delle soluzioni: 1 soluzione
+La ricorsione è particolarmente utile quando si vogliono elencare tutte le soluzioni e questo è obbligatorio nei problemi di ottimizzazione. 
+Se ne basta una sola, bisogna far sì che tutte le ricorsioni si chiudano, ricordando che ognuna torna a quella che l’ha chiamata. È infatti errato pensare di poter «forare» la catena delle ricorsioni, tornando subito a quella iniziale.
+
+Soluzioni: 
+1. **uso di un flag**: 
+	- variabile globale (soluzione sconsigliata) 
+	- parametro passato by reference.
+2. funzione ricorsiva che ritorna un **valore di successo o fallimento** che viene testato.
+
+- Ci sarà una condizione di accettazione che è quella che definisce la singola soluzione.
+
+>***Uso di un flag come parametro by reference:***
+>	si definisce un flag stop (inizializzato a 0), il puntatore al quale è passato come parametro alla funzione ricorsiva: 
+>	- in caso di terminazione con successo, stop è messo a 1 
+>	- il ciclo sulle scelte ha nella condizione di esecuzione stop\==0
+
+>***Utilizzo di un valore di ritorno***:
+>	 - nella condizione di terminazione, se la condizione di accettazione è verificata si ritorna 1, altrimenti si ritorna 0 
+>	 - nel ciclo di scelta: 
+>		 - si effettua la scelta 
+>		 - si testa il risultato della chiamata ricorsiva: se c’è successo si ritorna 1 
+>	 - terminato il ciclo di scelta: si ritorna 0.
+---
+### Problemi di ottimizzazione
+Esplorando esaustivamente lo spazio delle soluzioni, si tiene traccia della soluzione fino al momento ottima, che si aggiorna eventualmente ad ogni passo. 
+**È necessario generare tutte le soluzioni.**
+
+Esempio (Conto corrente) slide 300
+	Per ogni ordinamento dei movimenti ci sarà un saldo corrente massimo e un saldo corrente minimo, mentre il saldo finale sarà ovviamente lo stesso, qualunque sia l’ordine. Determinare l’ordine dei movimenti che minimizza la differenza tra saldo corrente massimo e saldo corrente minimo.
+```c
+// #include anche di <limits.h>
+int min_diff = INT_MAX; //Variabile globale
+
+void perm(int pos,int *val,int *sol,int *mark,int *fin,intn);
+void check(int *sol, int *fin, int n); 
+
+int main(void) { 
+	int i, n, *val, *sol, *mark, *fin; 
+	printf("Inserisci n: "); 
+	scanf("%d", &n); // allocazione di val, sol, mark e fin di n interi 
+	for (i=0; i < n; i++) { 
+		sol[i]= -1; 
+		mark[i]= 0;
+	} 
+	// leggi valori in val 
+	perm(0, val, sol, mark, fin, n); // stampa risultato da fin 
+	// free di val, sol, mark e fin 
+	return 0; 
+}
+
+//Non serve passare il numero delle permutazioni
+void perm(int pos,int *val,int *sol,int *mark,int *fin,intn) {
+	int i; 
+	if (pos >= n) { //Condizione di terminazione
+		check(sol, fin, n); //Controllo ottimalità della soluzione
+		return; 
+	} 
+	for (i=0; i<n; i++) 
+		if (mark[i] == 0) { 
+			mark[i] = 1; 
+			sol[pos] = val[i]; 
+			perm(pos+1, val, sol, mark, fin, n); //generazione delle permutazioni
+			mark[i] = 0; 
+		} 
+	return; 
+}
+
+void check(int *sol, int *fin, int n) { 
+	int i, saldo=0, max_curr=0, min_curr=INT_MAX, diff_curr;
+	for (i=0; i<n; i++) { 
+		saldo += sol[i]; //Calcolo del saldo
+		//Aggiorno massimo e minimo
+		if (saldo > max_curr) max_curr = saldo; 
+		if (saldo < min_curr) min_curr = saldo; 
+	} 
+	
+	diff_curr = max_curr - min_curr; //Calcolo differenza
+	if (diff_curr < min_diff) { //Controllo di ottimalità
+		min_diff = diff_curr; 
+		for (i=0; i<n; i++) fin[i] = sol[i]; //Aggiorno soluzione
+	} 
+	return; 
+}
+```
+---
+#### Pruning dello spazio delle soluzioni
+Vogliamo capire in anticipo se la nostra soluzione può ancora essere valida, in caso contrario tagliare il ramo poiché non può più essere valida.
+**Criterio di accettazione** della soluzione espresso mediante vincoli. 
+**Vincoli** valutati: 
+- direttamente nei casi terminali, senza specifica struttura dati.
+- ad ogni chiamata ricorsiva, mediante struttura dati aggiornata dinamicamente.
+**Crescita molto rapida dello spazio** delle soluzioni e dunque **inapplicabilità dell’approccio enumerativo.**
+
+>Esempio: Puzzle di Einstein
+	modello: principio di moltiplicazione 
+	numero di decisioni da prendere n=5 
+	scelte disponibili per ogni decisione: permutazioni semplici di 5 alternative (5! scelte)
+	dimensione dello spazio di ricerca: (5!)5 = 24.883.200.000 
+	impossibile valutare i vincoli solo nel caso terminale!
+>Osservazioni: 
+>	delle 5! scelte sulla nazionalità, solo (5-1)! hanno il norvegese nella prima casa 
+>	perché considerare anche quelle che certamente porteranno a soluzioni inaccettabili (ad esempio il norvegese non nella prima casa)? 
+>	scartarle non inficia la completezza della ricerca!
+
+**Applicando il pruning:**
+- riduzione dello spazio di ricerca 
+- nessuna perdita di completezza 
+- scarto a priori dei rami dell’albero che non possono portare a soluzioni valide/ottime.
+I vincoli permettono di: 
+- **escludere a priori strade** che non portano a soluzioni accettabili 
+- **anticipare** il test di accettazione fatto nella condizione di terminazione in modo da subordinare ad esso la discesa ricorsiva.
+
+Esempio slide 320 (Somma di sottoinsiemi)
+##### Pruning
+Anticipazione della valutazione dei vincoli in uno stato intermedio, non c’è una metodologia generale. Casi tipici: 
+- **filtro statico sulle scelte**: condizioni di accettazione che non dipendono dalle scelte precedenti, ma solo dal problema (ad esempio condizioni ai bordi in una mappa) 
+- **filtro dinamico sulle scelte:** condizioni di accettazione che dipendono dalle scelte precedenti e dal problema (ad esempio la posizione di altri pezzi nel gioco) 
+- **validazione di una soluzione parziale:** valutazione della speranza di raggiungere una soluzione o condizione sufficiente per decidere che la soluzione non può essere raggiunta.
