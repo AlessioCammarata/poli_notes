@@ -1,112 +1,133 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "inventario.h"
+#include "personaggi.h"
 
 #define nfin1 "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L06/E03/pg.txt"
 #define nfin2 "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L06/E03/inventario.txt"
-#define NMAX 51
-#define MAX_ID 7
-#define DEFAULT_VALUE 8
+#define MAXL 35
 
-typedef struct{
-    char id[MAX_ID], name[NMAX], class[NMAX];
-    int hp, mp, atk, def, mag, spr;
-} player;
+typedef enum {
+    r_remove_player, r_add_player, r_add_equip, r_remove_equip, r_calc_stats, r_fine
+} comando_e;
 
-typedef struct{
-    char name[NMAX], class[NMAX];
-    int hp, mp, atk, def, mag, spr;
-} oggetto;
-
-typedef struct{
-    oggetto *items;
-    int n;
-} inventario;
-
-int leggiPlayers(FILE *fin, player **pp, int *maxn);
-int leggiInventario(FILE *fin, inventario inv);
+comando_e leggiComando (void);
 
 int main(void){
-    int n, maxn = DEFAULT_VALUE;
+    int end = 0;
+    char ch;
     FILE *fin;
-    inventario inv;
-    player *players = malloc(DEFAULT_VALUE*sizeof(player));
-    if(players == NULL){
-        perror("malloc");
-        return 1;
-    }
+    inventory inv;
+    tabPG players;
+    comando_e act;
     
     if((fin = fopen(nfin1,"r")) == NULL){
         printf("Errore in apertura del file %s\n",nfin1);
-        free(players);
         return 1;
     }
 
-    n = leggiPlayers(fin, &players, &maxn);
-    if(n == -1){
+    if(leggiPlayers(fin, &players) == -1){
         printf("Errore in lettura del file %s\n",nfin1);
         fclose(fin);
-        free(players);
         return 1;
     }
     fclose(fin);
 
-    // for(int i = 0; i<n; i++) printf("%s\n", players[i].id);
     if((fin = fopen(nfin2,"r")) == NULL){
         printf("Errore in apertura del file %s\n",nfin2);
-        free(players);
+        free_players(&players);
         return 1;
     }
 
     fscanf(fin,"%d",&inv.n); //Presumo sia sempre presente
-    inv.items = malloc(inv.n*sizeof(oggetto));
+    inv.items = malloc(inv.n*sizeof(item));
     if(inv.items == NULL){
         perror("malloc");
-        free(players);
+        free_players(&players);
         fclose(fin);
         return 1;
     }
 
-    if(!leggiInventario(fin,inv)){
+    if(!leggiinventory(fin,&inv)){
         printf("Errore in lettura del file %s\n",nfin2);
-        free(players);
+        free_players(&players);
         free(inv.items);
         fclose(fin);
         return 1;
     }
     fclose(fin);
     
-    // for(int i = 0; i<inv.n; i++) printf("%s\n", inv.items[i].name);
+    // players.head->next->p.bp.items[0] = &inv.items[2];
+    // for (link p = players.head; p != NULL; p = p->next)
+    //     print_player(stdout,&p->p);
+
+    // for(int i = 0; i<inv.n; i++) print_item(stdout,&inv.items[i]);
+
+    while (!end) {
+
+        printf("Inserisci la tua scelta:\n");
+        act = leggiComando();
+        // Consuma e scarta tutti i caratteri rimanenti nel buffer di input fino al carattere di nuova linea ('\n') o alla fine del file (EOF).
+        while ((ch = getchar()) != '\n' && ch != EOF);
+
+        switch (act) {
+            case r_remove_player:
+
+                if(players.n > 0){
+                    char id[MAX_ID];
+                    printf("Inserisci l'id del personaggio da rimuovere\n");
+                    scanf("%s",id);
+
+                    if (!remove_player(&players,id)) printf("Elemento non trovato\n");
+                    else printf("Elemento rimosso con successo\n");
+                }else printf("Non ci sono abbastanza elementi per rimuovere\n");
     
-    free(players);
+                break;
+            case r_add_player:
+ 
+
+                break;  
+            case r_add_equip:
+                
+            
+                // if (!bp) return 0; // bp invalido
+                // if (!bp->items) return 0; // items non inizializzato
+
+                break;
+            case r_remove_equip:
+                
+                break;
+            case r_calc_stats:
+                
+                break;
+            case r_fine:
+                end = 1;
+                break;
+            default:
+                printf("Errore, comando non valido.\n");
+        }
+    }
+
+    
+    free_players(&players);
     free(inv.items);
     return 0;
 }
 
-int leggiPlayers(FILE *fin, player **pp, int *maxn){
-    int i = 0;
-    player *p = *pp;
-    while(fscanf(fin,"%6s %50s %50s %d %d %d %d %d %d",p[i].id,p[i].name,p[i].class,&p[i].hp,&p[i].mp,&p[i].atk,&p[i].def,&p[i].mag,&p[i].spr) == 9){
-        i++;
-        if(i >= *maxn){ 
-            *maxn *= 2;
-            p = realloc(p, (*maxn)*sizeof(player));
-            if(p == NULL){
-                perror("realloc");
-                return -1;
-            }
-            *pp = p;
-        }
-    }
+comando_e leggiComando (void) {
+    comando_e c;
+    char cmd[MAXL];
+    char tabella[r_fine + 1][MAXL] = {
+        "rimuovi_personaggio","aggiungi_personaggio","aggiungi_equipaggiamento","rimuovi_equipaggiamento","calcola_statisiche","fine"
+    };
 
-    return i;
-}
+    printf("comando (inserimento_tastiera");
+    printf("/rimuovi_personaggio/aggiungi_personaggio/aggiungi_equipaggiamento/rimuovi_equipaggiamento/calcola_statisiche/fine): ");
+    scanf("%s",cmd); 
+    c=r_remove_player;
 
-int leggiInventario(FILE *fin, inventario inv){
-    int i;
-    for(i = 0; i<inv.n; i++){
-        if(fscanf(fin,"%50s %50s %d %d %d %d %d %d",inv.items[i].name,inv.items[i].class,&inv.items[i].hp,&inv.items[i].mp,&inv.items[i].atk,&inv.items[i].def,&inv.items[i].mag,&inv.items[i].spr) != 8) 
-            break;
-    }
+    while(c<r_fine+1 && strcmp(cmd,tabella[c])!=0)
+        c++;
 
-    return i==inv.n;
+    return (c);
 }
