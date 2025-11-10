@@ -32,6 +32,7 @@ typedef struct{
 } tabPG;
 
 int helper_bp(player *p);
+link create_node();
 int leggiPlayers(FILE *fin, tabPG *players);
 void add_player(tabPG *players, node_p *node);
 int remove_player(tabPG *players, char *id);

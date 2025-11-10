@@ -11,6 +11,20 @@ int helper_bp(player *p){ //Inizializza lo zaino
     return 1;
 }
 
+link create_node(){
+    link pnode = malloc(sizeof(node_p));
+    if(!pnode){
+        perror("malloc");
+        return NULL;
+    }
+    if(!helper_bp(&pnode->p)){
+        free(pnode);
+        return NULL;
+    }
+    pnode->next = NULL;
+    return pnode;
+}
+
 int leggiPlayers(FILE *fin, tabPG *players){
     int i = 0;
     link pnode = malloc(sizeof(node_p));
@@ -99,7 +113,7 @@ int remove_player(tabPG *players, char *id){
 
 node_p *find_player(tabPG *players, char *id){
     for(link p = players->head; p!=NULL; p = p->next)
-        if(strcmp(p->p.id+2,id+2) == 0)
+        if(strcmp(p->p.id,id) == 0)
             return p;
     return NULL;
 }
@@ -131,7 +145,7 @@ int add_equip(backpack *bp, item *instance){
 }
 
 int remove_equip(backpack *bp, item *instance){
-    if(bp->act_item == instance) bp->act_item == NULL; // Tolgo l'elemento se presente anche dalla mano
+    if(bp->act_item == instance) bp->act_item = NULL; // Tolgo l'elemento se presente anche dalla mano
 
     for (int i = 0; i < DEFAULT_VALUE; i++)
         if (bp->items[i] == instance){
