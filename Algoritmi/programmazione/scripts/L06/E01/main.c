@@ -95,7 +95,7 @@ int cmp_intervals(const void *a, const void *b) { //qsort necessità const void 
 void attSel(int N, att *V){
 
     //Programmazione dinamica
-    int val, b_len= 0, start = 0, *dp = malloc(N*sizeof(int)), *b_seq = malloc(N*sizeof(int));
+    int val, start = 0, *dp = malloc(N*sizeof(int)), *b_seq = malloc(N*sizeof(int));
     qsort(V, N, sizeof(*V), cmp_intervals);
     for (int j = 0; j < N; j++) b_seq[j] = -1;  //Metto un valore sentinella
 
@@ -116,7 +116,7 @@ void attSel(int N, att *V){
     for(int i = 1; i<N; i++) if(dp[i] > dp[start]) start = i;  //Trovo la chiave da cui iniziare
     
     printf("La sequenza massima ha durata %d:\n",dp[start]);
-    for(int i = start; i!=-1; i = b_seq[i], b_len++){
+    for(int i = start; i!=-1; i = b_seq[i]){
         printf("(%d-%d) ",V[i].start_t,V[i].end_t);
     }
 
