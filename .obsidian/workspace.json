@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Algoritmi/programmazione/3 - Modularità.md",
+                "file": "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "3 - Modularità"
+              "title": "3 - Problemi di ricerca e Ottimizzazione"
             }
           },
           {
@@ -195,25 +195,25 @@
   },
   "active": "58fe39b181a18433",
   "lastOpenFiles": [
-    "Algoritmi/programmazione/scripts/L06/E03/main.exe",
+    "Algoritmi/programmazione/scripts/L07/E02/testset_e_risultati.txt",
+    "Algoritmi/programmazione/scripts/L07/E02/elementi.txt",
+    "Algoritmi/programmazione/scripts/L07/E01/pgList.h",
+    "Algoritmi/programmazione/scripts/L07/E01/pg.txt",
+    "Algoritmi/programmazione/scripts/L07/E01/pg.h",
+    "Algoritmi/programmazione/scripts/L07/E01/inventario.txt",
+    "Algoritmi/programmazione/scripts/L07/E01/invArray.h",
+    "Algoritmi/programmazione/scripts/L07/E01/inv.h",
+    "Algoritmi/programmazione/scripts/L07/E01/gdr.c",
+    "Algoritmi/programmazione/scripts/L07/E01/equipArray.h",
+    "Algoritmi/programmazione/scripts/L07/E02",
+    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
     "Algoritmi/programmazione/3 - Modularità.md",
     "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
     "Algoritmi/5 - Programmazione dinamica.md",
-    "Algoritmi/my_lib/src/personaggi.o",
-    "Algoritmi/my_lib/src/personaggi.c",
-    "Algoritmi/my_lib/src/inventario.o",
-    "Algoritmi/my_lib/src/inventario.c",
-    "Algoritmi/my_lib/include/personaggi.h",
-    "Algoritmi/my_lib/include/inventario.h",
     "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
-    "Algoritmi/programmazione/scripts/L05/E01/main.exe",
     "README.md",
-    "Algoritmi/programmazione/scripts/L05/E02/main.c",
-    "Algoritmi/programmazione/scripts/L05/E02/main.exe",
     "Algoritmi/programmazione/2 - Le liste.md",
-    "Algoritmi/programmazione/scripts/L04/E03/main.exe",
     "Untitled.canvas",
-    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
     "Algoritmi/img/torri di hanoi.png",
     "Algoritmi/img/stack frame representation.png",
     "Algoritmi/img/linked list.png",
