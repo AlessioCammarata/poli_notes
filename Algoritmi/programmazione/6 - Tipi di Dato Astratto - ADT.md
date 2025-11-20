@@ -737,7 +737,6 @@ ADT di I classe
 Slide 69
 ###### Implementazione con lista
 Slide 73
-
 ##### L’ADT coda (queue) 
 Definizione: ADT che supporta operazioni di: 
 - **enqueue/put**: inserisci un elemento (QUEUEput) 
@@ -763,5 +762,249 @@ Quasi ADT
 ADT di I classe 
 - una struct puntata (da handle), contenente, come campi, la variabili globali del quasi ADT.
 
+###### Implementazione con lista
+>L'importante è tenere il puntatore sia dalla testa che dalla coda cosi inserisco da una parte e rimuovo dall'altra.
+##### L’ADT coda a priorità
+ADT che supporta operazioni di: 
+- **insert**: inserisci un elemento (PQinsert) 
+- **extract**: preleva (e cancella) l’elemento a priorità massima (o minima) (PQextractmax o PQextractmin). 
+La strategia di gestione dei dati è detta priority-first. 
+Altre operazioni: 
+- inizializzare la coda a priorità 
+- verifica se vuota 
+- visualizzazione senza estrazione di elemento a massima/minima priorità 
+- cambio della priorità di un elemento
+>Quando acquisisco un item bisogna chiedere anche qual è la priorità dell'elemento inserito.
+###### Complessità
+implementazione con vettore/lista NON ordinato: 
+- inserzione in testa alla lista o in coda al vettore -> O(1) 
+- estrazione/visualizzazione del massimo/minimo con scansione -> O(N) 
+- cambio di priorità: richiede ricerca dell’elemento con scansione -> O(N) 
+implementazione con vettore/lista ordinato: 
+- inserzione ordinata nella lista o nel vettore mediante scansione -> O(N) 
+- estrazione/visualizzazione del massimo/minimo se memorizzato in testa alla lista o in coda al vettore con accesso diretto -> O(1) 
+- cambio di priorità: 
+	- lista: richiede ricerca dell’elemento mediante scansione (O(N)), eliminazione (O(1)), reinserimento (O(N)), globalmente complessità O(N) 
+	- vettore: richiede ricerca dell’elemento mediante ricerca dicotomica (O(logN)), eliminazione (O(N)), reinserimento (O(N)), globalmente complessità O(N)
 
+implementazione con **heap**: (Ricerca tramite un albero) 
+- inserzione/estrazione del massimo/minimo con complessità O(logN) 
+- visualizzazione del massimo/minimo con complessità O(1) 
+- cambio di priorità: richiede ricerca dell’elemento (con tabella di hash complessità media O(1)), globalmente complessità O(logN).
+>Implementazione con lista ordinate:
+```c
+// PQ.h
+typedef struct pqueue *PQ; 
+PQ PQinit(int maxN); 
+int PQempty(PQ pq); 
+void PQinsert(PQ pq, Item data); 
+Item PQextractMax(PQ pq); 
+Item PQshowMax(PQ pq); 
+void PQdisplay(PQ pq); 
+void PQchange(PQ pq, Item data);
+
+//PQ.c
+typedef struct PQnode *link; 
+struct PQnode{ 
+	Item val; 
+	link next; 
+}; 
+struct pqueue { 
+	link head; 
+}; 
+link NEW(Item val, link next) { 
+	link x = malloc(sizeof *x); 
+	x->val = val; 
+	x->next = next; 
+	return x; 
+} 
+PQ PQinit(int maxN) { 
+	PQ pq = malloc(sizeof *pq); 
+	pq->head = NULL; 
+	return pq; 
+} 
+int PQempty(PQ pq) { 
+	return pq->head == NULL; 
+} 
+Item PQshowMax(PQ pq) { 
+	return pq->head->val; 
+} 
+void PQdisplay(PQ pq) { 
+	link x; 
+	for (x=pq->head; x!=NULL; x=x->next) ITEMdisplay(x->val); 
+	return; 
+} 
+//Ricerca lineare implicita
+void PQinsert (PQ pq, Item val) { 
+	link x, p; 
+	Key k = KEYget(val); 
+	if (pq->head==NULL || KEYless(KEYget(pq->head->val),k)) { 
+		pq->head = NEW(val, pq->head); 
+		return; 
+	} 
+	//Ricerca lineare per mettere nel posto giusto
+	for(x=pq->head->next, p=pq->head; x!=NULL&&KEYless(k,KEYget(x->val)); p=x, x=x->next); 
+	p->next = NEW(val, x); 
+	return; 
+}
+// O(1)
+Item PQextractMax(PQ pq) { 
+	Item tmp; 
+	link t; 
+	if (PQempty(pq)) { 
+		printf("PQ empty\n"); 
+		return ITEMsetvoid(); 
+	} 
+	tmp = pq->head->val; 
+	t = pq->head->next; 
+	free(pq->head); 
+	pq->head = t; 
+	return tmp; 
+} 
+
+//Ricerca lineare implicita
+void PQchange (PQ pq, Item val) { 
+	link x, p; 
+	if (PQempty(pq)) { 
+		printf("PQ empty\n"); 
+		return; 
+	} 
+	//Ricerca lineare del nodo a cui cambiare priorità, e lo tolgo dalla lista
+	for(x=pq->head, p=NULL; x!=NULL; p=x, x=x->next) { 
+		if (ITEMeq(x->val, val)){ 
+			if (x==pq->head) 
+				pq->head = x->next; 
+			else 
+				p->next = x->next; 
+			free(x); 
+			break; 
+		} 
+	} 
+	PQinsert(pq, val); //Reinserisco il nodo con la nuova priorità
+	return; 
+}
+```
 ---
+#### Tabelle di Simboli
+ADT che supporta operazioni di: 
+- **insert**: inserisci un dato (item) (STinsert) 
+- **search**: ricerca dato con certa chiave (STsearch) 
+- **delete**: cancella il dato con una certa chiave (STdelete). 
+Talora la tabella di simboli è detta ==dizionario==. Altre operazioni: 
+- inizializzare la tabella 
+- distruggere la tabella 
+- contare il numero di dati 
+- visualizzare della tabella 
+- se sulla chiave è definita una relazione d’ordine: 
+	- ordinare la tabella 
+	- selezionare la chiave di rango r (r-esima più piccola chiave)
+```c
+typedef struct symboltable *ST; 
+ST STinit(int maxN); 
+void STfree(ST st); int STcount(ST st); 
+void STinsert(ST st, Item val); 
+Item STsearch(ST st, Key k); 
+void STdelete(ST st, Key k); 
+Item STselect(ST st, int r); 
+void STdisplay(ST st);
+```
+##### ADT di I classe Tabella ad accesso diretto 
+- insieme universo U con M = card(U) = maxN elementi 
+- corrispondenza biunivoca tra ciascuna delle chiavi k  U e gli interi tra 0 e M-1 (funzione int GETindex(Key k)). L’intero funge da indice in un vettore.
+- vettore st->a[] di dimensione maxN: 
+- se la chiave k è nella tabella, essa è in posizione st->a[GETindex(k)], altrimenti st->a[GETindex(k)] contiene l’elemento vuoto 
+- si memorizza un insieme di N chiavi (N ≤ M). La cardinalità è N ritornata dalla funzione st->size.
+>Esempi:
+```c
+//se le chiavi sono le lettere maiuscole dell’alfabeto inglese A..Z (M = 26)
+int GETindex(Key k) { 
+	int i; 
+	i = k - 'A'; 
+	return i; 
+}
+
+//se le chiavi sono interi tra 0 e M-1 111 
+int GETindex(Key k) { 
+	int i; 
+	i = (int) k; 
+	return i; 
+}
+```
+
+```c
+struct symbtab {Item *a; int N; int M;}; 
+ST STinit(int maxN) { 
+	ST st; int i; 
+	st = malloc(sizeof(*st)); 
+	st->a = malloc(maxN * sizeof(Item) ); 
+	for (i = 0; i < maxN; i++) 
+		st->a[i] = ITEMsetvoid(); 
+	st->M = maxN; 
+	st->N= 0; 
+	return st; 
+} 
+int STcount(ST st) { 
+	return st->N; 
+}
+
+void STfree(ST st) { 
+	free(st->a); 
+	free(st); 
+} 
+void STinsert(ST st, Item val) { 
+	int index = GETindex(KEYget(val)); 
+	st->a[index] = val; 
+	st->N++; 
+} 
+Item STsearch(ST st, Key k) { 
+	int index = GETindex(k); 
+	return st->a[index]; 
+}
+
+void STdelete(ST st, Key k) { 
+	st->a[GETindex(k)] = ITEMsetvoid(); 
+	st->N-- ; 
+} 
+
+Item STselect(ST st, int r) { 
+	int i; 
+	for (i = 0; i < st->M; i++) 
+		if ((ITEMcheckvoid (st->a[i])==0) && (r-- == 0)) 
+			return st->a[i]; 
+	return NULL ; 
+} 
+void STdisplay(ST st){ 
+	int i; 
+	for (i = 0; i < st ->M; i++) 
+		if (ITEMcheckvoid (st ->a[i])==0) 
+			ITEMstore (st->a[i]); 
+}
+```
+>Con la tabella ad accesso diretto è comodo perche get e insert costano 1, la select è lineare.
+>Se è possibile questa struttura dati è consigliabile. (Serve la biunivocità dei dati)
+
+Se la get index da un valore alto, piu si spreca la memoria.
+
+##### Considerazioni pratiche
+Se l'algoritmo è molto dinamico, cancellazioni e inserimento durante l'uso della struttura dati
+- Tabella ad accesso diretto
+>Serve velocità, fare inserimenti mentre si utilizza l'algoritmo.
+
+Se invece metto dati a caso mi conviene ordinare il vettore all'inizio, cosi la ricerca (select) che faccio successivamente costa di meno.
+
+###### Gestione dei duplicati nelle tabelle di simboli 
+Casistica: 
+- le chiavi sono di per sé distinte (IBAN, matricola, codice fiscale). In inserzione: 
+	- “**si ignora il nuovo elemento**” : si prosegue come se l’istanza (di inserimento) non sia stata avanzata = si ignora l’inserimento 
+	- “**si dimentica il vecchio elemento**” : si cancella (o sovrascrive) l’elemento già presente, poi si procede al nuovo inserimento 
+
+- le chiavi possono essere rese distinte (per es. si aggiunge il prefisso della nazione al numero telefonico. Si ricade nel caso precedente
+
+- nel modello ***chiavi duplicate*** hanno senso (per es. numero di crediti superati condiviso da più studenti). Ci si riconduce al modello precedente creando una chiave **univoca** e un riferimento alla lista degli elementi che la condividono. L’inserzione è in 2 passi: 
+	- data la chiave, si ***identifica la lista ad essa associata ***
+	- si **inserisce** nella lista 
+
+- nel modello hanno senso elementi che condividono la stessa chiave (per es. nome e cognome cui sono associati diversi indirizzi di e-mail). In ricerca è il client che decide cosa vene ritornato: -
+	- il primo elemento con quella chiave 
+	- un qualsiasi elemento con quella chiave 
+	- tutti gli elementi con quella chiave.
