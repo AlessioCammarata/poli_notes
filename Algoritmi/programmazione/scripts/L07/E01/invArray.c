@@ -7,7 +7,7 @@ struct invArray_s{
 
 /* creatore e disruttore */
 invArray_t invArray_init(){
-    invArray_t inv = malloc(sizeof(invArray_t));
+    invArray_t inv = malloc(sizeof *inv);
     if (!inv) return NULL;
     inv->items = NULL;
     inv->n = 0;
@@ -38,6 +38,7 @@ void invArray_print(FILE *fp, invArray_t invArray){
     if (!invArray || !fp) return;
     for(int i = 0; i<invArray->n; i++){
         inv_print(fp,&invArray->items[i]);
+        // fprintf(fp,"\n");
     }
 }
 /* stampa un unico oggetto selezionato da indice (nel vettore) */

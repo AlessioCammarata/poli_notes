@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
+                "file": "Algoritmi/programmazione/3 - Modularità.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "3 - Problemi di ricerca e Ottimizzazione"
+              "title": "3 - Modularità"
             }
           },
           {
@@ -195,6 +195,7 @@
   },
   "active": "58fe39b181a18433",
   "lastOpenFiles": [
+    "Algoritmi/programmazione/scripts/L07/E01/pg.c",
     "Algoritmi/programmazione/scripts/L07/E02/testset_e_risultati.txt",
     "Algoritmi/programmazione/scripts/L07/E02/elementi.txt",
     "Algoritmi/programmazione/scripts/L07/E01/pgList.h",
@@ -202,15 +203,14 @@
     "Algoritmi/programmazione/scripts/L07/E01/pg.h",
     "Algoritmi/programmazione/scripts/L07/E01/inventario.txt",
     "Algoritmi/programmazione/scripts/L07/E01/invArray.h",
+    "Algoritmi/programmazione/scripts/L07/E01/invArray.c",
     "Algoritmi/programmazione/scripts/L07/E01/inv.h",
-    "Algoritmi/programmazione/scripts/L07/E01/gdr.c",
-    "Algoritmi/programmazione/scripts/L07/E01/equipArray.h",
-    "Algoritmi/programmazione/scripts/L07/E02",
-    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
-    "Algoritmi/programmazione/3 - Modularità.md",
-    "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
+    "Algoritmi/programmazione/scripts/L07/E01/inv.c",
     "Algoritmi/5 - Programmazione dinamica.md",
     "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
+    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
+    "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
+    "Algoritmi/programmazione/3 - Modularità.md",
     "README.md",
     "Algoritmi/programmazione/2 - Le liste.md",
     "Untitled.canvas",
