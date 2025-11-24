@@ -27,30 +27,44 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Algoritmi/programmazione/3 - Modularità.md",
+                "file": "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "3 - Modularità"
+              "title": "1 - Ricorsione e paradigma divide et impera"
             }
           },
           {
-            "id": "58fe39b181a18433",
+            "id": "d1d7433433e7c16e",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
+                "file": "Algoritmi/6 - Il pradigma greedy.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "6 - Tipi di Dato Astratto - ADT"
+              "title": "6 - Il pradigma greedy"
+            }
+          },
+          {
+            "id": "4b9fae59cf9aa6a5",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Algoritmi/7 - Code a priorità e heap.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "7 - Code a priorità e heap"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -193,8 +207,15 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "58fe39b181a18433",
+  "active": "4b9fae59cf9aa6a5",
   "lastOpenFiles": [
+    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
+    "Algoritmi/7 - Code a priorità e heap.md",
+    "Algoritmi/6 - Il pradigma greedy.md",
+    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
+    "Algoritmi/5 - Programmazione dinamica.md",
+    "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
+    "Algoritmi/programmazione/scripts/L07/E01/pgList.c",
     "Algoritmi/programmazione/scripts/L07/E01/pg.c",
     "Algoritmi/programmazione/scripts/L07/E02/testset_e_risultati.txt",
     "Algoritmi/programmazione/scripts/L07/E02/elementi.txt",
@@ -203,13 +224,7 @@
     "Algoritmi/programmazione/scripts/L07/E01/pg.h",
     "Algoritmi/programmazione/scripts/L07/E01/inventario.txt",
     "Algoritmi/programmazione/scripts/L07/E01/invArray.h",
-    "Algoritmi/programmazione/scripts/L07/E01/invArray.c",
     "Algoritmi/programmazione/scripts/L07/E01/inv.h",
-    "Algoritmi/programmazione/scripts/L07/E01/inv.c",
-    "Algoritmi/5 - Programmazione dinamica.md",
-    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
-    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
-    "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
     "Algoritmi/programmazione/3 - Modularità.md",
     "README.md",
     "Algoritmi/programmazione/2 - Le liste.md",
@@ -235,7 +250,6 @@
     "Tecniche di Programmazione/Vettori nel problem solving.md",
     "Tecniche di Programmazione/Struct.md",
     "Tecniche di Programmazione/Puntatore.md",
-    "Tecniche di Programmazione/Problemi di verifica e selezione.md",
-    "Tecniche di Programmazione/GOMOKU.md"
+    "Tecniche di Programmazione/Problemi di verifica e selezione.md"
   ]
 }
