@@ -1,7 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L07/E02/elementi.txt"
+// #define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L07/E02/elementi.txt"
+#define nfin "./elementi.txt"
 #define MAX 100
 #define N_DIAG 3
 #define N_E_DIAG 5
@@ -15,11 +16,11 @@ typedef struct{
 
 void free_all(Elements **e, int n);
 int leggiFile(FILE *fin, Elements **e, int n);
-void find_best_program(Elements **e, int pos, int sel[], int sol[N_DIAG*N_E_DIAG], int mark_t[], int mark_di[], int mark_du[], int score, int dif, int k);
+void find_best_program(Elements **e, int pos, int sol[], int mark_t[], float score, int dif, int tot_dif, float *b_score, int DD, int DP, int k, int n);
 
 int main(void){
     FILE *fin;
-    int n;
+    int n, DD = 10, DP = 20;
     Elements **elements;
 
     if((fin = fopen(nfin,"r")) == NULL){
@@ -49,7 +50,7 @@ int main(void){
     //     printf("%s %d %d %d %d %d %.2f %d\n", elements[i]->name, elements[i]->type, elements[i]->start_dir, 
     //                                     elements[i]->end_dir, elements[i]->prec, elements[i]->final, 
     //                                     elements[i]->value, elements[i]->difficulty);
-    int k = n;
+    // int k = n;
     int *mark_t = calloc(n, sizeof *mark_t);
     int *sol = calloc(N_DIAG*N_E_DIAG, sizeof *sol);
     if (!mark_t || !sol) {
@@ -59,7 +60,11 @@ int main(void){
         fclose(fin);
         return 1;
     }
-    find_best_diag(elements, 0, sol, mark_t, k);
+    float best = -1.0f;
+    find_best_program(elements, 0, sol, mark_t, 0, 0, 0, &best, DD, DP, 0, n);
+    printf("Best score: %.2f\n", best);
+    printf("END\n");
+
     free(mark_t);
     free(sol);
 
@@ -134,7 +139,7 @@ int is_valid(Elements **e, int sol[]){
             if(e[sol[i*N_E_DIAG+j]]->type == 1) back = 1;
             if(e[sol[i*N_E_DIAG+j]]->type == 2) forward = 1;
 
-            if(i*N_E_DIAG+j != i*N_E_DIAG && e[sol[i*N_E_DIAG+j-1]]->type != 0 && e[sol[i*N_E_DIAG+j]] != 0) sequence = 1;
+            if(j>0 && e[sol[i*N_E_DIAG+j-1]]->type != 0 && e[sol[i*N_E_DIAG+j]]->type != 0) sequence = 1;
             if(acr_diag && back && forward && sequence) break;
         }
     }
@@ -142,29 +147,54 @@ int is_valid(Elements **e, int sol[]){
     return acr_diag && back && forward && sequence;
 }
 
-void find_best_program(Elements **e, int pos, int sol[], int mark_t[], int mark_di[], int mark_du[], int score, int dif, int k){
-    if(pos == N_DIAG*N_E_DIAG){
-        if(is_valid(e,sol)){
-        // for(int i = 0; i < k; ++i){
-        //     if(i) printf(" | ");
-        //     printf("%d:%s", mark_t[i], e[i]->name);
-        // }
-        // printf("\n");
-        }
-        return;
+void find_best_program(Elements **e, int pos, int sol[], int mark_t[], float score, int dif, int tot_dif, float *b_score, int DD, int DP, int k, int n){
+    
+    if(pos!= 0 && pos%N_E_DIAG ==  0){
+        if(dif > DD) return;
+        tot_dif += dif;
+        dif = 0;
+        if (tot_dif > DP) return;
     }
 
+    if(pos >= N_DIAG*N_E_DIAG){
+        // if(k >= N_DIAG*N_E_DIAG){
+            if(tot_dif > DP) return;
+            printf("%d\n",tot_dif);
+
+            if(is_valid(e,sol)){
+                if(score > *b_score) *b_score = score;
+                printf("%f",*b_score);
+                // for(int i = 0; i < k; ++i){
+                //     if(mark_t[i]){
+                //         // if(i) printf(" | ");
+                //         // printf("%.2f:%s", e[sol[i]]->value, e[i]->name);
+                //     }
+                // }
+                printf("\n");
+            }
+        // }
+        return;
+    }
+    // printf("%f",e[k]->value);
+    // printf("%d %d\n",k,pos);
     
-    score += e[pos]->value;
-    dif += e[pos]->difficulty;
-    mark_t[pos] = 1;
-    sol[pos] = pos;
-    find_best_diag(e, pos+1, sol, mark_t, score, dif, k);
+    //Ricorsione prendo uno di ognuno
+    // score += e[pos]->value;
+    // dif += e[pos]->difficulty;
+    // mark_t[pos] = 1;
+    // sol[k] = pos;
+    // find_best_program(e, pos+1, sol, mark_t, score, dif, tot_dif, b_score, DD, DP, k+1, n);
     
-    score -= e[pos]->value;
-    dif -= e[pos]->difficulty;
-    mark_t[pos] = 0;
-    find_best_diag(e, pos+1, sol, mark_t, score, dif, k);
+    // score -= e[pos]->value;
+    // dif -= e[pos]->difficulty;
+    // mark_t[pos] = 0;
+    // find_best_program(e, pos+1, sol, mark_t, score, dif, tot_dif, b_score, DD, DP, k, n);
+
+    //Ricorsione corretta
+    for (int i=k; i<n; ++i) { 
+		sol[pos] = i;
+		find_best_program(e, pos+1, sol, mark_t, score + e[i]->value, dif + e[i]->difficulty, tot_dif, b_score, DD, DP, i, n);
+	}
     
     return;
 }

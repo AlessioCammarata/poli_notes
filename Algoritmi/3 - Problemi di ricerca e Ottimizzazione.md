@@ -388,7 +388,7 @@ Come per le combinazioni semplici ma:
 - l’indice start viene incrementato quando termina la ricorsione 
 - cnt registra il numero di soluzioni.
 ```c
-int comb_r(int pos,int *val,int *sol,int n,int k,int start,intcnt) {
+int comb_r(int pos,int *val,int *sol,int n,int k,int start,int cnt) {
 	int i, j; 
 	if (pos >= k) { 
 		for (i=0; i<k; i++) 

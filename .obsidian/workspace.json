@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "698f258f333df52f",
+            "id": "4b9fae59cf9aa6a5",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -20,65 +20,8 @@
               "icon": "lucide-file",
               "title": "3 - Modularità"
             }
-          },
-          {
-            "id": "7692e9d307fab9e0",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "1 - Ricorsione e paradigma divide et impera"
-            }
-          },
-          {
-            "id": "d1d7433433e7c16e",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Algoritmi/6 - Il pradigma greedy.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "6 - Il pradigma greedy"
-            }
-          },
-          {
-            "id": "4b9fae59cf9aa6a5",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Algoritmi/7 - Code a priorità e heap.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "7 - Code a priorità e heap"
-            }
-          },
-          {
-            "id": "4dc97becfbbc750f",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Algoritmi/8 - Alberi binari di ricerca.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "8 - Alberi binari di ricerca"
-            }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "vertical"
@@ -135,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "ed1933459f3df990",
@@ -222,25 +164,27 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "4dc97becfbbc750f",
+  "active": "4b9fae59cf9aa6a5",
   "lastOpenFiles": [
-    "Algoritmi/7 - Code a priorità e heap.md",
-    "Algoritmi/8 - Alberi binari di ricerca.md",
-    "Algoritmi/programmazione/scripts/L07/E02/main.c",
-    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
-    "Algoritmi/6 - Il pradigma greedy.md",
-    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
-    "Algoritmi/5 - Programmazione dinamica.md",
+    "Algoritmi/programmazione/scripts/L07/E02/main2.exe",
+    "Algoritmi/programmazione/scripts/L07/E02/main2.c",
     "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
+    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
+    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
+    "Algoritmi/6 - Il pradigma greedy.md",
+    "Algoritmi/5 - Programmazione dinamica.md",
+    "Algoritmi/8 - Alberi binari di ricerca.md",
+    "Algoritmi/7 - Code a priorità e heap.md",
+    "Untitled.base",
+    "sicurezza lavoro.md",
+    "Algoritmi/programmazione/scripts/L07/E02/main1.exe",
+    "Algoritmi/programmazione/scripts/L07/E02/main.exe",
+    "Algoritmi/programmazione/scripts/L07/E02/main.c",
     "Algoritmi/programmazione/scripts/L07/E01/pgList.c",
     "Algoritmi/programmazione/scripts/L07/E01/pg.c",
     "Algoritmi/programmazione/scripts/L07/E02/testset_e_risultati.txt",
     "Algoritmi/programmazione/scripts/L07/E02/elementi.txt",
     "Algoritmi/programmazione/scripts/L07/E01/pgList.h",
-    "Algoritmi/programmazione/scripts/L07/E01/pg.txt",
-    "Algoritmi/programmazione/scripts/L07/E01/pg.h",
-    "Algoritmi/programmazione/scripts/L07/E01/inventario.txt",
-    "Algoritmi/programmazione/scripts/L07/E01/invArray.h",
     "Algoritmi/programmazione/3 - Modularità.md",
     "README.md",
     "Algoritmi/programmazione/2 - Le liste.md",
@@ -263,8 +207,6 @@
     "Tecniche di Programmazione/Dualità puntatore-vettore.md",
     "Tecniche di Programmazione/Argomenti al main.md",
     "Tecniche di Programmazione/Problemi di ordinamento.md",
-    "Tecniche di Programmazione/Vettori nel problem solving.md",
-    "Tecniche di Programmazione/Struct.md",
-    "Tecniche di Programmazione/Puntatore.md"
+    "Tecniche di Programmazione/Vettori nel problem solving.md"
   ]
 }
