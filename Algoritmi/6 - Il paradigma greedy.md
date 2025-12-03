@@ -67,7 +67,7 @@ Decodifica: da codice a simbolo
 >Esempio: Codice morse
 ##### Codici prefissi
 Codice (libero da) prefisso: nessuna parola di codice valida è un prefisso di un’altra parola di codice. 
-Codifica: giustapposizione di stringhe 
+Codifica: giusta posizione di stringhe 
 Decodifica: percorrimento di albero binario. 
 PS: il codice Morse non è libero da prefisso, ma ci sono le durate e le pause.
 >**Esempio slide 47.**
