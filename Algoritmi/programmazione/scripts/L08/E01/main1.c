@@ -1,3 +1,18 @@
+/*
+Idea: 
+    provare a dividere gli elementi in base al fatto se possono 
+    essere final o no in quanto cosi costruisci le diagonali sapendo già come finirle, e quindi ciclando su quelle che non possono finire.
+    Ciclando per ogni elemento interno al vettore dei final, che indicano appunto il numero massimo diagonali creabili, 
+    creo al contrario partendo dal fondo le diagonali e prendo le migliori 3 compatibili, dove metto la migliore in 3 posizione 
+    per prendere il bonus.
+*/
+
+/*
+Pesco da 3 vettori differenti ordinati per value/difficulty, prendo prima il finale dopo prendo lo start provo,
+Creo diversi percorsi che hanno elementi fino a massimo 4 e vedo li ordino per peso anche loro (facendoli diventare dei singoli elementi)
+Le chiamo sequenze
+*/
+
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -11,8 +26,13 @@ typedef struct{
     char name[MAX];
     int type, start_dir, end_dir, prec, final;
     float value;
-    int difficulty; 
+    int difficulty;
 } Elements;
+
+typedef struct{
+    int n; //Numero di elementi
+    Elements **e; //Puntatori di elementi
+}Sequence;
 
 void free_all(Elements **e, int n);
 int leggiFile(FILE *fin, Elements **e, int n);
@@ -26,6 +46,10 @@ int cmp_elem_by_value_desc(const void* a, const void* b) {
     //Difficulty > 0, sempre
     float a_density = ea->value/ea->difficulty;
     float b_density = eb->value/eb->difficulty;
+    // if(ea->final > eb->final)
+    //     return 1;
+    // if(ea->final < eb->final)
+    //     return -1;
     if (a_density < b_density) 
         return 1; 
     if (a_density > b_density) 
@@ -34,8 +58,48 @@ int cmp_elem_by_value_desc(const void* a, const void* b) {
 }
 
 void find_best_program_greedy(Elements **e, int *sol[], int n, int DD, int DP){
-    int act_dif, tot_dif, c = 0, idx, prev_end_d, prev_acro, final;
+    int act_dif, tot_dif, c = 0, idx, prev_end_d, prev_acro, final, start;
     float act_value, tot_value, max = 0;
+    int *e_f, *e_s, *e_n;
+    int n_f, n_s, n_n;
+    n_f = n_s = n_n = 0;
+    //Leggo i dati per dividere in 3 diversi vettori.
+    for(int i = 0; i<n; i++){
+        if(!e[i]->final) n_s++;
+        else if(e[i]->final) n_f++;
+        // printf("%d %d\n",elements[i]->prec,elements[i]->final);
+        // if(elements[i]->final) n_f++;
+    }
+    //Prec = 1 -> deve avere un elemento prima
+    //Quindi posso inserirli ovunque ma non all'inizio
+    // printf("%d elementi che hanno prec ma non final.\n",n_n); // Quindi
+
+    // Quindi posso inserirli in fondo e aggiungerci cose dietro, o niente se raggiungono gia il massimo
+    printf("%d elementi hanno final\n",n_f); 
+
+    //Devo metterli all'inizio e poi pesco dal massimo tra quelli che stanno qua e quelli in n_n
+    printf("%d elementi che non hanno final e non hanno prec\n",n_s);
+    e_f = malloc(n_f*sizeof(int));
+    if (!e_f) {
+        perror("malloc");
+        free_all(e, n);
+        return ;
+    }
+    e_s = malloc(n_s*sizeof(int));
+    if (!e_s) {
+        perror("malloc");
+        free_all(e, n);
+        free(e_f);
+        return ;
+    }
+    // e_n = malloc(n_n*sizeof(int));
+    // if (!e_n) {
+    //     perror("malloc");
+    //     free_all(e, n);
+    //     free(e_s); free(e_f);
+    //     return ;
+    // }
+
     int **tmp = malloc(N_DIAG*sizeof *tmp);
     if (!tmp) {
         perror("malloc");
@@ -47,100 +111,49 @@ void find_best_program_greedy(Elements **e, int *sol[], int n, int DD, int DP){
             perror("calloc");
             for (int j = 0; j < i; j++) free(tmp[j]);
             free(tmp);
+            free(e_s); free(e_f); free(e_n);
             return ;
         }
         for(int j = 0; j<N_E_DIAG; j++) tmp[i][j] = -1;
     }
     
     qsort(e, n, sizeof(*e), cmp_elem_by_value_desc);
-    for(int k = 0; k<n; k++){
-        // printf("%d\n",tot_dif);
-        tot_dif = 0;
-        tot_value = 0;
-        int valid = 1, has_acro = 0, has_b = 0, has_f = 0, has_acro_seq = 0;
+    n_f = n_s = n_n = 0;
+    // for(int i = 0; i<n; i++){
+    //     if(e[i]->prec && !e[i]->final) e_n[n_n++] = i;
+    //     else if(e[i]->final) e_f[n_f++] = i;
+    //     else e_s[n_s++] = i;
+    // }
 
-        for(int i = 0; i<N_DIAG; i++){
-            for(int j = 0; j<N_E_DIAG; j++) tmp[i][j] = -1;
-            act_dif = 0;
-            act_value = 0;
-            c = 0;
-            final = -1;
-            if(!e[(k)%n]->prec) continue; //Non puoi cominciare con questo
-            for(int j = k; j<n; j++){
-                if(c == N_E_DIAG) break;
-                idx = (k+j)%n;
-                // if(c == 0 && e[idx]->prec) continue; //Non puoi cominciare con questo
-                if(final != -1 && e[idx]->final){ //Se ho gia il final skippa
-                    continue;
-                }
-                // if(e[idx]->final) { //Al primo final che trovo lo tengo e ci aggiungo il resto
-                //     final = idx;
-                //     //Non finito
-                // }
-                if(j!=k && prev_end_d != e[idx]->start_dir) continue;
-                
-                int nd = e[idx]->difficulty;
-                if (act_dif + nd >= DD) continue;
-                if (tot_dif + act_dif + nd >= DP) continue;
+    // for(int i = 0; i<n; i++){
+    //     printf("%.2f ",e[i]->value/e[i]->difficulty);
+    //     // printf(" %d",i,e[i]->difficulty);
+    //     // printf("%d ",e[i]->final);
+    // }
+    // printf("\n");
+    // for(int i = 0; i<n; i++){
+    //     printf("%d ",e[i]->final);
+    // }
+    // printf("\n");
+    // for(int i = 0; i<n; i++) printf("%d: %.2f - %d\n",i, e[i]->value,e[i]->difficulty);
 
-                //Controlli finali di validità
-                if(e[idx]->type != 0) has_acro = 1;
-                if(j != k && e[idx]->type != 0 && prev_acro) has_acro_seq = 1;
-                if(e[idx]->type == 1) has_b = 1; 
-                if(e[idx]->type == 2) has_f = 1; 
+    for(int i = 0; i<N_DIAG; i++){
+        final = 0;
 
-                act_dif += nd;
-                act_value += e[idx]->value;
-                prev_end_d = e[idx]->end_dir;
-                prev_acro = e[idx] != 0 ? 1 : 0;
-
-                tmp[i][c++] = idx;
-                if(e[idx]->final) final = idx;
-            }
-
-            // printf("%d - %d - %d\n",i,c,tot_dif);
-            if (c == 0) {
-                if(final != -1)
-                    tmp[i][c++] = final;
-                else{
-                    valid = 0; 
-                    break; 
-                }
-            }  // diagonale vuota: scarta tentativo
-            if(!has_acro){
-                valid = 0;
-                break;
-            }
-            tot_dif += act_dif;
-            if (tot_dif > DP) { 
-                valid = 0; 
-                break; 
-            } // sforato DP complessivo
-
-            // bonus 1.5 sulla “prima” che poi leggerai al contrario
-            tot_value += (i == 0) ? act_value * 1.5f : act_value;
-            //Controlli su sol[i]
-        }
-
-        // printf("%d - %d",valid,valid);
-
-        if (!valid) continue;
-        // printf("%d - %d\n",tot_value,max);
-        if(tot_value > max && has_b && has_f && has_acro_seq) {
-            max = tot_value;
-            //Soluzione valida quindi copio
-            for(int j = 0; j<N_DIAG; j++){
-                for(int m = 0; m<N_E_DIAG; m++){
-                    // printf("%d ",tmp[j][m]);
-                    sol[j][m] = tmp[j][m];
-                }
-                // printf("\n");
+        for(int j = 0; j<n; j++){
+            if(e[j]->final){
+                final = 1;
+                j += n_f;
             }
         }
     }
+
+
     for (int i = 0; i < N_DIAG; i++) 
         free(tmp[i]);
     free(tmp);
+    free(e_s); free(e_f); 
+    // free(e_n);
 
     printf("%.2f\n",max);
     // for(int i = 0; i<n; i++) printf("%d: %.2f\n",i,e[i]->value);
@@ -159,6 +172,7 @@ int main(void){
     FILE *fin;
     int n, DD = 12, DP = 28;
     Elements **elements;
+    
 
     if((fin = fopen(nfin,"r")) == NULL){
         perror("Errore in apertura del file");
@@ -175,7 +189,7 @@ int main(void){
         perror("malloc");
         fclose(fin);
         return 1;
-    } 
+    }
 
     if(!leggiFile(fin, elements ,n)){
         perror("Errore in lettura del file");
@@ -216,7 +230,6 @@ int main(void){
         free(sol[i]);
     }
     free(sol);
-
 
     free_all(elements, n);
     fclose(fin);
