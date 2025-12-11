@@ -177,7 +177,7 @@ Graph GRAPHinit(int V) {
 
 void GRAPHfree(Graph G) { 
 	int i; 
-	for (i=0; iV; i++) 
+	for (i=0; i<V; i++) 
 		free(G->madj[i]); 
 	free(G->madj); 
 	STfree(G->tab); 

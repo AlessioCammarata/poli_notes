@@ -1,8 +1,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-// #define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L07/E02/elementi.txt"
-#define nfin "./elementi.txt"
+#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L07/E02/elementi.txt"
+// #define nfin "./elementi.txt"
 #define MAX 100
 #define N_DIAG 3
 #define N_E_DIAG 5
@@ -34,8 +34,11 @@ int cmp_elem_by_value_desc(const void* a, const void* b) {
 }
 
 void find_best_program_greedy(Elements **e, int *sol[], int n, int DD, int DP){
-    int act_dif, tot_dif, c = 0, idx, prev_end_d, prev_acro, final;
+    int act_dif, tot_dif, c = 0, idx, prev_end_d = -1, prev_acro = 0, final;
     float act_value, tot_value, max = 0;
+    
+    qsort(e, n, sizeof(*e), cmp_elem_by_value_desc);
+    
     int **tmp = malloc(N_DIAG*sizeof *tmp);
     if (!tmp) {
         perror("malloc");
@@ -52,7 +55,6 @@ void find_best_program_greedy(Elements **e, int *sol[], int n, int DD, int DP){
         for(int j = 0; j<N_E_DIAG; j++) tmp[i][j] = -1;
     }
     
-    qsort(e, n, sizeof(*e), cmp_elem_by_value_desc);
     for(int k = 0; k<n; k++){
         // printf("%d\n",tot_dif);
         tot_dif = 0;
@@ -65,47 +67,112 @@ void find_best_program_greedy(Elements **e, int *sol[], int n, int DD, int DP){
             act_value = 0;
             c = 0;
             final = -1;
-            if(!e[(k)%n]->prec) continue; //Non puoi cominciare con questo
+            int prev_final = 0, prev_start_d = 0, mul = 1, prev_index = -1, prev_mul = 1, last_idx = -1;
+            // if(!e[(k)%n]->prec) continue; //Non puoi cominciare con questo
             for(int j = k; j<n; j++){
                 if(c == N_E_DIAG) break;
                 idx = (k+j)%n;
                 // if(c == 0 && e[idx]->prec) continue; //Non puoi cominciare con questo
+                
                 if(final != -1 && e[idx]->final){ //Se ho gia il final skippa
                     continue;
                 }
+                
                 // if(e[idx]->final) { //Al primo final che trovo lo tengo e ci aggiungo il resto
                 //     final = idx;
                 //     //Non finito
                 // }
-                if(j!=k && prev_end_d != e[idx]->start_dir) continue;
+                
+                if(final != -1){
+                    if(prev_start_d != e[idx]->end_dir) continue;
+                }else
+                    if(j!=k && prev_end_d != e[idx]->start_dir) continue;
+
+                // printf("%.2f %d %d %d - ",e[idx]->value,e[idx]->end_dir, prev_start_d,prev_start_d != e[idx]->end_dir);
+
+                // printf("%.2f %d %d %d - ",e[idx]->value,e[idx]->type, prev_start_d,prev_start_d != e[idx]->end_dir);
+
+                int p = 1;
+                //Controllo se il valore dopo puo stare due volte e se in quel caso ha valore maggiore del primo
+                if(idx < n-1 && mul == 1 && last_idx != -1){
+                    int max_mul = N_E_DIAG - c;
+                    if (max_mul < 1) max_mul = 1;
+                    p = c; // N_E_DIAG - c
+                    // printf("MAXMUL: %d, %d",max_mul, p);
+                    while(p<=max_mul){
+                        if(!e[idx]->final                                       &&
+                            e[idx]->end_dir == e[idx]->start_dir                && 
+                            e[idx]->difficulty * p + act_dif - e[last_idx]->difficulty < DD              &&  //DEvo sistemare qua perche è sempre maggiore
+                            e[idx]->difficulty * p + tot_dif + act_dif - e[last_idx]->difficulty * prev_mul <= DP &&
+                            e[last_idx]->value *prev_mul < e[idx]->value * p
+                        ) mul = p;
+                        // 1.75 * 2-> 3, 6
+
+                        // if(e[last_idx]->value*prev_mul + e[idx+1]->value < e[idx]->value * p && mul == p) break; 
+                        // if(e[idx]->difficulty == 3){
+                        //     printf("%s, %d|%d-%d|%d|%d|%.2f-%.2f\n",e[idx]->name, !e[idx]->final, e[idx]->end_dir, e[idx]->start_dir, e[idx]->difficulty * p + act_dif - e[last_idx]->difficulty,
+                        //         e[idx]->difficulty * p + tot_dif + act_dif - e[last_idx]->difficulty * prev_mul,
+                        //         e[last_idx]->value/e[last_idx]->difficulty*prev_mul + e[idx+1]->value/e[idx+1]->difficulty,e[idx]->value/e[idx]->difficulty * p);
+                        //     printf("%d\n",e[last_idx]->value/e[last_idx]->difficulty*prev_mul + e[idx+1]->value/e[idx+1]->difficulty < e[idx]->value/e[idx]->difficulty * p);
+                        // }
+                        p++;
+                    }
+                    // if(mul != 1) continue;
+                }
+
+                // printf("(%d) - %s\n",mul,e[idx]->name);
+                //Controllo che ancora non va bene ma serve per contare cose, devo controllare che il valore attuale*p > precedente*prev_mul + next
+                if(mul != 1){
+                    for(int val = 0; val<prev_mul && c > 0; val++){
+                        act_dif -= e[last_idx]->difficulty;
+                        act_value -= e[last_idx]->value;
+                        tmp[i][c--] = idx;
+                    }
+                }
+
                 
                 int nd = e[idx]->difficulty;
-                if (act_dif + nd >= DD) continue;
-                if (tot_dif + act_dif + nd >= DP) continue;
+                if (act_dif + nd > DD) continue;
+                if (tot_dif + act_dif + nd > DP) continue;
 
                 //Controlli finali di validità
                 if(e[idx]->type != 0) has_acro = 1;
-                if(j != k && e[idx]->type != 0 && prev_acro) has_acro_seq = 1;
+                if((j != k && e[idx]->type != 0 && prev_acro) || e[idx]->type != 0 && mul > 1) has_acro_seq = 1;
                 if(e[idx]->type == 1) has_b = 1; 
                 if(e[idx]->type == 2) has_f = 1; 
 
-                act_dif += nd;
-                act_value += e[idx]->value;
-                prev_end_d = e[idx]->end_dir;
-                prev_acro = e[idx] != 0 ? 1 : 0;
+                for(int val = 0; val < mul && c < N_E_DIAG; val++){  
+                    // if(c == N_E_DIAG) break;       
+                    act_dif += nd;
+                    act_value += e[idx]->value;
+                    prev_end_d = e[idx]->end_dir;
+                    prev_start_d = e[idx]->start_dir;
+                    prev_acro = (e[idx]->type != 0) ? 1 : 0;
 
-                tmp[i][c++] = idx;
-                if(e[idx]->final) final = idx;
+                    tmp[i][c++] = idx;
+                    // printf("Adding: %d-%.2f - %d\n",e[idx]->difficulty,e[idx]->value,c);
+                }
+                last_idx = idx;
+                prev_mul = mul;
+                mul = 1;
+                if(e[idx]->final){
+                    final = idx;
+                    prev_final = 1;
+                }
+                
+                // j = k;
+                // printf("\n");
             }
+            // printf("----\n\n");
 
             // printf("%d - %d - %d\n",i,c,tot_dif);
             if (c == 0) {
-                if(final != -1)
-                    tmp[i][c++] = final;
-                else{
+                // if(final != -1)
+                //     tmp[i][c++] = final;
+                // else{
                     valid = 0; 
                     break; 
-                }
+                // }
             }  // diagonale vuota: scarta tentativo
             if(!has_acro){
                 valid = 0;
@@ -120,35 +187,59 @@ void find_best_program_greedy(Elements **e, int *sol[], int n, int DD, int DP){
             // bonus 1.5 sulla “prima” che poi leggerai al contrario
             tot_value += (i == 0) ? act_value * 1.5f : act_value;
             //Controlli su sol[i]
+            // printf("%d - %d - %d\n",i,c,tot_dif);
+            printf("\n----------------------------\n\n");
         }
-
+        printf("%d - %.2f\n",valid,tot_value);
+        // break;
         // printf("%d - %d",valid,valid);
 
-        if (!valid) continue;
-        // printf("%d - %d\n",tot_value,max);
-        if(tot_value > max && has_b && has_f && has_acro_seq) {
+        if (!valid || !has_b || !has_f || !has_acro_seq) continue;
+        printf("%.2f - %.2f\n",tot_value,max);
+        printf("%d - %d - %d\n",has_b,has_f, has_acro_seq);
+
+        if(tot_value > max) {
             max = tot_value;
+            printf("--------------||--------------");
             //Soluzione valida quindi copio
             for(int j = 0; j<N_DIAG; j++){
                 for(int m = 0; m<N_E_DIAG; m++){
-                    // printf("%d ",tmp[j][m]);
+                    printf("%d ",tmp[j][m]);
                     sol[j][m] = tmp[j][m];
                 }
-                // printf("\n");
+                printf("\n");
             }
+            printf("--------------||--------------");
         }
-    }
-    for (int i = 0; i < N_DIAG; i++) 
-        free(tmp[i]);
-    free(tmp);
+        printf("%.2f - %.2f\n",tot_value,max);
+       
+        // break;
 
+
+    }
+    // for(int i = 0; i<n; i++){
+    //     printf("%.2f ",e[i]->value/e[i]->difficulty);
+    //     printf("%.2f ",e[i]->value);
+    //     printf("%d ",e[i]->difficulty);
+    //     printf(" %s\n",e[i]->name);
+    //     // printf("%d ",e[i]->final);
+    // }
+    // // int dif = 0;
     printf("%.2f\n",max);
+
+
     // for(int i = 0; i<n; i++) printf("%d: %.2f\n",i,e[i]->value);
     for(int i= 0; i<N_DIAG; i++) {
-        for(int j = 0; j<N_E_DIAG; j++) printf("%f ", sol[i][j] != -1 ? e[sol[i][j]]->value : -1);
+        for(int j = 0; j<N_E_DIAG; j++) printf("%s ", sol[i][j] != -1 ? e[sol[i][j]]->name : "");
+            // dif += sol[i][j] != -1 ? e[sol[i][j]]->difficulty : 0;
         printf("\n");
     }
     
+    for (int i = 0; i < N_DIAG; i++){
+        free(tmp[i]);
+    }
+    free(tmp);
+    // printf("%d",dif);
     printf("\n");
     return;
 }
@@ -157,7 +248,7 @@ void find_best_program_greedy(Elements **e, int *sol[], int n, int DD, int DP){
 
 int main(void){
     FILE *fin;
-    int n, DD = 12, DP = 28;
+    int n, DD = 10, DP = 35;
     Elements **elements;
 
     if((fin = fopen(nfin,"r")) == NULL){
@@ -216,12 +307,12 @@ int main(void){
         free(sol[i]);
     }
     free(sol);
-
-
     free_all(elements, n);
+
     fclose(fin);
     return 0;
 }
+
 
 void free_all(Elements **e, int n){
     for(int i = 0; i<n; i++) free(e[i]);

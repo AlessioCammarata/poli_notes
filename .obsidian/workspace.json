@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Esercizi python.md",
+                "file": "Algoritmi/10 - ADT grafi.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Esercizi python"
+              "title": "10 - ADT grafi"
             }
           },
           {
@@ -180,28 +180,28 @@
   },
   "active": "ea01f45a27d7de35",
   "lastOpenFiles": [
+    "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
+    "Algoritmi/programmazione/scripts/L08/E02/st.c",
+    "Algoritmi/programmazione/scripts/L08/E02/st.h",
+    "Algoritmi/programmazione/scripts/L08/E02/simTab.c",
+    "Algoritmi/programmazione/scripts/L08/E02/simTab.h",
+    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
+    "Algoritmi/5 - Programmazione dinamica.md",
     "Algoritmi/6 - Il paradigma greedy.md",
+    "Algoritmi/8 - Alberi binari di ricerca.md",
+    "Algoritmi/7 - Code a priorità e heap.md",
     "Algoritmi/10 - ADT grafi.md",
+    "Algoritmi/programmazione/scripts/L08/E02/grafo.c",
     "Esercizi python.md",
     "Untitled.base",
     "Untitled 3.base",
     "Untitled 2.base",
     "Untitled 1.base",
-    "Algoritmi/8 - Alberi binari di ricerca.md",
     "Algoritmi/11 - Gli algoritmi di visita dei grafi.md",
     "Algoritmi/programmazione/3 - Modularità.md",
     "Algoritmi/programmazione/scripts/L07/E02/main2.exe",
-    "Algoritmi/programmazione/scripts/L07/E02/main2.c",
-    "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
     "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
-    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
-    "Algoritmi/5 - Programmazione dinamica.md",
-    "Algoritmi/7 - Code a priorità e heap.md",
     "sicurezza lavoro.md",
-    "Algoritmi/programmazione/scripts/L07/E02/main1.exe",
-    "Algoritmi/programmazione/scripts/L07/E02/main.exe",
-    "Algoritmi/programmazione/scripts/L07/E02/main.c",
-    "Algoritmi/programmazione/scripts/L07/E01/pgList.c",
     "README.md",
     "Algoritmi/programmazione/2 - Le liste.md",
     "Untitled.canvas",
@@ -220,7 +220,6 @@
     "Informatica/3 - Operatori numerici.md",
     "Informatica/1 - Introduzione alla programmazione.md",
     "Tecniche di Programmazione/Prove d'esame.md",
-    "Tecniche di Programmazione/Dualità puntatore-vettore.md",
-    "Tecniche di Programmazione/Argomenti al main.md"
+    "Tecniche di Programmazione/Dualità puntatore-vettore.md"
   ]
 }
