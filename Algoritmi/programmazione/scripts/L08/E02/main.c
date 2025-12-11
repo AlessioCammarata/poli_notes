@@ -22,18 +22,68 @@ quella a matrice di adiacenza.
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include "grafo.h"
 
-#define nfin ""
+#define nfin "./grafo.txt"
 #define NMAX 30
+
+typedef struct {
+    int u, v;
+    int w;
+} Edge;
+
+static int find_or_add(char **nodes, int *nn, const char *name) {
+    for (int i = 0; i < *nn; i++) {
+        if (strcmp(nodes[i], name) == 0) return i;
+    }
+    // add: duplica la stringa e salva il puntatore
+    nodes[*nn] = _strdup(name);              // su Windows; su POSIX usa strdup
+    if (!nodes[*nn]) { perror("strdup"); return -1; }
+    return (*nn)++;
+}
 
 int main(void){
     FILE *fin;
+    char net1[NMAX], net2[NMAX], id1[NMAX], id2[NMAX];
+    int val, nEdges = 0, nNodes = 0;;
 
     if((fin = fopen(nfin,"r")) == NULL){
         perror("Apertura file");
         return 1;
     }
 
+    // dimensione massima stimata; se serve usa realloc
+    Edge *edges = malloc(sizeof(Edge) * 1024);
+    char **nodes = calloc(1024, sizeof(char*));        // array di stringhe
+    if (!edges || !nodes) { 
+        perror("malloc"); 
+        return 1; 
+    }
 
+    while(fscanf(fin,"%s %s %s %s %d\n",id1,net1,id2,net2,&val) == 5) {
+
+        int u = find_or_add(nodes, &nNodes, id1);
+        int v = find_or_add(nodes, &nNodes, id2);
+        if (u < 0 || v < 0) { 
+            fclose(fin); 
+            return 1; 
+        }
+        if (u == v) continue; // niente cappi
+
+        edges[nEdges++] = (Edge){ u, v, val };
+        edges[nEdges++] = (Edge){ v, u, val }; //Arco inverso
+    }
+    fclose(fin);
+
+    graph_t graph = graph_init(nNodes,0);
+    // inserisci gli archi nella matrice di adiacenza dell'ADT
+    for (int i = 0; i < nEdges; i++) {
+        graph_insert(graph, edges[i].u, edges[i].v, edges[i].w);
+    }
+
+    // cleanup
+    for (int i = 0; i < nNodes; i++) free(nodes[i]);
+    free(nodes);
+    free(edges);
     return 0;
 }

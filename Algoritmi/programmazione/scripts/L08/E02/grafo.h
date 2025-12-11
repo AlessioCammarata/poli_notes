@@ -27,7 +27,6 @@ void graph_free(graph_t graph);
 void graph_read(FILE *fp, graph_t graph);
 void graph_print(FILE *fp, graph_t graph); // elencare in ordine alfabetico i vertici e per ogni vertice gli archi che su di esso insistono, sempre in ordine alfabetico
 
-/* inserimento di un nuovo personaggio */
 void graph_insert(graph_t graph, node_t pg); 
 
 /* ricerca per nome, ritornando il puntatore */
