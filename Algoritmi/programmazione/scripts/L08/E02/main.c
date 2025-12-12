@@ -24,28 +24,35 @@ quella a matrice di adiacenza.
 #include <stdlib.h>
 #include "grafo.h"
 
-#define nfin "./grafo.txt"
 #define NMAX 30
 
-typedef struct {
-    int u, v;
-    int w;
-} Edge;
-
-static int find_or_add(char **nodes, int *nn, const char *name) {
+static int find_or_add(vertex_t *nodes, int *nn, char *name, char *net) {
     for (int i = 0; i < *nn; i++) {
-        if (strcmp(nodes[i], name) == 0) return i;
+        if (strcmp(nodes[i]->elab, name) == 0) return i;
     }
-    // add: duplica la stringa e salva il puntatore
-    nodes[*nn] = _strdup(name);              // su Windows; su POSIX usa strdup
-    if (!nodes[*nn]) { perror("strdup"); return -1; }
+    // add: crea nuovo nodo con NEW
+    nodes[*nn] = NEW_vertex(name, net); // flow=0 per i nodi puri
     return (*nn)++;
 }
 
-int main(void){
+int main(int argc, char *argv[]){
     FILE *fin;
     char net1[NMAX], net2[NMAX], id1[NMAX], id2[NMAX];
-    int val, nEdges = 0, nNodes = 0;;
+    int eval = 0, nEdges = 0, nNodes = 0, val;
+
+    if (argc < 2) {
+        fprintf(stderr, "Uso: %s <file_grafo>\n", argv[0]);
+        return 1;
+    }
+    const char *nfin = argv[1];
+
+    if((fin = fopen(nfin,"r")) == NULL){
+        perror("Apertura file");
+        return 1;
+    }
+    while(fscanf(fin,"%s %s %s %s %d\n",id1,net1,id2,net2,&val) == 5) eval++;
+    printf("%d\n",eval);
+    fclose(fin);
 
     if((fin = fopen(nfin,"r")) == NULL){
         perror("Apertura file");
@@ -53,8 +60,8 @@ int main(void){
     }
 
     // dimensione massima stimata; se serve usa realloc
-    Edge *edges = malloc(sizeof(Edge) * 1024);
-    char **nodes = calloc(1024, sizeof(char*));        // array di stringhe
+    edge_t *edges = malloc(sizeof(edge_t) * eval * 2);
+    vertex_t *nodes = malloc(sizeof(vertex_t) * eval * 2);  // Array di puntatori a nodi
     if (!edges || !nodes) { 
         perror("malloc"); 
         return 1; 
@@ -62,27 +69,78 @@ int main(void){
 
     while(fscanf(fin,"%s %s %s %s %d\n",id1,net1,id2,net2,&val) == 5) {
 
-        int u = find_or_add(nodes, &nNodes, id1);
-        int v = find_or_add(nodes, &nNodes, id2);
+        int u = find_or_add(nodes, &nNodes, id1, net1);
+        int v = find_or_add(nodes, &nNodes, id2, net2);
         if (u < 0 || v < 0) { 
             fclose(fin); 
             return 1; 
         }
         if (u == v) continue; // niente cappi
 
-        edges[nEdges++] = (Edge){ u, v, val };
-        edges[nEdges++] = (Edge){ v, u, val }; //Arco inverso
+        edges[nEdges] = EDGEcreate(nodes[u], nodes[v], val);
+        nEdges++;
+
     }
     fclose(fin);
 
-    graph_t graph = graph_init(nNodes,0);
-    // inserisci gli archi nella matrice di adiacenza dell'ADT
+    graph_t graph = GRAPHinit(nNodes);
+    // Inserisci gli archi nella matrice di adiacenza dell'ADT
     for (int i = 0; i < nEdges; i++) {
-        graph_insert(graph, edges[i].u, edges[i].v, edges[i].w);
+        GRAPHinsertEdge(graph, edges[i].node1, edges[i].node2, edges[i].flow);
+    }
+
+    int end = 0, choose;
+    while(!end){
+        printf("Cosa vuoi fare?\n");
+        printf("0. Esci\n");
+        printf("1. Stampa in ordine\n");
+        printf("2. Verifica adiacenza a coppie\n");
+        printf("3. Genera le liste di adiacenza\n");
+        scanf("%d",&choose);
+
+        switch (choose)
+        {
+        case 0:
+            end = 1;
+            break;
+        case 1:
+            ORDERprint(stdout,graph);
+            break;
+        case 2:
+            int n = 3;
+            char **names = malloc(n* sizeof(char*));
+            for(int i = 0; i<n; i++){
+                names[i] = malloc(NMAX*sizeof(char));
+                printf("Inserisci il valore del nodo %d\n",i+1);
+                scanf("%29s",names[i]);
+                while(ExistName(graph,names[i]) == -1){
+                    printf("Reinserisci il valore del nodo %d\n",i+1);
+                    scanf("%29s",names[i]);
+                }
+            }
+            if(subGraph(graph, names, n)) printf("I %d nodi formano un sottografo completo\n",n);
+            else printf("I %d nodi non formano un sottografo completo\n",n);
+
+            for(int i = 0; i<n; i++) free(names[i]);
+            free(names);
+            break;
+        case 3:
+            GRAPHinitList(graph);
+            GRAPHinsertEdgeList(graph);
+            printf("Liste di adiacenza create con successo!\n");
+            break;
+        default:
+            printf("Inserisci un valore valido\n");
+        }
+        printf("\n");
     }
 
     // cleanup
-    for (int i = 0; i < nNodes; i++) free(nodes[i]);
+    GRAPHfree(graph);
+    // Libera tutti i vertex_t creati con NEW_vertex
+    for (int i = 0; i < nNodes; i++) {
+        if (nodes[i]) free(nodes[i]); // FIX: libera ogni struct vertex_s
+    }
     free(nodes);
     free(edges);
     return 0;

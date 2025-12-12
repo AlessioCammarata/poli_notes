@@ -50,7 +50,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -194,10 +194,13 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "2cbbba2875d04a87",
+  "active": "e0a06d4b852879ad",
   "lastOpenFiles": [
-    "Algoritmi/10 - ADT grafi.md",
+    "Algoritmi/programmazione/scripts/L08/E02/E02.exe",
+    "Algoritmi/programmazione/scripts/L08/E02/main.exe",
+    "Algoritmi/13 - Alberi ricoprenti minimi.md",
     "Algoritmi/12 - applicazioni algoritmi di visita dei grafi.md",
+    "Algoritmi/10 - ADT grafi.md",
     "Algoritmi/11 - Gli algoritmi di visita dei grafi.md",
     "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
     "Algoritmi/programmazione/scripts/L08/E02/st.c",
@@ -216,7 +219,6 @@
     "Untitled 2.base",
     "Untitled 1.base",
     "Algoritmi/programmazione/3 - Modularità.md",
-    "Algoritmi/programmazione/scripts/L07/E02/main2.exe",
     "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
     "sicurezza lavoro.md",
     "README.md",
@@ -235,8 +237,6 @@
     "Informatica/9 - Numeri relativi (continuo lezione5).md",
     "Informatica/10 - Funzioni.md",
     "Informatica/3 - Operatori numerici.md",
-    "Informatica/1 - Introduzione alla programmazione.md",
-    "Tecniche di Programmazione/Prove d'esame.md",
-    "Tecniche di Programmazione/Dualità puntatore-vettore.md"
+    "Informatica/1 - Introduzione alla programmazione.md"
   ]
 }
