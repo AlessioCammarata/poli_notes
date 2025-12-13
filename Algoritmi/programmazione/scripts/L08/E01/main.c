@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L07/E02/elementi.txt"
+#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L08/E01/elementi.txt"
 // #define nfin "./elementi.txt"
 #define MAX 100
 #define N_DIAG 3

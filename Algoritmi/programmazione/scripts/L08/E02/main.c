@@ -41,9 +41,10 @@ int main(int argc, char *argv[]){
     int eval = 0, nEdges = 0, nNodes = 0, val;
 
     if (argc < 2) {
-        fprintf(stderr, "Uso: %s <file_grafo>\n", argv[0]);
+        fprintf(stderr, "Uso: %s come file_grafo\n", argv[0]);
         return 1;
     }
+    fprintf(stderr, "Uso: %s come file_grafo\n", argv[1]);
     const char *nfin = argv[1];
 
     if((fin = fopen(nfin,"r")) == NULL){
@@ -51,7 +52,6 @@ int main(int argc, char *argv[]){
         return 1;
     }
     while(fscanf(fin,"%s %s %s %s %d\n",id1,net1,id2,net2,&val) == 5) eval++;
-    printf("%d\n",eval);
     fclose(fin);
 
     if((fin = fopen(nfin,"r")) == NULL){
