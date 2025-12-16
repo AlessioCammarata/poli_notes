@@ -16,7 +16,13 @@ struct DailyQuote_s{
     float totTitles;     // Quantità Titoli
 };
 
+DailyQuoteCollection_t INITcollection();
+
+//Calcola il valore effettivo ddella DailyQuote
 float CalcDailyQuote(DailyQuote_t quote);
+//Inserimento nell'albero delle DailyQuote
 void insertQuoteInBST(DailyQuoteCollection_t DQ, DateTime_t day, float value, int quantity);
+//Libera la collezione
+void FREEcollection(DailyQuoteCollection_t DQ);
 
 #endif // DAILYQUOTE_H_DEFINED

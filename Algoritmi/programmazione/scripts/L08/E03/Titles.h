@@ -3,6 +3,11 @@
 
 #define NMAX 21 //20 + 1
 
+#include "DateTime.h"
+#include "DailyQuote.h"
+#include <stdio.h>
+#include <string.h>
+
 // ADT I classe - Titolo
 typedef struct Title_s *Title_t;
 // ADT I classe - Collezione di titoli
@@ -14,6 +19,11 @@ typedef struct TitleCollection_s *TitleCollection_t;
 
 TitleCollection_t INITlist();
 Title_t searchTitle(TitleCollection_t TC, char *title);
-DailyQuoteCollection_t getCollection(Title_t TC);
+//Aggiungo un titolo alla lista
+Title_t addTitle(TitleCollection_t TC, char *title);
+//Ottengo le DailyQuote
+DailyQuoteCollection_t getCollection(Title_t title);
+//LIbera tutta la lista
+void freeTC(TitleCollection_t TC);
 
 #endif // TITLS_H_DEFINED

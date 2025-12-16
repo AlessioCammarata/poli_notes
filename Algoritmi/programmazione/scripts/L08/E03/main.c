@@ -40,7 +40,7 @@ int main(void){
     FILE *fin;
     int end = 0, choose;
 
-    if((fopen(nfin,"r")) == NULL){
+    if((fin = fopen(nfin,"r")) == NULL){
         perror("Apertura del file");
         return 1;
     }
@@ -51,12 +51,14 @@ int main(void){
         fclose(fin);
         return 1;
     }
-    if(!leggiFile(fin,TC)){
+    if(leggiFile(fin,TC)){
         perror("malloc");
         //Free collection
+        freeTC(TC);
         fclose(fin);
         return 1;
-    } 
+    }
+    fclose(fin);
 
     while(!end){
         printf("Cosa vuoi fare?\n");
@@ -65,10 +67,10 @@ int main(void){
         printf("2. Verifica adiacenza a coppie\n");
         printf("3. Genera le liste di adiacenza\n");
         scanf("%d",&choose);
-
+        
     }
 
-    fclose(fin);
+    freeTC(TC);
     return 0;
 }
 
@@ -76,7 +78,7 @@ int leggiFile(FILE *fin, TitleCollection_t TC){
     int n, m, quantity;
     float value;
     char title[NMAX];
-    if(fscanf(fin,"%d",n) != 1) return 0;
+    if(fscanf(fin,"%d",&n) != 1) return 0;
 
     for(int i = 0; i<n; i++){
         if(fscanf(fin,"%s %d",title,&m) != 1){ 
@@ -97,7 +99,7 @@ int leggiFile(FILE *fin, TitleCollection_t TC){
                 return 0;
             }
             //Aggiungi valori al titolo
-            insertQuoteInBST(, day, value, quantity);
+            insertQuoteInBST(BST, day, value, quantity);
         }
     }
 

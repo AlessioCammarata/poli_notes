@@ -1,7 +1,4 @@
-#include "DateTime.h"
 #include "Titles.h"
-#include "DailyQuote.h"
-#include <string.h>
 
 struct Title_s{
     char *title;
@@ -73,6 +70,17 @@ Title_t addTitle(TitleCollection_t TC, char *title){
     return x;
 }
 
-DailyQuoteCollection_t getCollection(Title_t TC){
-    return TC->quotes;
+DailyQuoteCollection_t getCollection(Title_t title){
+    return title->quotes;
+}
+
+void freeTC(TitleCollection_t TC){
+    Title_t x = TC->head;
+    while(x!=NULL){
+        Title_t next = x->next;
+        FREEcollection(x->quotes);
+        free(x);
+        x = next;
+    }
+    free(TC);
 }

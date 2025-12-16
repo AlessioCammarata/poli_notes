@@ -10,4 +10,6 @@ struct DateTime_s{
     int year, month, day, hour, minute;
 };
 
+int cmpDate(DateTime_t d1, DateTime_t d2);
+
 #endif // DATETIME_H_DEFINED
