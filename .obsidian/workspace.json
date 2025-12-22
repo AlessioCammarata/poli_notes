@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Algoritmi/9 - Le tabelle di Hash.md",
+                "file": "Algoritmi/8 - Alberi binari di ricerca.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "9 - Le tabelle di Hash"
+              "title": "8 - Alberi binari di ricerca"
             }
           }
         ],
@@ -135,8 +135,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "ed1933459f3df990",
@@ -224,8 +223,8 @@
   },
   "active": "29652a0692e9f057",
   "lastOpenFiles": [
-    "Algoritmi/14 - Cammini minimi.md",
     "Algoritmi/9 - Le tabelle di Hash.md",
+    "Algoritmi/14 - Cammini minimi.md",
     "Algoritmi/13 - Alberi ricoprenti minimi.md",
     "Algoritmi/programmazione/2 - Le liste.md",
     "Algoritmi/8 - Alberi binari di ricerca.md",

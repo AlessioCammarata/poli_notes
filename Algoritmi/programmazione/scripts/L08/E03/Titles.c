@@ -18,6 +18,19 @@ TitleCollection_t INITlist(){
     return TC;
 }
 
+void printTitle(Title_t T){ //Wrapper
+    printf("%s\n",T->title);
+    printDQ(T->quotes);
+}
+
+float getDQfromDate(Title_t T, DateTime_t date){
+    return getDQvalue(T->quotes,date);
+}
+
+void getDQfromDates(Title_t T, DateTime_t date1, DateTime_t date2, float *min, float *max){
+    getDQvalueInterval(T->quotes,date1,date2,min,max);
+}
+
 Title_t searchTitle(TitleCollection_t TC, char *title) {
     for(Title_t tmp = TC->head; tmp != NULL; tmp = tmp->next) {
         int val = strcmp(tmp->title, title);
@@ -34,6 +47,7 @@ Title_t addTitle(TitleCollection_t TC, char *title){
         return existing;
     }
 
+    // printf("%s",title);
     Title_t x = malloc(sizeof *x);
     x->title = title;        
     x->quotes = INITcollection();
@@ -70,8 +84,12 @@ Title_t addTitle(TitleCollection_t TC, char *title){
     return x;
 }
 
-DailyQuoteCollection_t getCollection(Title_t title){
-    return title->quotes;
+DailyQuoteCollection_t getCollection(Title_t T){
+    return T->quotes;
+}
+
+void balanceQuotes(Title_t T ,int threshold){
+    balanceBST(T->quotes, threshold);
 }
 
 void freeTC(TitleCollection_t TC){
