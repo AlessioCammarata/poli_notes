@@ -345,6 +345,9 @@ Al nodo elementare si possono aggiungere informazioni che permettono lo sviluppo
 - **puntatore al padre** 
 - **numero di nodi dell’albero radicato nel nodo corrente**. 
 Queste informazioni devono ovviamente essere gestite (quando necessario) da tutte le funzioni già viste.
+
+>Vantaggio poiche possiamo mettere nuove funzionalità, tipo il **bilanciamento dell'albero.**
+
 Aggiungiamo le funzioni:
 ```c
 //BST.h
@@ -609,3 +612,362 @@ void BSTdelete(BST bst, Key k) {
 	bst->root= deleteR(bst->root, k, bst->z); 
 }
 ```
+###### Bilanciamento
+- A priori: vincoli che garantiscono un albero perfettamente bilanciato (B-tree) o con sbilanciamento limitato (alberi 2-3-4, RBtree) 
+- Ribilanciamento a richiesta: 
+	- partizionamento ricorsivo attorno alla chiave mediana inferiore (algoritmo semplice) 
+	- algoritmo di Day, Stout e Warren, di complessità O(n) costruisce un albero quasi completo (tutti i livelli completi, tranne l’ultimo riempito da sinistra a destra, cfr heap) 
+Bisogna valutare il rapporto tra costo e frequenza di ribilanciamento.
+Esempio:
+```c
+static link balanceR(link h, link z) { 
+	int r; 
+	if (h == z) return z; 
+	r = (h->N+1)/2-1; 
+	h = partR(h, r); 
+	h->l = balanceR(h->l, z); 
+	h->r = balanceR(h->r, z); 
+	return h; 
+} 
+void BSTbalance(BST bst) { 
+	bst->root = balanceR(bst->root, bst->z); 
+}
+```
+
+---
+#### Interval BST
+
+BST la cui chiave è un intervallo chiuso: coppia ordinata di reali [t1, t2], dove t1 $\le$ t2 e [t1 , t2 ] = ${t \in \Re: t_1 \le t \le t_2 }$. 
+L’item intervallo [t1 , t2 ] può essere realizzato da una struct con campi low = t1 e high = t2. 
+Procedura: 
+1.***identificare la struttura dati candidata*** (**BST con inserzione secondo l'estremo inferiore**)
+1. ***identificare le informazioni supplementari*** (max: massimo high del sottoalbero)
+2. verificare di poter mantenere le informazioni supplementari senza alterare la complessità delle operazioni esistenti (O(1))
+3.***sviluppare nuove operazioni.**** (Item IBSTsearch(BST, Item);)
+
+>Serve un criterio di ordinamento, per esempio il primo estremo.
+>Il massimo dei nodi sottostanti viene tenuto come informazione a livello superiore.
+
+>**Criterio di sovrapposizione:** (caso a)
+>	L[i]<H[i'] e L[i'] < H[i].
+>In caso contrario allora siamo o nel caso in cui i' accade prima di i o viceversa.
+
+caso b: i>i'
+caso c: i'>i
+```c
+//Item.h
+typedef struct item { 
+	int low; 
+	int high; 
+} Item; 
+Item ITEMscan(); 
+Item ITEMsetVoid(); 
+int ITEMcheckVoid(Item val); 
+void ITEMstore(Item val); 
+int ITEMhigh(); //Estremo superiore
+int ITEMlow();  //Estremo inferiore
+int ITEMoverlap(Item val1, Item val2); //Interserzione
+int ITEMeq(Item val1, Item val2); //Uguale in inserzione
+int ITEMlt(Item val1, Item val2); //Minore in inserzione
+int ITEMlt_int(Item val1, int val2); // < in ricerca
+```
+
+```c
+//item.c
+
+#include #include #include #include 
+#include "Item.h" 
+Item ITEMscan() { //Acquisiamo low e high
+	Item val; 
+	printf("low = "); scanf("%d", &val.low); 
+	printf("high = "); scanf("%d", &val.high); 
+	return val; 
+} 
+
+void ITEMstore(Item val) { //Stampa
+	printf("[%d, %d] ", val.low, val.high); 
+} 
+
+Item ITEMsetVoid() { 
+	Item val = {-1, -1}; 
+	return val; 
+}
+
+int ITEMcheckVoid(Item val) { //Vediamo se un item è nullo
+	if ((val.low == -1) && (val.high == -1)) 
+		return 1; 
+	return 0; 
+} 
+
+int ITEMhigh(Item val) { 
+	return val.high; 
+} 
+
+int ITEMlow(Item val) { 
+	return val.low; 
+} 
+
+//Dice se c'è sovrapposizone, seguendo il criterio definito prima
+int ITEMoverlap(Item val1, Item val2) { 
+	if ((val1.low <= val2.high) && (val2.low<= val1.high)) 
+		return 1; 
+	return 0; 
+}
+
+//Confronto tra intervalli
+int ITEMeq(Item val1, Item val2) { 
+	if ((val1.low == val2.low) && (val1.high == val2.high))
+		return 1; 
+	return 0; 
+} 
+//Primo intervallo minore del secondo (Considerando low)
+int ITEMlt(Item val1, Item val2) { 
+	if ((val1.low < val2.low)) 
+		return 1; 
+	return 0; 
+} 
+
+int ITEMlt_int(Item val1, int val2) { 
+	if ((val1.low < val2)) 
+		return 1; 
+	return 0; 
+}
+```
+##### ADT I Classe Interval BST
+
+```c
+// IBST.h
+typedef struct intervalbinarysearchtree *IBST; 
+void IBSTinit(IBST ibst); //Modificata
+void IBSTfree(IBST ibst); 
+void BSTinsert(IBST ibst, Item x); //Modificata
+void IBSTdelete(IBST ibst, Item x); //Modificata
+Item IBSTsearch(IBST ibst, Item x); //Nuova
+int IBSTcount(IBST ibst); //Modificata
+int IBSTempty(IBST ibst); //Modificata
+void IBSTvisit(IBST ibst, int strategy);
+```
+
+```c
+#include #include 
+#include "Item.h" 
+#include "IBST.h“ 
+typedef struct IBSTnode *link; 
+struct IBSTnode {
+	Item item; 
+	link l, r; 
+	int N; 
+	int max; // max: massimo high del sottoalbero
+}; 
+struct intervalbinarysearchtree {
+	link root;
+	int size; // size: dimensione del sottoalbero
+	link z;
+}; 
+
+//Inizializzazione dell'item
+static link NEW(Item item, link l, link r, int N, int max) { 
+	link x = malloc(sizeof *x); 
+	x->item = item; 
+	x->l = l; 
+	x->r = r; 
+	x->N = N; 
+	x->max = max; 
+	return x; 
+}
+
+static void NODEshow(link x) { 
+	ITEMstore(x->item); 
+	printf("max = %d\n", x->max); 
+} 
+
+IBST IBSTinit( ) { 
+	IBST ibst = malloc(sizeof *ibst); 
+	ibst->N = 0; 
+	//0 come minimo e -1 come massimo della radice
+	ibst->root=(ibst->z=NEW(ITEMsetNull(),NULL,NULL,0,-1));
+	return ibst; 
+} 
+
+//Cancellare l'albero
+void IBSTfree(IBST ibst) { 
+	if (ibst == NULL) return; 
+	treeFree(ibst->root, ibst->z); 
+	free(ibst->z); 
+	free(ibst); 
+} 
+
+//Ricorsione per cancellare l'albero
+static void treeFree(link h, link z) {
+	 if (h == z) return; 
+	 treeFree(h->l, z); 
+	 treeFree(h->r, z); 
+	 free(h); 
+}
+
+//Ritorniamo il valore size
+int IBSTcount(IBST ibst) { 
+	return ibst->size; 
+} 
+//Ritorniamo se l'albero è vuoto
+int IBSTempty(IBST ibst) { 
+	if (IBSTcount(ibst) == 0) 
+		return 1; 
+	return 0; 
+} 
+
+//Stampa a seconda della strategia
+static void treePrintR(link h, link z, int strategy) {
+	if (h == z) return; 
+	if (strategy == PREORDER) 
+		NODEshow(h); 
+	treePrintR(h->l, z, strategy); 
+	if (strategy == INORDER) 
+		NODEshow(h); 
+	treePrintR(h->r, z, strategy); 
+	if (strategy == POSTORDER) 
+		NODEshow(h); 
+} 
+//Wrapper di stampa
+void IBSTvisit(IBST ibst, int strategy) { 
+	if (IBSTempty(ibst)) return; 
+	treePrintR(ibst->root, ibst->z, strategy); 
+}
+
+//INSERT
+link insertR(link h, Item item, link z) { 
+	if (h == z) //Se usciamo inseriamo il valore high come alto
+		return NEW(item, z, z, 1, ITEMhigh(item)); 
+	if (ITEMlt(item, h->item)) { //Scendiamo a sinistra
+		h->l = insertR(h->l, item, z); 
+		h->max = max(h->max, h->l->max, h->r->max); 
+	} else { //Scendiamo a destra
+		h->r = insertR(h->r, item, z); 
+		h->max = max(h->max, h->l->max, h->r->max); 
+	} 
+	(h->N)++; 
+	return h; 
+} 
+
+void IBSTinsert(IBST ibst, Item item) { 
+	//Modifica la radice se l'albero era vuoto
+	ibst->root = insertR(ibst->root, item, ibst->z); 
+	ibst->size++; //Aggiorniamo la dimensione dell'albero
+}
+
+//rotL/rotR
+link rotL(link h) { 
+	link x = h->r; //x è Figlio destro di h
+	h->r = x->l; //Nuovo figlio uguale al figlio sinistro di x
+	x->l = h; //Nuovo figlio sinsitro di x è h
+	x->N = h->N; // Il numero di nodi di h (che aveva prima) diventa quello di x
+	//Devo cambiare il numero di nodi attuale di h, sommo sinistra e destra piu se stesso
+	h->N = h->l->N + h->r->N +1;
+	//Aggiorno max sia di h che di x dato che ho ruotato
+	h->max = max(ITEMhigh(h->item), h->l->max, h->r->max);
+	x->max = max(ITEMhigh(x->item), x->l->max, x->r->max);
+	return x; 
+} 
+
+//Come la rotazione a sinistra (speculare)
+link rotR(link h) { 
+	link x = h->l; 
+	h->l = x->r; 
+	x->r = h; 
+	x->N = h->N; 
+	h->N = h->r->N + h->l->N +1; 
+	h->max = max(ITEMhigh(h->item), h->l->max, h->r->max);
+	x->max = max(ITEMhigh(x->item), x->l->max, x->r->max);
+	return x;
+}
+
+//Faccio risalire un nodo la cui chiave ha rango r (posizione r). Che diventerà la nuova radice dell'albero
+link partR(link h, int r) { 
+	int t = h->l->N; 
+	if (t > r) { 
+		h->l = partR(h->l, r); 
+		h = rotR(h); 
+	} 
+	if (t < r) { 
+		h->r = partR(h->r, r-t-1); 
+		h = rotL(h); 
+	} 
+	return h; 
+} 
+
+//Unisce due nodi monchi (Per esempio quando cancelli la radice)
+link joinLR(link a, link b, link z) { 
+	if (b == z) 
+		return a;
+	//Partizione per portare in cima il successore della radice tolta
+	b = partR(b, 0); 
+	b->l = a; 
+	b->N = a->N + b->r->N +1;
+	//Aggiorno il max, prendendo il massimo tra b->l e b->r
+	b->max = max(ITEMhigh(b->item), a->max, b->r->max);
+	return b; 
+}
+
+//Delete
+//Scendo a sinistra o a destra fino a trovare il nodo, dopodiché quando lo trovo cancello e faccio la join tra figli destri e sinistri del nodo, dopo aver cancellato devo aggiornare max
+link deleteR(link h, Item item, link z) { 
+	link x; 
+	if (h == z) return z; 
+	if (ITEMlt(item, h->item)) { 
+		h->l = deleteR(h->l, item, z); 
+		h->max = max(ITEMhigh(h->item), h->l->max, h->r->max);
+	} 
+	if (ITEMlt(h->item, item)) { 
+		h->r = deleteR(h->r, item, z); 
+		h->max = max(ITEMhigh(h->item), h->l->max, h->r->max);
+	} 
+	(h->N)--; 
+	if (ITEMeq(item, h->item)) { 
+		x = h; 
+		h = joinLR(h->l, h->r, z); 
+		free(x); //Libero il nodo
+	} 
+	return h; 
+} 
+
+void IBSTdelete(IBST ibst, Item item) { 
+	ibst->root=deleteR(ibst->root,item,ibst->z); 
+	ibst->size--; 
+}
+```
+###### Search
+Ricerca di un nodo h con intervallo che interseca l’intervallo i: 
+- percorrimento dell’albero dalla radice 
+- terminazione: trovato intervallo che interseca i oppure si è giunti ad un albero vuoto 
+- Ricorsione: dal nodo h
+	- su sottoalbero sinistro se 
+		h->l->max ≥ low[i] 
+	- su sottoalbero destro se 
+		h->l->max < low[i]
+```c
+/*
+Scendo a sinistra se so che il max del nodo è maggiore del low dell'intervallo che cerco. (h->l->max ≥ low[i])
+Scendo sul sottoalbero destro se l'estremo inferiore dell'intervallo i è maggiore del massimo del sottoalbero sinistro.
+Se max di sinistra è inferiore di max del mio intervallo che cerco scendo a destra.
+
+Non è detto che si trovi un 'intersezione nell'albero (ritorno NULL)
+*/
+Item searchR(link h, Item item, link z) { 
+	if (h == z) return ITEMsetNull(); 
+	if (ITEMoverlap(item, h->item)) 
+		return h->item; 
+	if (ITEMlt_int(item, h->l->max)) 
+		return searchR(h->l, item, z); 
+	else 
+		return searchR(h->r, item, z); 
+} 
+
+Item IBSTsearch(IBST ibst, Item item) { 
+	return searchR(ibst->root, item, ibst->z);
+}
+```
+- **Analisi** 
+Ordinamento: T(n) = O(NlogN) 
+**Se l’IBST è bilanciato:** 
+- ogni inserzione/cancellazione di intervallo o ricerca del primo intervallo che interseca uno dato costa T(n) = O(logN), 
+- la ricerca di tutti gli intervalli che intersecano un intervallo dato costa T(n) = O(RlogN) se R è il numero di intersezioni.

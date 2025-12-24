@@ -135,7 +135,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "ed1933459f3df990",
@@ -224,16 +225,17 @@
   "active": "29652a0692e9f057",
   "lastOpenFiles": [
     "Algoritmi/9 - Le tabelle di Hash.md",
-    "Algoritmi/14 - Cammini minimi.md",
+    "Algoritmi/7 - Code a priorità e heap.md",
+    "Algoritmi/12 - applicazioni algoritmi di visita dei grafi.md",
+    "Algoritmi/11 - Gli algoritmi di visita dei grafi.md",
     "Algoritmi/13 - Alberi ricoprenti minimi.md",
-    "Algoritmi/programmazione/2 - Le liste.md",
     "Algoritmi/8 - Alberi binari di ricerca.md",
+    "Algoritmi/14 - Cammini minimi.md",
+    "Algoritmi/programmazione/2 - Le liste.md",
     "Algoritmi/programmazione/scripts/L08/E03/DateTime.c",
     "Algoritmi/10 - ADT grafi.md",
     "Algoritmi/programmazione/scripts/L08/E02/E02.exe",
     "Algoritmi/programmazione/scripts/L08/E02/main.exe",
-    "Algoritmi/12 - applicazioni algoritmi di visita dei grafi.md",
-    "Algoritmi/11 - Gli algoritmi di visita dei grafi.md",
     "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
     "Algoritmi/programmazione/scripts/L08/E02/st.c",
     "Algoritmi/programmazione/scripts/L08/E02/st.h",
@@ -242,7 +244,6 @@
     "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
     "Algoritmi/5 - Programmazione dinamica.md",
     "Algoritmi/6 - Il paradigma greedy.md",
-    "Algoritmi/7 - Code a priorità e heap.md",
     "Algoritmi/programmazione/scripts/L08/E02/grafo.c",
     "Esercizi python.md",
     "Untitled.base",
