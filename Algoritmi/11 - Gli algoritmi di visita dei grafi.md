@@ -1,6 +1,6 @@
 ### Algoritmi di Visita
 Visita di un grafo G=(V, E): 
-- a partire da un vertice dato, seguendo gli archi con una certastrategia, elencare i vertici incontrati, eventualmenteaggiungendo altre informazioni. 
+- a partire da un vertice dato, seguendo gli archi con una certa strategia, elencare i vertici incontrati, eventualmente aggiungendo altre informazioni. 
 Algoritmi: 
 - in **profondità** (depth-first search, DFS) 
 - in **ampiezza** (breadth-first search, BFS).
@@ -37,11 +37,11 @@ void GRAPHsimpleDfs(Graph G, int id) {
 		printf("vertex %s : %d \n", STsearchByIndex(G->tab, v), pre[v]);
 }
 
-static void simpleDfsR(Graph G, Edge e, int *cnt, int*pre) {
+static void simpleDfsR(Graph G, Edge e, int *cnt, int *pre) {
 	link t; 
 	int w = e.w; 
 	pre[w] = (*cnt)++; 
-	// terminazione implicitdella ricorsione
+	// terminazione implicita della ricorsione
 	for (t = G->ladj[w]; t != G->z; t = t->next) 
 		if (pre[t->v] == -1) 
 			simpleDfsR(G, EDGEcreate(w, t->v), cnt, pre); 
@@ -49,7 +49,7 @@ static void simpleDfsR(Graph G, Edge e, int *cnt, int*pre) {
 ```
 
 **Versione estesa**
-	- nodi etichettati con etichetta tempo di scoperta / tempo dicompletamento 
+	- nodi etichettati con etichetta tempo di scoperta / tempo di completamento 
 	- foresta di alberi della visita in profondità, memorizzata in un vettore.
 Scoperta di un vertice: prima volta che si incontra nella visita (discesa ricorsiva, visita in pre-order), vettore ***pre[i].*** 
 
@@ -107,13 +107,13 @@ Si etichetta ogni arco:
 ==Grafo orientato: ==
 - **T**: archi dell'albero della visita in profondità 
 - **B**: connettono un vertice w ad un suo antenato v nell’albero: tempo di fine elaborazione di v sarà > tempo di fine elaborazione di w. Equivale a testare se, quando scopro l’arco (w, v), post[v] == -1
-- **F**: connettono un vertice w ad un suo discendente vnell’albero: tempo di scoperta di v è > tempo di scoperta di w quandoscopro l’arco (w, v) pre[v] > pre[w]
-- **C**: archi rimanenti, per cui tempo di scoperta di w è > tempo di scoperta di v quando scoprol’arco (w, v) pre[w] > pre[v].
+- **F**: connettono un vertice w ad un suo discendente v nell’albero: tempo di scoperta di v è > tempo di scoperta di w quando scopro l’arco (w, v) pre[v] > pre[w]
+- **C**: archi rimanenti, per cui tempo di scoperta di w è > tempo di scoperta di v quando scopro l’arco (w, v) pre[w] > pre[v].
 
 >**Grafo non orientato: solo archi T e B.**
 
-- **GRAPHdfs**: funzione che, a partire da un vertice dato, visita tutti ivertici di un grafo, richiamando la procedura ricorsiva dfsR.Termina quando tutti i vertici sono stati visitati. 
-- **dfsR**: funzione che visita in profondità a partire da un verticeididentificato con un arco fittizio EDGEcreate(id,id)utile in fasedi visualizzazione. Termina quando ha visitato in profondità tutti inodi raggiungibili da id.
+- **GRAPHdfs**: funzione che, a partire da un vertice dato, visita tutti i vertici di un grafo, richiamando la procedura ricorsiva dfsR. Termina quando tutti i vertici sono stati visitati. 
+- **dfsR**: funzione che visita in profondità a partire da un vertice id identificato con un arco fittizio EDGEcreate(id,id)utile in fase di visualizzazione. Termina quando ha visitato in profondità tutti i nodi raggiungibili da id.
 
 ```c
 void dfsR(Graph G, Edge e, int *time, int *pre, int *post, int *st){ 
@@ -201,7 +201,7 @@ void GRAPHbfs(Graph G, int id) {
 			printf("%s: %d \n",STsearchByIndex(G->tab,v),dist[v]);
 }
 
-void bfs(Graph G, Edge e, int *time, int *pre, int*st,int *dist) { 
+void bfs(Graph G, Edge e, int *time, int *pre, int*st, int *dist) { 
 	int x; 
 	Q q = Qinit(); 
 	Qput(q, e); 

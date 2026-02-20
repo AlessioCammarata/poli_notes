@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// #define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L04/E03/easy_test_set.txt"
-#define nfin "./hard_test_set.txt"
+#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L04/E03/hard_test_set.txt"
+// #define nfin "./hard_test_set.txt"
 #define Nstones 4
 
 typedef enum{

@@ -196,7 +196,7 @@ Item BSTsearch(BST bst, Key k) { //Wrapper poiche ADT I Classe
 }
 ```
 ###### BSTmin
-Seguire il puntatore al sottoalbero sinistro finché si arriva al nodosentinella z:
+Seguire il puntatore al sottoalbero sinistro finché si arriva al nodo sentinella z:
 ```c
 Item minR(link h, link z) { 
 	if (h == z) 
@@ -211,7 +211,7 @@ Item BSTmin(BST bst) { //Wrapper poiche ADT I Classe
 }
 ```
 ###### BSTmax
-Seguire il puntatore al sottoalbero destro finché si arriva al nodosentinella z:
+Seguire il puntatore al sottoalbero destro finché si arriva al nodo sentinella z:
 ```c
 Item maxR(link h, link z) { 
 	if (h == z) 
@@ -226,7 +226,7 @@ Item BSTmax(BST bst) { //Wrapper poiche ADT I Classe
 }
 ```
 ###### BSTinsert (in foglia)
-Inserire in un albero binario di ricerca un nodo che contiene un item -> mantenimento della proprietà: 
+Inserire in un albero binario di ricerca un nodo che contiene un item -> mantenimento della proprietà: 
 - se il BST è vuoto, creazione del nuovo albero 
 - inserimento **ricorsivo** nel sottoalbero sinistro o destro a seconda del confronto tra la chiave dell’item e quella del nodo corrente 
 - inserimento **iterativo**: prima si ricerca la posizione, poi si appende il nuovo nodo.

@@ -72,8 +72,8 @@ chiavi: stringhe alfanumeriche corte come interi derivati dalla valutazione di p
 - h(k) = k % M
 
 Esempio:
-	stringa now = ‘n’*1282 + ‘o’*128 + ‘w’ 
-			= 110\*1282 + 111*128 + 119 
+	stringa now = ‘n’\*$128^2$ + ‘o’\*128 + ‘w’ 
+			= 110\*$128^2$ + 111\*128 + 119 
 			k = 1816567 
 	k = 1816567 M = 19 
 	h(k) = 1816567 % 19 = 15
@@ -190,7 +190,7 @@ ST STinit(int maxN, float r) {
 	int i; 
 	ST st; 
 	st = malloc(sizeof(*st)); 
-	st->N = 0; //Il numero inziiale è 0
+	st->N = 0; //Il numero iniziale è 0
 	st->M = STsizeSet(maxN, r); // Alloco M ad una certa dimensione STzizeSet (M >= numero di chiavi max / r), numero di righe della hash table
 	st->heads = malloc(st->M*sizeof(link)); // Alloco M teste
 	st->z = NEW(ITEMsetNull(), NULL); //Creo il nodo sentinella
@@ -218,7 +218,7 @@ static int STsizeSet(int maxN, float r) {
 void STfree(ST st) { 
 	int i; 
 	link t,u; 
-	for(i=0; iM; i++) 
+	for(i=0; i<st->M; i++) 
 		for (t = st->heads[i]; t != st->z; t = u){ 
 			u = t->next; 
 			free(t); 
@@ -349,7 +349,7 @@ ST STinit(int maxN, float alpha) {
 
 /*
 Determinazione della dimensione M della tabella: 
- il più piccolo numero primo M >= maxN*alpha.
+ il più piccolo numero primo M >= maxN/alpha.
 */
 //Come prima ma è cambiato il fattore di carico
 static int STsizeSet(int maxN, float alpha) { 
@@ -506,7 +506,7 @@ Tentativi in media di “probing” per la ricerca:
 ###### Quadratic Probing
 >***Insert***: 
 - i è il contatore dei tentativi (all’inizio 0) 
-- index = (h’(k) + c1 i + c2 i2 )%M 
+- index = $(h’(k) + c_1 \cdot i + c_2 \cdot i^2 )\%M$ 
 - se libero, inserisci chiave, altrimenti incrementa i e ripeti fino a cella vuota.
 ```c
 #define c1 1 
@@ -538,7 +538,7 @@ Item STsearch(ST st, Key k) {
 ###### Double Hashing
 Ti sposti di una funzione matematica (di hash), calcolo due funzioni di hash e ottengo il modulo di M della somma delle due funzioni di hash, funziona meglio del linear probing.
 
--  calcola i = h1 (k) 
+- calcola i = h1 (k) 
 - se posizione libera, inserisci chiave, altrimenti calcola j =h2 (k) e prova in i = (i + j) % M 
 - ripeti fino a cella vuota. Ricordare che, se M = 2\*max, $\alpha$< 1
 
@@ -587,5 +587,6 @@ Ipotesi:
 Tentativi di “probing” per la ricerca: 
 - search miss: 1/(1–$\alpha$) 
 - search hit: 1/$\alpha$ ln (1/(1- $\alpha$))
->Quando le tabelle sono praticamente piene, si fanno un numero di tentativi che va bene( aumenta ma non di tanto).
+>Quando le tabelle sono praticamente piene, si fanno un numero di tentativi che va bene 
+>(aumenta ma non di tanto).
 >è piu difficile da implementare del linear probing.

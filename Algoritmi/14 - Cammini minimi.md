@@ -13,7 +13,7 @@ qualsiasi cammino p con w(p) = $\delta$(s,v)
 
 Cammini minimi: 
 - da sorgente singola: 
-	cammino minimo e suo peso da s a ogni altrovertice v 
+	cammino minimo e suo peso da s a ogni altro vertice v 
 	- algoritmo di Dijkstra 
 	- algoritmo di Bellman-Ford 
 - con destinazione singola
@@ -46,15 +46,19 @@ In assenza di cicli a peso negativo:
 Dimostrazione per assurdo: (programmazione dinamica).
 ##### Rappresentazione dei cammini minimi
 1. **Vettore** dei predecessori st\[v]: 
-parent(v) se  vV st\[v] = -1 altrimenti 
+$\forall v \in V$ st\[v] vale parent(v) se $\exists$,   -1 altrimenti 
 
 2. **Sottografo** dei predecessori: 
-	G =(V ,E ), dove 
-	- V = {v $\in$V: st\[v] != -1} $\union$ {s} 
-	- E = {(st\[v], v) $\in$ E : v $\in$ $V_\pi$ - {s}}
+	$G_{\pi}$ =($V_\pi ,E_2$), dove 
+	- $V_\pi$ = {v $\in$V: st\[v] != -1} $\cup$ {s} 
+	- $E_\pi$ = {(st\[v], v) $\in$ E : v $\in$ $V_\pi$ - {s}}
 
 3. **Albero** dei cammini minimi.
-G’ = (V’, E’) dove V’  V && E’  E  V’: insieme dei vertici raggiungibili da s  s radice dell’albero  vV’ l’unico cammino semplice da s a v in G’ è un cammino minimoda s a v in G. Nei grafi non pesati: si ottiene con una visita in ampiezza.
+G’ = (V’, E’) dove V’ $\subseteq$ V && E’ $\subseteq$ E 
+- V’: insieme dei vertici raggiungibili da s 
+- s radice dell’albero 
+- $\forall v \in V’$ l’unico cammino semplice da s a v in G’ è un cammino minimo da s a v in G. 
+Nei grafi non pesati: si ottiene con una visita in ampiezza.
 ###### Principio di rilassamento
 In un dato momento accetta che la tua soluzione sia sovrastimata.
 >Rilassare la stima significa avvicinarsi alla soluzione.
@@ -208,7 +212,7 @@ if (d[v]< d[u] + w(u,v)) {
 - soluzione ricorsiva: $d_w$[v] è la lunghezza del cammino minimo da s a v con al più w archi 
 	- $d_0$[v] vale 0 se v coincide con s, $\infty$ altrimenti 
 	- $d_w$[v]= min{$d_w$[v], $\min_{u\in \mathbb{Inc(V)} }$($d_{w-1}$[u] + w(u,v))} 
-	- Inc(v): insieme dei vertici da cui escono archi incidenti in v
+	- $\mathbb{Inc(V)}$: insieme dei vertici da cui escono archi incidenti in v
 **Calcolo bottom-up:** 
 - vettori d e st delle distanze minime e dei predecessori opportunamente inizializzati 
 - |V|-1 passi 

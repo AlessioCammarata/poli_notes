@@ -18,10 +18,10 @@ Valore-sentinella per indicare l’assenza di un arco (peso inesistente):
 Per semplicità si considerano pesi interi e non reali.
 #### Approccio completo
 - Dati V vertici, l’alberi ricoprente avrà esattamente V-1 archi 
-- si esplorano tutte le maniere di raggruppare V-1 archi scelti dagli Earchi del grafo 
+- si esplorano tutte le maniere di raggruppare V-1 archi scelti dagli E archi del grafo 
 	- l’ordine non conta (combinazioni)
 	- condizione di accettazione: verifica di copertura e di aciclicità
-	- problema di ottimizzazione: si considerano tutte le soluzioni e sisceglie la migliore 
+	- problema di ottimizzazione: si considerano tutte le soluzioni e si sceglie la migliore 
 - costo: esponenziale.
 
 >Creo le combinazione di ogni archi e poi considero se sto toccando tutti i vertici e anche che non ci siano archi Back (condizione aciclicità).
@@ -47,7 +47,7 @@ Algoritmo generico:
 
 ###### Tagli e Archi
 Dato G=(V,E) grafo non orientato, pesato, connesso, si definisce **taglio** una partizione di V in S e V-S 
-					V = S  V-S && S  V-S = $\empty$ 
+					V = S $\cup$ V-S && S $\cap$ V-S = $\emptyset$ 
 tale che se (u,v) $\in$ E attraversa il taglio allora 
 					u$\in$S && v$\in$V-S (o viceversa) 
 
@@ -61,7 +61,7 @@ Dati:
 - G=(V,E) grafo non orientato, pesato, connesso 
 - A sottoinsieme degli archi 
 se: 
-- A $\incluso$ E è contenuto in un qualche albero ricoprente minimo di G. Inizialmente A è vuoto 
+- A $\subseteq$ E è contenuto in un qualche albero ricoprente minimo di G. Inizialmente A è vuoto 
 - (S,V-S) è un taglio qualunque **che rispetta A** (Significa che gli archi in A non attraversano il taglio) 
 - (u,v) è un **arco leggero** che attraversa (S,V-S) 
 
@@ -72,8 +72,8 @@ Dati:
 - G=(V,E) grafo non orientato, pesato, connesso 
 - A sottoinsieme degli archi 
 se: 
-- A $\incluso$ E è contenuto in un qualche albero ricoprente minimo di G. Inizialmente A è vuoto 
-- C è un albero nella foresta GA = (V,A) 
+- A $\subseteq$ E è contenuto in un qualche albero ricoprente minimo di G. Inizialmente A è vuoto 
+- C è un albero nella foresta $G_A$ = (V,A) 
 - (u,v) è un arco leggero che connette C ad un altro albero in $G_A$
 allora 
 							**(u,v) è sicuro per A.**
@@ -103,7 +103,7 @@ Dato un insieme di N elementi denominati da 0 a N-1:
 
 ###### ADT di I classe UF 
 Versione con weighted quick-union 
-- quick-union: un elemento punta a chi lo rappresenta, quindicomplessità O(1) 
+- quick-union: un elemento punta a chi lo rappresenta, quindi complessità O(1) 
 - find: percorrimento di una “catena” dall’elemento fino al rappresentante “ultimo” del sottoinsieme. Grazie al mantenimento dell’informazione sulla cardinalità dell’insieme che permette di fondere l’insieme a cardinalità minore in quello a cardinalità maggiore, generando un cammino di lunghezza logaritmica, la complessità è O(logN).
 ```c
 //UF.h
@@ -192,87 +192,45 @@ in quanto, ricordando che $|E| = O(|V|^2 )$ (grafo completo),
 $log|E| = O(log|V|^2 ) = O(2log|V|) = O(log|V|).$
 ##### Algoritmo di Prim (1956)
 - basato su algoritmo generico 
-- soluzione brute-force 
-- uso del teorema per determinare l’arco sicuro: 
-	- inizialmente S = $\empty$, poi S = {vertice di partenza} 
-	- iterazione: V-1 passi in cui si aggiunge 1 arco alla soluzione
+- **soluzione brute-force** 
+- uso del teorema per determinare l’arco sicuro:
+	- inizialmente S = $\emptyset$, poi S = {vertice di partenza} 
+	- **iterazione**: V-1 passi in cui si aggiunge 1 arco alla soluzione
 		- iterazione sugli archi per selezionarne 1: 
-			- selezionare quello di peso minimo tra gli archi che attraversano il taglio e aggiungerlo alla soluzione
+			- **selezionare quello di peso minimo** tra gli archi che attraversano il taglio e aggiungerlo alla soluzione
 			- in base al vertice in cui arriva l’arco, aggiornare S 
-		- terminazione: considerati tutti i vertici, quindi soluzione che contiene V-1 archi 
-		- versione semplice, ma non efficiente a causa del ciclo annidato sugli archi.
+	- **terminazione**: considerati tutti i vertici, quindi soluzione che contiene V-1 archi 
 
--  L’approccio incrementale consiste nell’aggiungere ad ogni passo un vertice v a S 
+>versione semplice, ma non efficiente a causa del **ciclo annidato** sugli archi.
+###### Algoritmo
+-  L’approccio incrementale consiste nell’**aggiungere** ad ogni passo un **vertice v a S** 
 - ciò che interessa è la distanza minima da ogni vertice ancora in V-S ai vertici già in S 
 - quando si aggiunge il vertice v a S, ogni vertice w in V-S può avvicinarsi ai vertici già in S 
-- non serve memorizzare la distanza tra w e tutti i vertici in S, basta quella minima e verificare se l’aggiunta di v a S la diminuisce, nel qual caso la si aggiorna.
+- **non serve memorizzare la distanza tra w e tutti i vertici in S,** basta quella minima e verificare se l’aggiunta di v a S la diminuisce, nel qual caso la si aggiorna.
 ###### Struttura dati
-- Grafo rappresentato come matrice delle adiacenze dove l’assenza di un arco si indica con maxWT anziché 0 
+- Grafo rappresentato come **matrice delle adiacenze** dove l’assenza di un arco si indica con maxWT anziché 0 
 - vettore st di G->V elementi per registrare per ogni vertice che appartiene ad S il padre 
-- vettore fringe (frangia) fr di G->V elementi per registrare per ogni vertice di V-S quale è il vertice di S più vicino. È dichiarato static in Graph.c
-- vettore wt di G->V+1 elementi per registrare: 
-	- per vertici di S il peso dell’arco al padre 
-	- per vertici di V-S il peso dell’arco verso il vertice di S più vicino 
-	- si considera un elemento fittizio con arco di peso maxWT
-	- il vettore è inizializzato con maxWT 
-- variabile min per il vertice in V-S più vicino a vertici di S.
+- **vettore fringe** (frangia) fr di G->V elementi per registrare per ogni vertice di V-S quale è il vertice di S più vicino. È dichiarato static in Graph.c
+- **vettore wt** di G->V+1 elementi per registrare: 
+	- per vertici di S il **peso dell’arco al padre** 
+	- per vertici di V-S il **peso dell’arco verso il vertice di S più vicino** 
+	- si considera un elemento fittizio con arco di peso **maxWT**
+	- il vettore è inizializzato con **maxWT** 
+- variabile **min** per il vertice in V-S più vicino a vertici di S.
 
 Azioni: 
-- ciclo esterno sui vertici prendendo di volta in volta quello a minima distanza (identificato da min) e aggiungendolo a S. Inizialmente min è il vertice 0 
-for (min=0; min!=G->V; ) { 
-	v=min; //Prendi il valore minimo
-	st[min]=fr[min]; //Metti il padre nella frangia
-Notare che nel ciclo for non si incrementa min, min viene assegnato opportunamente nel corpo del ciclo.
-- ciclo interno sui vertici w non ancora in S (st[w]\==-1): (Non ancora presi)
-	- se l’arco (v,w) migliora la stima (if (G->madj[v][w]madj[v][w]) 
-		- la si aggiorna (wt[w] = G->madj[v][w])
+- ciclo **esterno** sui vertici **prendendo di volta in volta quello a minima distanza** (identificato da min) e aggiungendolo a S. Inizialmente min è il vertice 0 
+	for (min=0; min!=G->V; ) { 
+		v=min; //Prendi il valore minimo
+		st[min]=fr[min]; //Metti il padre nella frangia
+	Notare che nel ciclo for non si incrementa min, ma viene assegnato opportunamente nel corpo del ciclo.
+- ciclo **interno** sui vertici w non ancora in S (st[w]\==-1): (Non ancora presi)
+	- se l’arco (v,w) migliora la stima (if (G->madj\[v]\[w]madj\[v]\[w]) 
+		- la si aggiorna (wt[w] = G->madj\[v]\[w])
 		- e si indica che il vertice in S più vicino a w è v (fr[w] = v)
 	- se w è diventato il vertice più vicino a S (if (wt[w]<wt[min])), si aggiorna min (min=w).
 ```c
-void GRAPHmstP(Graph G) { //Wrapper
-	int v, *st, *wt, weight = 0; 
-	st = malloc(G->V*sizeof(int)); //Elementi padre
-	wt = malloc((G->V+1)*sizeof(int)); // Elementi peso + peso fittizio
-	 
-	mstV(G, st, wt); //Chiamata a Prim 
-	
-	printf("\nEdges in the MST: \n");
-	//Stampa
-	for (v=0; v < G->V; v++) { 
-		if (st[v] != v) { 
-			printf("(%s-%s)\n",STsearchByIndex(G->tab,st[v]),STsearchByIndex(G->tab,v));
-			weight += wt[v]; 
-		} 
-	} 
-	printf("\nminimum weight: %d\n", weight); 
-}
-
-void mstV(Graph G, int *st, int *wt) { 
-	int v, w, min, *fr = malloc(G->V*sizeof(int));
-	for (v=0; v < G->V; v++) { //Inizializziamo la fr
-		st[v] = -1; 
-		fr[v] = v; 
-		wt[v] = maxWT; //Peso iniziale massimo, qualsiasi arco è migliorativo
-	} 
-	//Parti da un nodo (in questo caso 0)
-	st[0] = 0; 
-	wt[0] = 0; 
-	wt[G->V] = maxWT; //Inizializzo il nodo fittizio
-	for (min = 0; min != G->V; ) { 
-		v = min; //Vertice di partenza
-		st[min] = fr[min]; 
-		for (w = 0, min = G->V; w < G->V; w++)
-	//Verifica nella matrice di adiacenza i collegamenti con v e gli altri vertici 
-			if (st[w] == -1) { 
-				if (G->madj[v][w] < wt[w]) { //Se il peso è minore 
-					wt[w] = G->madj[v][w]; // lo prendo
-					fr[w] = v; // metto v in fr[w], cosi in futuro passo da v
-				} 
-				if (wt[w] < wt[min]) //se il peso è piu piccolo di min aggiorna min
-					min = w; 
-			} 
-	} 
-}
+//Incremento il numero di nodi visti
 ```
 **Complessità:**
 Per grafi densi: 

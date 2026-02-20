@@ -83,11 +83,11 @@ void HEAPify(Heap h, int i) {
 	int l, r, largest; 
 	l = LEFT(i); 
 	r = RIGHT(i); 
-	if ((lheapsize) && KEYcmp(KEYget(h->A[l]),KEYget(h->A[i]))==1) 
+	if ((l<h->heapsize) && KEYcmp(KEYget(h->A[l]),KEYget(h->A[i]))==1) 
 		largest = l; 
 	else 
 		largest = i; 
-	if ((rheapsize) && KEYcmp(KEYget(h->A[r]), KEYget(h->A[largest]))==1)
+	if ((r<h->heapsize) && KEYcmp(KEYget(h->A[r]), KEYget(h->A[largest]))==1)
 		largest = r; 
 	if (largest != i) { 
 		Swap(h, i,largest); 
@@ -225,7 +225,7 @@ void PQdisplay(PQ pq) {
 ```
 ##### Funzione PQinsert
 - Aggiunge una foglia all’albero (cresce per livelli da SX a DX, rispettando la proprietà strutturale) 
-- Risale dal nodo corrente (inizialmente la foglia appena creata) fino al più alla radice. Confronta la chiave del datocontenuto nel padre con la chiave del dato da inserire, facendo scendere il dato del padre nel figlio se la chiave da inserire è maggiore, altrimenti inserisce il dato nel nodo corrente. 
+- Risale dal nodo corrente (inizialmente la foglia appena creata) fino al più alla radice. Confronta la chiave del dato contenuto nel padre con la chiave del dato da inserire, facendo scendere il dato del padre nel figlio se la chiave da inserire è maggiore, altrimenti inserisce il dato nel nodo corrente. 
 Complessità: **T(n) = O(lg n)**.
 ```c
 void PQinsert (PQ pq, Item val) { 
@@ -369,7 +369,7 @@ void PQchange (PQ pq, Item item) {
 	temp = pq->heap[pos]; 
 	temp.prio = prio; // new prio 
 	//Posizionamento corretto in risalita
-	while ((pos>=1) && (pq->heap[PARENT(pos)].index < prio)) {
+	while ((pos>=1) && (pq->heap[PARENT(pos)].prio < prio)) {
 		pq->heap[pos] = pq->heap[PARENT(pos)]; 
 		pq->qp[pq->heap[pos].index] = pos; 
 		pos = PARENT(pos); 

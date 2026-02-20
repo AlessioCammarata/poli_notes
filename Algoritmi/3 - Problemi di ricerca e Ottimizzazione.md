@@ -85,7 +85,7 @@ le **ripetizioni**: uno stesso oggetto del gruppo può o meno essere riusato pi�
 ##### Disposizione semplice
 Una disposizione semplice $D_{n,k}$ di n oggetti distinti di classe k è un sottoinsieme ordinato composto da k degli n oggetti. (0 <= k <= n). (==L'ordinamento conta no ripetizioni==)
 $$
-	D_{n,k} = \frac {n!}{(n-k!)} = n \cdot (n-1) \cdot ... \cdot (n-k+1)
+	D_{n,k} = \frac {n!}{(n-k)!} = n \cdot (n-1) \cdot ... \cdot (n-k+1)
 $$
 >Vi sono tutte quelle disposizioni che dipendono da n e k.
 >Due soluzioni sono diversi se hanno elementi diversi o se li ho presi in ordine differente.

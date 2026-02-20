@@ -1,7 +1,7 @@
 ##### Componenti connesse
 In un grafo non orientato: 
 - ogni albero della foresta della DFS è una componente connessa
-- cc[v] è un array locale a GRAPHcc che memorizza unintero che identifica ciascuna componente connessa. I vertici fungono da indici dell’array
+- cc[v] è un array locale a GRAPHcc che memorizza un intero che identifica ciascuna componente connessa. I vertici fungono da indici dell’array
 
 ```c
 void dfsRcc(Graph G, int v, int id, int *cc) { //Ricorsione
@@ -10,7 +10,7 @@ void dfsRcc(Graph G, int v, int id, int *cc) { //Ricorsione
 	for (t = G->ladj[v]; t != G->z; t = t->next) //Visita in profondita
 		if (cc[t->v] == -1) 
 			dfsRcc(G, t->v, id, cc); 
-	} 
+} 
 	
 int GRAPHcc(Graph G) { //Wrapper
 	int v, id = 0, *cc; 
@@ -24,10 +24,10 @@ int GRAPHcc(Graph G) { //Wrapper
 	for (v = 0; v < G->V; v++) //Stampo le componenti connesse
 		printf("node %s in cc %d\n",STsearchByIndex(G->tab,v),cc[v]);
 	return id; 
-	}
+}
 ```
 ##### Connettività
-Dato un grafo non orientato e connesso, determinare se perdela proprietà di connessione a seguito della rimozione di: 
+Dato un grafo non orientato e connesso, determinare se perde la proprietà di connessione a seguito della rimozione di: 
 - un arco 
 - un nodo. 
 
@@ -117,8 +117,8 @@ Algoritmo di Kosaraju (anni ’80):
 - eseguire DFS sul grafo trasposto, calcolando i tempi di scoperta e di fine elaborazione 
 - eseguire DFS sul grafo originale per tempi di fine elaborazione decrescenti 
 - gli alberi dell’ultima DFS sono le componenti fortemente connesse.
-- Le SCC sono classi di equivalenza rispetto alla proprietà di mutuaraggiungibilità 
-- Si può “estrarre” un grafo ridotto G’ considerando un vertice comerappresentativo di ogni classe 
+- Le SCC sono classi di equivalenza rispetto alla proprietà di mutua raggiungibilità 
+- Si può “estrarre” un grafo ridotto G’ considerando un vertice come rappresentativo di ogni classe 
 - Il grafo ridotto G’ è un DAG ed è detto “kernel DAG” del grafo G.
 ###### Grafo trasposto
 Dato un grafo orientato G=(V, E), il suo grafo trasposto GT =(V, ET) ètale per cui (u, v)  E  (v,u)  E T .
@@ -138,11 +138,12 @@ Graph Graphreverse(Graph G) {
 ##### Algoritmo e strutture dati
 - GRAPHscc è il wrapper con i vettori e le variabili locali passati byreference alla funzione ricorsiva SCCdfsR. 
 - in sccG[w] per ogni vertice si memorizza un intero che 
-	- identifica la componente fortemente connessa cui essoappartiene 
+	- identifica la componente fortemente connessa cui esso appartiene 
 	- marca anche se il vertice è stato visitato dalla DFS 
-- sccR[w] serve per marcare i vertici visitati dalla DFS del grafotrasposto 
-- time0 è il contatore del tempo che avanza solo quando di unvertice è terminata l’elaborazione (non serve il tempo di scoperta)
-- time1 è il contatore delle SCC  \*postR contiene per ogni valore del contatore di tempo time0 quale vertice è stato terminato a quel tempo 
+- sccR[w] serve per marcare i vertici visitati dalla DFS del grafo trasposto 
+- time0 è il contatore del tempo che avanza solo quando di un vertice è terminata l’elaborazione (non serve il tempo di scoperta)
+- time1 è il contatore delle SCC  
+- \*postR contiene per ogni valore del contatore di tempo time0 quale vertice è stato terminato a quel tempo 
 - l’istruzione post[(\*time0)++]=w registra che al tempo(\*time0) è stato terminato w, quindi c’è un implicito ordinamento per tempi di completamento crescenti 
 - percorrendo in discesa il vettore postR si considerano i vertici in ordine di tempo di fine elaborazione decrescente senza bisogno di un algoritmo di ordinamento 
 - \*postG viene introdotto soltanto per avere un’unica versione della funzione ricorsiva SCCdfsR utilizzabile sia sul grafo G, sia sul grafo trasposto GT.

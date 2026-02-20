@@ -19,7 +19,7 @@ passo precedente (cfr lucidi cap. 14).
 #include <stdlib.h>
 #include "grafo.h"
 
-#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L09/E01/grafo2.txt"
+#define nfin "D:/politecnico/poli_notes/Algoritmi/programmazione/scripts/L09/E01/grafo3.txt"
 #define NMAX 30
 
 static int find(vertex_t *nodes, int nn, char *id) {
@@ -31,7 +31,7 @@ static int find(vertex_t *nodes, int nn, char *id) {
 
 static void combinations(int *arr, int n, int k, int start, int *current, int idx, 
     edge_t *edges, graph_t graph, int ***solutions, int *nSol, int *minCard);
-static void findMinimalSets(edge_t *edges, int nEdges, graph_t graph, int ***solutions, int *nSol, int *minCard);
+static void findMinimalSets(edge_t *edges, int nEdges, graph_t graph, int ***solutions, int *nSol, int *minCard, graph_t *dag);
 
 int main(void){
     FILE *fin;
@@ -107,7 +107,7 @@ int main(void){
                 nSol = 0;
                 minCard = 0;
                 solutions = NULL;
-                findMinimalSets(edges, nEdges, graph, &solutions, &nSol, &minCard);
+                findMinimalSets(edges, nEdges, graph, &solutions, &nSol, &minCard, &dag);
                 break;
             case 2:
                 if (nSol == 0) {
@@ -231,7 +231,7 @@ static void combinations(int *arr, int n, int k, int start, int *current, int id
     }
 }
 
-static void findMinimalSets(edge_t *edges, int nEdges, graph_t graph, int ***solutions, int *nSol, int *minCard) {
+static void findMinimalSets(edge_t *edges, int nEdges, graph_t graph, int ***solutions, int *nSol, int *minCard, graph_t *dag) {
     int *backEdges = malloc(nEdges * sizeof(int));
     int nBack = 0;
     
@@ -242,6 +242,7 @@ static void findMinimalSets(edge_t *edges, int nEdges, graph_t graph, int ***sol
     if (nBack == 0) {
         printf("\nIl grafo è già un DAG!\n");
         free(backEdges);
+        *dag = graph;
         return;
     }
     
