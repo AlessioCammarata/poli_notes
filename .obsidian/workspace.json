@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Database/2 - Modello Relazionale.md",
+                "file": "Database/3 - Entità-Relazione.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2 - Modello Relazionale"
+              "title": "3 - Entità-Relazione"
             }
           }
         ],
@@ -182,8 +182,23 @@
   },
   "active": "920f10f5475f78a5",
   "lastOpenFiles": [
-    "Untitled.md",
+    "Database/img/external_id_oss.png",
+    "Database/img/Screenshot 2026-03-02 142234.png",
     "Database/2 - Modello Relazionale.md",
+    "Identificatore.md",
+    "Database/3 - Entità-Relazione.md",
+    "Database/img/external_id.png",
+    "Database/img/Screenshot 2026-03-02 141958.png",
+    "Database/img/1-n.png",
+    "Database/img/1-1.png",
+    "Database/img/n-n.png",
+    "Pasted image 20260302124729.png",
+    "Pasted image 20260302124718.png",
+    "Pasted image 20260302124700.png",
+    "Database/Untitled.md",
+    "Database/img",
+    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
+    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
     "Database/1 - Introduzione.md",
     "Algoritmi/10 - ADT grafi.md",
     "Database",
@@ -200,13 +215,10 @@
     "Algoritmi/programmazione/preparazione_esame/BST/lib/BST.h",
     "Algoritmi/programmazione/preparazione_esame/BST/lib/BST.c",
     "Algoritmi/programmazione/preparazione_esame/Graph/lib/graph.exe",
-    "Algoritmi/programmazione/preparazione_esame/Graph/GRAPHmain.exe",
-    "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
     "Algoritmi/9 - Le tabelle di Hash.md",
     "Algoritmi/5 - Programmazione dinamica.md",
     "Algoritmi/6 - Il paradigma greedy.md",
     "Algoritmi/7 - Code a priorità e heap.md",
-    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
     "Algoritmi/programmazione/2 - Le liste.md",
     "Algoritmi/programmazione/6 - Tipi di Dato Astratto - ADT.md",
     "Algoritmi/programmazione/3 - Modularità.md",
@@ -216,13 +228,6 @@
     "README.md",
     "Untitled.canvas",
     "Algoritmi/img/torri di hanoi.png",
-    "Algoritmi/img/stack frame representation.png",
-    "Algoritmi/img/linked list.png",
-    "Algoritmi e strutture dati/1 - Ricorsione e paradigma divide et impera.md",
-    "Algoritmi e strutture dati/img/stack frame representation.png",
-    "Algoritmi e strutture dati/programmazione/1 - allocazione dinamica della memoria.md",
-    "Algoritmi e strutture dati/img/torri di hanoi.png",
-    "Algoritmi e strutture dati/Lezione  1.md",
-    "Algoritmi e strutture dati/Ricorsione e paradigma divide et impera.md"
+    "Algoritmi e strutture dati/1 - Ricorsione e paradigma divide et impera.md"
   ]
 }
