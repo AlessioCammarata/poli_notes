@@ -137,3 +137,38 @@ In pratica si suddivide un insieme in 2 o piu sottoinsiemi, per esempio l'insiem
 La generalizzazione è sempre parziale ed esclusiva.
 
 ---
+### Documentazione di schemi ER
+
+Dizionario dei dati: permette di arricchire lo schema E-R con descrizioni in linguaggio naturale di entità, relazioni e attributi.
+>Esempio:
+
+| Entità   | Descrizione                            | Attributi                                               | Identificatore  |
+| -------- | -------------------------------------- | ------------------------------------------------------- | --------------- |
+| Studente | Studente dell’università               | Matricola, Cognome, Nome, Crediti acquisiti, Media voti | Matricola       |
+| Docente  | Docente dell'università                | Codice docente, Dipartimento, Cognome, Nome             | Codcice docente |
+| Corso    | Corsi offerti dall’università          | Codice corso, Nome, Crediti                             | Codice corso    |
+| Tempo    | Date in cui sono stati sostenuti esami | Data                                                    | Data            |
+
+| Relazione | Descrizione                                                                         | Entità coinvolte                                 | Attributi |
+| --------- | ----------------------------------------------------------------------------------- | ------------------------------------------------ | --------- |
+| Esame     | Associa uno studente agli esami che <br>ha sostenuto e memorizza il voto conseguito | Studente (0,N), <br>Corso (0,N), <br>Tempo (1,N) | Voto      |
+| Titolare  | Associa ogni corso al suo docente titolare                                          | Corso (1,1), <br>Docente (0,N)                   |           |
+
+>Osservazione:
+>**Permette** di arricchire lo schema E-R con descrizioni in linguaggio naturale di entità, relazioni e attributi.
+
+##### Vincoli d'integrità sui dati
+>Non sempre possono essere indicati i ***vincoli d'integrità sui dati*** esplicitamente in uno schema E-R. Possono essere descritti in **linguaggio naturale**.
+
+|     | Vincoli d'integrità                                                                                                       |
+| --- | ------------------------------------------------------------------------------------------------------------------------- |
+| RV1 | Il voto di un esame può assumere esclusivamente valori compresi tra 0 e 30                                                |
+| RV2 | Ogni studente non può superare due volte con esito positivo lo stesso esame                                               |
+| RV3 | Uno studente non può sostenere più di tre volte l’esame relativo allo stesso corso nell’arco dello stesso anno accademico |
+##### Regole di derivazione dei dati
+Permettono di esplicitare che un concetto dello schema può essere ottenuto (mediante inferenza o calcolo aritmetico) da altri concetti dello schema.
+
+|     | Regole di derivazione                                                                                                                     |
+| --- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| RD1 | Il numero di crediti acquisiti da uno studente si ottiene sommando il numero di crediti dei corsi per cui lo studente ha superato l’esame |
+| RD2 | La media voti di uno studente di ottiene calcolando la media dei voti degli esami superati dallo studente                                 |
