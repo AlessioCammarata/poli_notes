@@ -77,3 +77,38 @@ Alternativa 3
 
 >Si effettua quando entrambe le entità partecipano con cardinalità massima pari a 1 alla relazione, ed **entrambe le entità partecipano opzionalmente** alla relazione (cardinalità minima pari a 0)
 ---
+#### Relazione ternaria
+Esempio:
+	Studente (~~Matricola~~, Nome, Cognome) 
+	Corso (~~CodC~~, Nome) 
+	Tempo (~~Data~~) 
+	Esame (~~Matricola, CodC, Data~~, Voto)
+>Abbiamo messo le chiavi all'interno della tabella dell'associazione, aggiungendo l'attributo proprio voto.
+>Aldilà delle tabelle le occorrenze sono rappresentate da una tabella che ha come PK le FK delle relazioni.
+
+### Traduzione di Entità con Identificatore Esterno
+Esempio:
+	Cinema (~~CodC~~, Nome, Indirizzo) 
+	Sala (~~Numero~~, ~~CodC~~, Capienza)
+>La relazione è rappresentata **insieme all’identificatore** 
+>La relazione contribuisce alla definizione dell’identificatore dell’**entità debole**.
+### Vincoli di integrità referenziale
+Esempio:
+	Studente (~~Matricola~~, Nome, Cognome) 
+	Corso (~~CodC~~, Nome) 
+	Esame (~~Matricola~~, ~~CodC~~, Voto)
+- Le relazioni rappresentano vincoli d’integrità referenziale
+Esame(Matricola) REFERENCES Studente(Matricola) 
+Esame(CodC) REFERENCES Corso(CodC)
+
+Esempio 2:
+	Stanza (~~CodStanza~~) 
+	Libreria (~~CodLibreria, CodStanza~~, Nome) 
+	Scaffale (~~CodScaffale, CodLibreria, CodStanza~~)
+
+>Nel caso la chiave referenziata sia costituita da più attributi il vincolo è imposto sull'insieme degli attributi 
+
+Libreria (CodStanza) REFERENCES Stanza (CodStanza) 
+Scaffale (CodLibreria, CodStanza) REFERENCES Libreria (CodLibreria, CodStanza)
+
+Ha piu FK perche fa riferimento ad una FK che compone la PK dell'altra relazione.
