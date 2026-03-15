@@ -114,6 +114,7 @@ struct node{
 	Item item; 
 	link2 l; 
 	link2 r;
+	link2 p;
     int count;
 };
 
@@ -816,4 +817,112 @@ int *getMax(int *heap, int *n){
     }
 
     return max;
+}
+
+//////////////////////////////////////
+
+/*
+Dato un grafo orientato e un sottoinsieme dei suoi vertici (passato, ad esempio, come un vettore di ID), 
+Cabodi ti chiede di verificare se quel sottoinsieme forma una singola
+*/
+
+graph_t GRAPHreverse(graph_t g){
+    graph_t R = GRAPHinit(g->V);
+    for(int i = 0; i<g->V; i++)
+        for(link x = g->ladj[i]; x != g->z; x = x->next){
+            GRAPHinsertE(R, x->info->id, i);
+        }
+    return R;
+}
+
+void dfs4(graph_t g, int id, int *val_id, int *visited, int *count){
+    visited[id] = 1;      // Lo marco come visitato
+    (*count)++;          // Incremento il numero di nodi raggiunti
+
+    for(link x = g->ladj[id]; x != g->z; x = x->next){
+        int w = x->info->id;
+        if(val_id[w] && !visited[w]){
+            dfs4(g, w, val_id, visited, count);
+        }
+    }
+    
+}
+
+int isSCC(graph_t g, int *ids, int n){
+    int *val_id = calloc(g->V,sizeof(int));
+    int *visited = malloc(g->V*sizeof(int));
+    int count;
+    for(int i = 0; i<n; i++)
+        val_id[ids[i]] = 1;
+
+    // for(int i = 0; i<n; i++){
+    //     count = 0;
+    //     for(int j = 0; j<g->V; j++)
+    //         visited[j] = 0;
+    //     dfs4(g, ids[i], val_id, visited, &count);
+
+    //     if(count != n){
+    //         free(val_id);
+    //         free(visited);
+    //         return 0; 
+    //     }
+    // }
+    //Oppure
+    dfs4(g, ids[0], val_id, visited, &count);
+
+    if(count != n){
+        free(val_id);
+        free(visited);
+        return 0; 
+    }
+
+    graph_t R = GRAPHreverse(g);
+    count = 0;
+    for(int i = 0; i<g->V; i++)
+        visited[i] = 0;
+    dfs4(R, ids[0], val_id, visited, &count);
+
+    if(count != n){
+        free(val_id);
+        free(visited);
+        GRAPHfree(R); //Devi liberare il grafo
+        return 0; 
+    }
+
+    free(visited); free(val_id);
+    GRAPHfree(R); //Devi liberare il grafo
+    return 1;
+}
+
+// Controlla cammino chiuso e senza sottocicli
+int checkPath(graph_t g, int *ids, int n){
+    if(n < 2 || ids[0] != ids[n-1]) return 0;
+    int *visited = calloc(g->V,sizeof(int));
+    
+    for(int i = 1; i<n; i++){
+        int u = ids[i-1];
+        int v = ids[i];
+
+        if(visited[u]){
+            free(visited);
+            return 0;
+        }
+        visited[u] = 1;
+
+        int found = 0;
+        for(link x = g->ladj[u]; x != g->z && !found; x = x->next){
+            int w = x->info->id;
+            if(w == v && !visited[w]){
+                found = 1;
+            }
+        }
+
+        if(!found){
+            free(visited);
+            return 0;
+        }
+    }
+
+    free(visited);
+    return 1;
 }
