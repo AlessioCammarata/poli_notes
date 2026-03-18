@@ -76,3 +76,62 @@ Tutte le proprietà delle entità figlie si spostano nell'entità padre, le rela
 - Ogni attributo che si sposta dal figlio al padre ha **cardinalità minima 0**
 - Anche l'associazione adesso che coinvolge l'intero personale adesso ha **cardinalità minima 0** 
 - Si aggiunge un informazione per descrivere il tipo di persona (etichetta per distinguere il personale)
+![[accorpamento_padre.png]]
+##### Eliminazione del padre
+L’accorpamento dell’entità padre nelle entità figlie è appropriato quando 
+- la **generalizzazione è totale** 
+- le operazioni d’accesso distinguono tra occorrenze delle diverse entità figlie (accesso più efficiente)
+Nell'esempio la minima diventa 0 perché non è detto che un medico debba essere associato ad un reparto a cui è associato un volontario perciò non ha senso avere 1 ma **la minima diventa 0**.
+![[kill_padre.png]]
+
+>Non adatta per **copertura parziale** 
+>- Possibilità di trasformarla in copertura totale aggiungendo un’entità figlia «Altri».
+>Non stai rappresentando l'insieme completo mancano le altre rappresentanze.
+>
+>Non adatta per **copertura sovrapposta** 
+>- Problema con ***identificatori duplicati***.
+>Persone possono essere sia medici che volontari e quindi andranno in entrambe le tabelle.
+##### Soluzioni miste
+Le operazioni d’accesso distinguono tra occorrenze di alcune entità figlie (accesso più efficiente)
+
+Si mantengono sia le entità figlie sia le padre, ma stabilisco un collegamento (associazione) che rappresenta l'appartenenza (per esempio personale is a medico o personale is a volontario).
+![[padre&figli.png|645]]
+>Utilizzo un identificatore esterno perciò, verso i figli mentre verso il padre la cardinalità sarà (0,1) perché appunto può appartenere o no.
+
+Soluzione più generale e sempre applicabile 
+- può essere dispendiosa per ricostruire l’informazione di partenza
+---
+>**Per le generalizzazioni a più livelli, si procede nello stesso modo, partendo dal livello inferiore**.
+---
+#### Analisi delle ridondanze
+Rappresentano informazioni significative, ma derivabili da altri concetti 
+- decisione se conservarle 
+**Effetti delle ridondanze sullo schema logico** 
+- semplificazione e velocizzazione delle interrogazioni 
+- maggiore complessità e rallentamento degli aggiornamenti 
+- maggiore occupazione di spazio
+
+Esempio:
+	L’attributo Media_voti è ridondante 
+	- utile per velocizzare le interrogazioni relative al calcolo della media dei voti degli studenti 
+	- se conservato, occorre integrare lo schema relazionale con l’indicazione di ridondanza dell’attributo
+![[redundancy.png]]
+
+---
+#### Partizionamento di concetti
+Partizionamento di entità o relazioni 
+- rappresentazione migliore di concetti separati 
+- separazione di attributi di uno stesso concetto che sono utilizzati da operazioni diverse 
+- maggiore efficienza delle operazioni
+
+>Raramente lo incontrerai.
+---
+#### Scelta degli identificatori primari 
+Necessaria per definire la chiave primaria delle tabelle 
+Un buon identificatore:
+- **non assume valore nullo** 
+- è costituito da **pochi attributi** (meglio 1!) 
+- **possibilmente è interno** 
+- è utilizzato da molte operazioni d’accesso 
+
+Può essere opportuno introdurre codici identificativi.

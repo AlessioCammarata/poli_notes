@@ -14,6 +14,7 @@ Gli appunti sono organizzati in sezioni tematiche per facilitare la consultazion
 - **Programmazione e Strutture Dati**
   - Tecniche di Programmazione (C)
   - Algoritmi e Strutture Dati
+  - Basi di dati
 
 ## Aggiornamenti
 Gli appunti vengono aggiornati regolarmente per includere nuove lezioni, approfondimenti e chiarimenti.
