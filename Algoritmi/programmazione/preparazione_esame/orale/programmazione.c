@@ -926,3 +926,53 @@ int checkPath(graph_t g, int *ids, int n){
     free(visited);
     return 1;
 }
+
+/////////////////////////////////////////////////////////////
+
+/*
+MCD
+Bellman-Ford
+*/
+
+/*
+Cancellare i nodi che hanno un solo figlio.
+Date due liste ordinate di interi, (rappresentano degli insiemi), 
+ritornare una terza lista che contiene gli elementi della
+prima che non appartengono alla seconda
+*/
+
+// typedef struct ListNode *link3;
+// struct ListNode{
+//     int id;
+//     link3 next;
+// };
+
+// typedef struct LinkedList *LL;
+// struct LinkedList{
+//     link3 head;
+//     int N;
+// };
+
+LL getDiff(LL list1, LL list2){
+    if(list1->head == NULL || list2->head == NULL) return NULL;
+    LL list3 = malloc(sizeof(*list3));
+    list3->head = NULL;
+    list3->N = 0;
+
+    link3 prev = NULL;
+    for(link3 x = list1->head, y = list2->head; x != NULL && y != NULL;){
+        if(x->id == y->id){
+            if(prev == NULL)
+                list3->head = x;
+            else
+                prev->next = x;
+        }else if(x->id > y->id){
+            x = x->next;
+        }else
+            y = y->next;
+            
+    }
+
+
+    return list3;
+}
