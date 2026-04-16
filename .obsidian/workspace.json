@@ -13,15 +13,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Database/8 - SQL.md",
+                "file": "Database/Esercizi SQL.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "8 - SQL"
+              "title": "Esercizi SQL"
+            }
+          },
+          {
+            "id": "ef24171b705d2b34",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Database/9 - Interrogazioni Nidificate.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "9 - Interrogazioni Nidificate"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -165,14 +180,21 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6f3819156295c5b1",
+  "active": "ef24171b705d2b34",
   "lastOpenFiles": [
+    "Database/Esercizi SQL.md",
+    "Database/9 - Interrogazioni Nidificate.md",
+    "Untitled.base",
+    "Algoritmi/programmazione/scripts/Consegne/s340616_3.zip",
+    "Algoritmi/programmazione/scripts/Consegne/s340616_2.zip",
+    "Algoritmi/programmazione/scripts/Consegne/s340616_1.zip",
+    "Algoritmi/programmazione/scripts/Consegne",
+    "Database/8 - SQL.md",
+    "Database/7 - Algebra relazionale.md",
+    "verilog/appunti L10-verilog.md",
     "verilog/appunti L11-verilog-memorie-testbench.md",
     "assembly/1 - Esercitazione.md",
-    "Database/8 - SQL.md",
     "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
-    "verilog/appunti L10-verilog.md",
-    "Database/7 - Algebra relazionale.md",
     "verilog",
     "Database/6 - Gestione del tempo.md",
     "Database/img/binary_relationship.png",
@@ -206,13 +228,6 @@
     "Algoritmi/14 - Cammini minimi.md",
     "Algoritmi/8 - Alberi binari di ricerca.md",
     "Algoritmi/programmazione/preparazione_esame/prove_esame/prova9.c",
-    "Algoritmi/programmazione/preparazione_esame/BST/BSTmain.exe",
-    "Algoritmi/programmazione/preparazione_esame/BST/lib/OSBST.h",
-    "Algoritmi/programmazione/preparazione_esame/BST/lib/OSBST.c",
-    "Algoritmi/programmazione/preparazione_esame/BST/BSTmain.c",
-    "Algoritmi/programmazione/preparazione_esame/BST/lib/BST.h",
-    "Algoritmi/9 - Le tabelle di Hash.md",
-    "Algoritmi/5 - Programmazione dinamica.md",
     "Untitled.canvas"
   ]
 }
