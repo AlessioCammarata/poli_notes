@@ -22,7 +22,7 @@
             }
           },
           {
-            "id": "ef24171b705d2b34",
+            "id": "4e1df88e9e7ea455",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -35,8 +35,7 @@
               "title": "9 - Interrogazioni Nidificate"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -180,10 +179,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "ef24171b705d2b34",
+  "active": "6f3819156295c5b1",
   "lastOpenFiles": [
-    "Database/Esercizi SQL.md",
     "Database/9 - Interrogazioni Nidificate.md",
+    "Database/Esercizi SQL.md",
     "Untitled.base",
     "Algoritmi/programmazione/scripts/Consegne/s340616_3.zip",
     "Algoritmi/programmazione/scripts/Consegne/s340616_2.zip",
