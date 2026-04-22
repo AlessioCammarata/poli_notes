@@ -22,7 +22,7 @@
             }
           },
           {
-            "id": "8f259c90d83bc663",
+            "id": "4e1df88e9e7ea455",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -35,8 +35,7 @@
               "title": "Esercizi"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -180,14 +179,10 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "8f259c90d83bc663",
+  "active": "6f3819156295c5b1",
   "lastOpenFiles": [
-    "Database/10 - Interrogazioni avanzate.md",
-    "Database/Esercizi.md",
-    "Database/Esercizi SQL.md",
     "Database/9 - Interrogazioni Nidificate.md",
-    "verilog/appunti L10-verilog.md",
-    "verilog/appunti L11-verilog-memorie-testbench.md",
+    "Database/Esercizi SQL.md",
     "Untitled.base",
     "Algoritmi/programmazione/scripts/Consegne/s340616_3.zip",
     "Algoritmi/programmazione/scripts/Consegne/s340616_2.zip",
