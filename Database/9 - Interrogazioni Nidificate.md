@@ -166,4 +166,59 @@ WHERE NOT EXISTS (SELECT *
 					WHERE CodP='P2' AND FP.CodF=F.CodF);
 ```
 >La condizione di correlazione **lega la computazione dell’interrogazione nidificata** al valore di uno o più attributi dell’interrogazione più esterna.
+---
+#### Correlazione tra interrogazioni
+Può essere necessario **legare la computazione di un'interrogazione nidificata** al valore di uno o più attributi in un'interrogazione più esterna, il legame è espresso da **una o più condizioni di correlazione**.
+Una condizione di correlazione:
+- è indicata nella **clausola WHERE** dell'interrogazione nidificata che la richiede 
+- è un predicato che lega attributi di tabelle nella **FROM dell'interrogazione nidificata** con attributi di tabelle nella **FROM di interrogazioni più esterne** 
+Non si possono esprimere condizioni di correlazione:
+- in interrogazioni allo stesso livello di nidificazione 
+- contenenti riferimenti ad attributi di una tabella nella FROM di un'interrogazione nidificata
 
+Esempio:
+	Per ogni prodotto, trovare il codice del fornitore che ne fornisce la quantità massima
+```sql
+SELECT CodP, CodF 
+FROM FP AS FPX 
+WHERE Qta = (SELECT MAX(Qta) 
+			FROM FP AS FPY 
+			WHERE FPY.CodP=FPX.CodP);
+```
+Esempio 2:
+VIAGGIO (CodV, LuogoPartenza, LuogoArrivo, OraPartenza, OraArrivo)
+	Trovare il codice dei viaggi che hanno una durata inferiore alla durata media dei viaggi sullo stesso percorso (caratterizzato dallo stesso luogo di partenza e di arrivo)
+```sql
+SELECT V1.CodV 
+FROM VIAGGIO AS V1 
+WHERE V1.OraArrivo-V1.OraPartenza < (SELECT AVG(V2.OraArrivo-V2.OraPartenza) 
+								FROM VIAGGIO AS V2
+								WHERE V2.LuogoPartenza = V1.LuogoPartenza 
+									AND V2.LuogoArrivo = V1.LuogoArrivo);
+```
+#### Operazione di divisione
+Nel linguaggio SQL, l’operazione di divisione può essere realizzata mediante l'operatore **COUNT**, per verificare che gli elementi di interesse appartengano tutti all'insieme di riferimento.
+
+Esempio:
+	Trovare il codice dei fornitori che forniscono tutti i prodotti
+```sql
+SELECT CodF
+FROM FP
+GROUP BY CodF
+HAVING COUNT(*) = (SELECT COUNT(*) 
+		FROM P);
+```
+Esempio 2:
+	Trovare il codice dei fornitori che forniscono almeno tutti i prodotti forniti dal fornitore F2
+```sql
+SELECT CodF
+FROM FP
+WHERE CodP IN (SELECT CodP
+			FROM FP
+			WHERE CodF = 'F2')
+GROUP BY CodF
+HAVING COUNT(*) = (SELECT COUNT(*) 
+					FROM FP
+					WHERE CodF = 'F2');
+```
+>In pratica prima seleziono i prodotti che sono forniti da F2, e poi raggruppando per CodF conto per ogni CodF quanti prodotti fornisce che sono forniti anche da F2.
