@@ -35,7 +35,8 @@
               "title": "Esercizi"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -179,8 +180,9 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "6f3819156295c5b1",
+  "active": "4e1df88e9e7ea455",
   "lastOpenFiles": [
+    "Database/10 - Interrogazioni avanzate.md",
     "Database/9 - Interrogazioni Nidificate.md",
     "Database/Esercizi SQL.md",
     "Untitled.base",
