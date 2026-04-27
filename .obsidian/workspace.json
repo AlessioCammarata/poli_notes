@@ -4,39 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "36fbce0b35d7a8d5",
+        "id": "1374ded41eae5684",
         "type": "tabs",
         "children": [
           {
-            "id": "fb3b17e5ff1f3614",
+            "id": "6e60b54e9b787838",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Database/10 - Interrogazioni avanzate.md",
+                "file": "Database/13 - Costrutti Avanzati.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "10 - Interrogazioni avanzate"
-            }
-          },
-          {
-            "id": "4e1df88e9e7ea455",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Database/Esercizi.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Esercizi"
+              "title": "13 - Costrutti Avanzati"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -93,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "ed1933459f3df990",
@@ -180,9 +164,16 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "4e1df88e9e7ea455",
+  "active": "6e60b54e9b787838",
   "lastOpenFiles": [
+    "Database/12 - Gestione delle Tabelle.md",
+    "Database/13 - Costrutti Avanzati.md",
+    "Database/6 - Gestione del tempo.md",
+    "Database/7 - Algebra relazionale.md",
+    "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
+    "Database/11 - Manipolazione dei Dati.md",
     "Database/10 - Interrogazioni avanzate.md",
+    "Database/Esercizi.md",
     "Database/9 - Interrogazioni Nidificate.md",
     "Database/Esercizi SQL.md",
     "Untitled.base",
@@ -191,11 +182,9 @@
     "Algoritmi/programmazione/scripts/Consegne/s340616_1.zip",
     "Algoritmi/programmazione/scripts/Consegne",
     "Database/8 - SQL.md",
-    "Database/7 - Algebra relazionale.md",
     "assembly/1 - Esercitazione.md",
     "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
     "verilog",
-    "Database/6 - Gestione del tempo.md",
     "Database/img/binary_relationship.png",
     "Informatica/7 - Cicli.md",
     "Informatica/1 - Introduzione alla programmazione.md",
@@ -214,7 +203,6 @@
     "Database/img/1-n.png",
     "Database/img/esempio_ristrutturazione.png",
     "Database/3 - Entità-Relazione.md",
-    "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
     "Database/2 - Modello Relazionale.md",
     "Database/img",
     "Algoritmi/3 - Problemi di ricerca e Ottimizzazione.md",
@@ -223,7 +211,6 @@
     "Database",
     "Algoritmi/12 - applicazioni algoritmi di visita dei grafi.md",
     "Algoritmi/11 - Gli algoritmi di visita dei grafi.md",
-    "Algoritmi/13 - Alberi ricoprenti minimi.md",
     "Algoritmi/programmazione/preparazione_esame/prove_esame/prova9.c",
     "Untitled.canvas"
   ]

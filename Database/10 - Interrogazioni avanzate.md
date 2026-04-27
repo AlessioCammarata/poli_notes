@@ -144,5 +144,13 @@ FROM distanzaMedia
 GROUP BY Provincia;
 ```
 ###### CTE ricorsive
+Non serve saperle
+
+#### Query Spaziali
+Si possono fare su DBMS che accettano dati spaziali, per esempio in MySQL.
+
+#### Query JSON
+Dati rappresentati attraverso file JSON.
+Vengono di solito utilizzati nei **DBMS NO-SQL.**
 
 ---
