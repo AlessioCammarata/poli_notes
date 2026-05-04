@@ -96,7 +96,7 @@ L'azione è
 - un blocco PL/SQL
 >Nessuna istruzione transazionale e DDL.
 
->Nel corpo del trigger puoi vedere i dati delle tuple, quindi puoi mettere delle condizioni nel trigger che le riguardano, si ha visibilità dello stato prima OLD dell'evento e dopo NEW.
+>Nel corpo del trigger puoi vedere i dati delle tuple, quindi puoi mettere delle condizioni nel trigger che le riguardano, si ha visibilità dello stato prima **OLD** dell'evento e dopo **NEW**.
 >So quali modifiche l'evento ha apportato alla tabella.
 
 >Se la istruzione è a livello di istruzione posso eseguire delle Query sull'intera tabella, mentre a livello di tupla no, per esempio delle SELECT.
