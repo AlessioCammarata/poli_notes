@@ -103,4 +103,52 @@ L'azione è
 >Non so quali modifiche l'evento ha apportato alla tabella.
 
 ---
+#### Algoritmo di esecuzione
+È possibile che ad una tabella siano associati piu trigger di stesso tipo o diverso, che avvengono quaindi in contemporanea.
+Per questo motivo c'è un ordine in cui vengono eseguiti:
+1. Vengono eseguiti i trigger di tipo **before** a **livello di istruzione**
+2. Per ogni tupla nella tabella target (TargetTable) interessata dall'istruzione di trigger 
+	a) Vengono eseguiti i trigger di tipo **before a livello di tupla** 
+	b) Viene eseguita **l'istruzione di attivazione** + i **vincoli di integrità definiti a livello di tupla** (CHECK o PRIMARY KEY, ecc)
+	c) Vengono eseguiti i trigger di tipo **after a livello di tupla**
+3. Vengono controllati i **vincoli di integrità** sulle **tabelle** (CHECK o PRIMARY KEY, ecc)
+4. Vengono eseguiti i trigger di tipo **after a livello di istruzione**
+
+>Vengono eseguiti prima i before e poi gli after.
+>Il trigger before di istruzione è il primo, prima dell'evento, quando poi finisce comincia l'esecuzione dell'evento (Che puo modificare piu tuple).
+>Per ogni tupla avviene il before della tupla, poi viene modificate e poi l'after di tupla.
+>Dopo tutti i trigger di tupla, si controllano i vincoli d'integrità e poi si eseguono i trigger after di istruzione.
+###### Piu trigger dello stesso tipo
+L'ordine di esecuzione di trigger con lo stesso evento, la stessa modalità e la stessa granularità non viene specificato 
+- è una fonte di non determinismo
+>A volte il primo a volte il secondo, non è detto.
+
+Quando si verifica un errore 
+- **rollback** di tutte le operazioni eseguite dai trigger 
+- **rollback** dell'istruzione di attivazione nella transazione di attivazione
+###### Non terminazione
+L'esecuzione di un trigger può attivare altri trigger, l'attivazione di trigger in cascata può portare alla non terminazione dell'esecuzione del trigger.
+È possibile impostare una lunghezza massima per l'esecuzione di trigger in cascata 
+- default = 32 trigger 
+Se il limite massimo viene superato, viene restituito un errore di esecuzione
+##### Tabelle mutanti
+Una **tabella mutante** è la tabella target modificata dall'istruzione (cioè dall'evento) che attiva il trigger.
+La tabella mutante 
+- **non** è accessibile nei trigger a livello di riga 
+- può essere accessibile solo nei trigger di istruzione 
+L'accesso limitato alle tabelle mutanti caratterizza solo le applicazioni Oracle, l'accesso alle tabelle mutanti è **sempre permesso in SQL3**.
+### Progettazione dei trigger
+La progettazione di un singolo trigger è solitamente semplice. 
+Bisogna identificare 
+- semantica di esecuzione 
+- evento 
+- condizione (opzionale) 
+- azione
+###### Bisogna garantire la terminazione
+La terminazione è garantita in fase di esecuzione, interrompendo l'esecuzione del trigger dopo un determinato numero di attivazione di trigger in cascata.
+La terminazione può essere verificata in fase di progettazione mediante il grafo di attivazione dei trigger 
+- un nodo per ogni trigger 
+- un arco diretto $T_i \ T_j$ se il trigger $T_i$ sta eseguendo un'azione che innesca il trigger $T_j$ 
+
+>Un **ciclo** nel grafo mostra esecuzioni che potrebbero causare una condizione di non terminazione.
 

@@ -146,6 +146,8 @@ Occorre notificare l'esito dell'operazione, sia che la borsa di studio sia stata
 L'attributo CodN è un contatore che viene incrementato ogni volta che viene inserita una nuova notifica. 
 Se la borsa di studio è assegnata, si deve aggiornare la tabella BORSE_STUDIO_ASSEGNATE.
 
+- **verifica di correttezza e eventuale correzione del seguente vincolo.** 
+Per ciascuna borsa di studio offerta, il numero di ore previsto deve essere pari ad almeno 15 ore. Se viene offerta una borsa di studio con un numero di ore inferiore a 15, il valore deve essere assegnato a 15.
 #### Svolgimento
 
 ##### Inserimento
@@ -193,5 +195,178 @@ BEGIN
 	--Calcolo punteggio ed inserimento
 	INSERT INTO GRADUATORIA_STUDENTI (Matricola, Punteggio) 
 	VALUES (:NEW.Matricola, Media * AnniIscrizione);
+END;
+```
+#### Assegnazione
+```plsql
+--STUDENTE(Matricola, NomeStudente, Annolmmatricolazione, CorsoLaurea) 
+--CORSO(CodCorso, NomeCorso, NumeroCrediti) 
+--ESAMI_SOSTENUTI(CodCorso,Matricola, Data, Voto) 
+--GRADUATORIA_STUDENTI(Matricola, Punteggio) 
+--BORSE_STUDIO_ASSEGNATE (CodBorsa, Matricola, NumeroOre) 
+--DOMANDA_INSERIMENTO_GRADUATORIA(Matricola, Data Domanda) 
+--OFFERTA_BORSA_STUDIO(CodBorsa,CodCorso, NumeroOre) 
+--NOTIFICA_INFORMAZIONI(CodN, CodBorsa, Matricola*, Messaggio)
+CREATE OR REPLACE TRIGGER offerta_borsa
+AFTER INSERT ON OFFERTA_BORSA_DI_STUDIO
+FOR EACH ROW --Devo calcolare il punteggio
+DECLARE 
+	max_punteggio NUMBER; --Punteggio massimo
+	StudentID number; --Studente che vince la borsa
+	MAXN number; --Per memorizzare CodN
+BEGIN 
+	--Calcolo il punteggio massimo tra gli studenti che hanno i requisiti
+		--1. Superato l'esame per il corso oggetto della borsa
+		--2. Complessivamente non svolga piu di 150 ore sulle borse assegnate
+	SELECT MAX(Punteggio) INTO MaxPunteggio
+	FROM GRADUATORIA_STUDENTI
+	WHERE Matricola IN (
+	-- Requisito 1: Ha superato l'esame specifico
+				SELECT  Matricola
+				FROM ESAMI_SOSTENUTI
+				WHERE Voto >= 18 AND CodCorso = :NEW.CodCorso
+	) AND Matricola NOT IN (
+	-- Requisito 2: Non supera le 150 ore totali (considerando le già assegnate)
+				SELECT Matricola
+				FROM BORSE_STUDIO_ASSEGNATE
+				GROUP BY Matricola
+				HAVING SUM(NumeroOre) + :NEW.NumeroOre > 150
+	);
+	
+	if (MAXN IS NULL)
+		MAX := 0;
+	end if
+	
+	if(MaxPunteggio IS NOT NULL) then
+	--Se esiste un elemento eleggibile, seleziono quello con punteggio massimo
+		SELECT Matricola INTO StudentID
+		FROM GRADUATORIA_STUDENTI
+		WHERE Matricola IN (
+		-- Requisito 1: Come prima
+					SELECT  Matricola
+					FROM ESAMI_SOSTENUTI
+					WHERE Voto >= 18 AND CodCorso = :NEW.CodCorso
+		) AND Matricola NOT IN (
+		-- Requisito 2: Come prima
+					SELECT Matricola
+					FROM BORSE_STUDIO_ASSEGNATE
+					GROUP BY Matricola
+					HAVING SUM(NumeroOre) + :NEW.NumeroOre > 150
+		) AND Punteggio = MaxPunteggio;
+	
+		SELECT MAX(CodN) INTO MAXN
+		FROM NOTIFICA_INFORMAZIONI;
+	
+	--Se esiste un elemento eleggibile
+		--Assegno la borsa inserendo un record in BORSE_ASSEGNATE
+		--notifico che la borsa è stata assegnata (NOTIFICA_INFORMAZIONI)
+	
+		insert into BORSE_STUDIO_ASSEGNATE (CodBorsa, Matricola, NumeroOre)
+		VALUES (:NEW.CodBorsa, StudentID, :NEW.NumeroOre);
+		
+		insert into NOTIFICA_INFORMAZIONI (CodN, CodBorsa, Matricola, Messaggio)
+		VALUES (MAXN + 1, :NEW.CodBorsa, StudentID, 'Borsa assegnata');
+	else
+	--Altrimenti notifico che la borsa non è assegnata (NOTIFICA_INFORMAZIONI)
+		INSERT INTO NOTIFICA_INFORMAZIONI (CodN, CodBorsa, Matricola, Messaggio) VALUES (MAXN + 1, :NEW.CodBorsa, NULL, 'Borsa non assegnata per mancanza di requisiti');
+	end if;
+END;
+```
+#### Verifica
+```plsql
+--STUDENTE(Matricola, NomeStudente, Annolmmatricolazione, CorsoLaurea) 
+--CORSO(CodCorso, NomeCorso, NumeroCrediti) 
+--ESAMI_SOSTENUTI(CodCorso,Matricola, Data, Voto) 
+--GRADUATORIA_STUDENTI(Matricola, Punteggio) 
+--BORSE_STUDIO_ASSEGNATE (CodBorsa, Matricola, NumeroOre) 
+--DOMANDA_INSERIMENTO_GRADUATORIA(Matricola, Data Domanda) 
+--OFFERTA_BORSA_STUDIO(CodBorsa,CodCorso, NumeroOre) 
+--NOTIFICA_INFORMAZIONI(CodN, CodBorsa, Matricola*, Messaggio)
+CREATE TRIGGER verifica_ore_offerta_borsa
+Before INSERT OR MODIFY of NumeroOre ON OFFERTA_BORSA_DI_STUDIO
+FOR EACH ROW --Devo controllare la singola tupla
+WHEN :NEW.NumeroOre < 15
+BEGIN 
+	--Assegno il valore minimo
+	:NEW.NumeroOre := 15;
+END;
+```
+
+per ciascun corso le borse di studio offerte per il corso non possono superare complessivamente un monte ore pari a 300.
+```plsql
+CREATE TRIGGER verifica_ore_offerta_borsa
+After INSERT OR MODIFY of NumeroOre ON OFFERTA_BORSA_DI_STUDIO
+BEGIN 
+	--Assegno il valore minimo
+
+END;
+```
+
+---
+### Richiesta Ferie
+#### Consegna
+PERSONA (Matricola, Mansione) 
+TIPO-TURNO (CodT, Oralnizio, Durata) 
+TURNO (Matricola, Data, CodT) 
+NOTIFICA (Matricola, Data, EsitoRichiesta) 
+RICHIESTA-FERIE(CodR, Matricola, Data)
+
+Scrivere il trigger per gestire le richieste di un giorno di ferie da parte delle persone che lavorano in un ospedale (inserimento nella tabella RICHIESTA-FERIE). 
+
+La richiesta di ferie viene accettata se la persona che la inoltra non è di turno nel giorno di ferie richiesto (tabella TURNO). 
+Altrimenti, se la persona è di turno in quel giorno, la richiesta di ferie è accettata solo se esiste un'altra persona che può sostituirla per il turno. 
+In caso contrario, la richiesta di ferie viene respinta. 
+
+Una persona può sostituire un 'altra persona per un turno in un certo giorno se ha la stessa mansione della persona che deve sostituire, e non è già di turno in quel giorno. Deve essere notificato l'esito della richiesta (accettata o respinta) mediante un inserimento nella tabella NOTIFICA-TURNO.
+#### Svolgimento
+```plsql
+--PERSONA (Matricola, Mansione) 
+--TIPO-TURNO (CodT, Oralnizio, Durata) 
+--TURNO (Matricola, Data, CodT) 
+--NOTIFICA (Matricola, Data, EsitoRichiesta) 
+--RICHIESTA-FERIE(CodR, Matricola, Data)
+CREATE TRIGGER gestisci_richieste_ferie
+After INSERT OR UPDATE ON RICHIESTA-FERIE
+FOR EACH ROW
+DECLARE
+	N number; -- Conteggio turni del richiedente
+	S number; -- Flag sostituzione
+BEGIN 
+	--Devo controllare se la persona non è di turno
+	SELECT COUNT(*) into N
+	FROM TURNO
+	WHERE Matricola = :NEW.Matricola and Data = :NEW.Data;
+	
+	if (N=0) then
+		-- Caso A: La persona non è di turno, ferie accettate automaticamente
+		INSERT INTO	NOTIFICA (Matricola, Data, EsitoRichiesta)
+		VALUES (:NEW.Matricola, :NEW.Data, 'Richiesta Ferie Accettata');
+	else
+		-- Caso B: La persona è di turno, cerchiamo un sostituto
+		SELECT COUNT(*) into S
+		FROM PERSONA
+		WHERE Matricola NOT IN (
+			SELECT Matricola
+			FROM TURNO
+			WHERE Data = :NEW.Data
+		) AND Mansione = (
+			SELECT Mansione
+			FROM Persona
+			WHERE Matricola = :NEW.Matricola
+		) AND Matricola <> :NEW.Matricola; -- Non può sostituire se stessa
+
+		if(S<>0) then
+			-- Sostituto trovato: elimino il turno del richiedente e accetto
+			DELETE FROM TURNO
+			WHERE Matricola = :NEW.Matricola AND Data = :NEW.Data;
+			
+			INSERT INTO	NOTIFICA (Matricola, Data, EsitoRichiesta)
+			VALUES (:NEW.Matricola, :NEW.Data, 'Richiesta Ferie Accettata');
+		else
+			-- Nessun sostituto disponibile: ferie rifiutate
+			INSERT INTO	NOTIFICA (Matricola, Data, EsitoRichiesta)
+			VALUES (:NEW.Matricola, :NEW.Data, 'Richiesta Ferie Rifiutata');
+		end if;
+	end if;
 END;
 ```
