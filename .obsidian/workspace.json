@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Database/Esercizi Trigger.md",
+                "file": "Database/13 - Costrutti Avanzati.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Esercizi Trigger"
+              "title": "13 - Costrutti Avanzati"
             }
           }
         ]
@@ -167,8 +167,9 @@
   },
   "active": "8473d147f09e5419",
   "lastOpenFiles": [
-    "Database/14 - Trigger.md",
+    "Database/Controllo dell'acceso.md",
     "Database/Esercizi Trigger.md",
+    "Database/14 - Trigger.md",
     "Database/Esempi Trigger.md",
     "Database/13 - Costrutti Avanzati.md",
     "Database/10 - Interrogazioni avanzate.md",
@@ -209,7 +210,6 @@
     "Database/img/esempio_ristrutturazione.png",
     "Database/3 - Entità-Relazione.md",
     "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
-    "Database/2 - Modello Relazionale.md",
     "Database/img",
     "Database",
     "Algoritmi/programmazione/preparazione_esame/prove_esame/prova9.c",
