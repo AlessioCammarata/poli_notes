@@ -4,21 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "3743862d743ee755",
+        "id": "da8c362a6f88ef15",
         "type": "tabs",
         "children": [
           {
-            "id": "8473d147f09e5419",
+            "id": "08d23df79a4d1914",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "release-notes",
               "state": {
-                "file": "Database/13 - Costrutti Avanzati.md",
-                "mode": "source",
-                "source": false
+                "currentVersion": "1.13.7"
               },
-              "icon": "lucide-file",
-              "title": "13 - Costrutti Avanzati"
+              "icon": "lucide-book-up",
+              "title": "Release Notes 1.13.7"
             }
           }
         ]
@@ -41,7 +39,9 @@
               "type": "file-explorer",
               "state": {
                 "sortOrder": "alphabetical",
-                "autoReveal": false
+                "autoReveal": false,
+                "showSearch": false,
+                "searchQuery": ""
               },
               "icon": "lucide-folder-closed",
               "title": "Files"
@@ -78,8 +78,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200,
-    "collapsed": true
+    "width": 200
   },
   "right": {
     "id": "ed1933459f3df990",
@@ -165,54 +164,54 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "8473d147f09e5419",
+  "active": "08d23df79a4d1914",
   "lastOpenFiles": [
     "Database/Controllo dell'acceso.md",
-    "Database/Esercizi Trigger.md",
-    "Database/14 - Trigger.md",
-    "Database/Esempi Trigger.md",
+    "OOP/1-lecture.md",
+    "OOP",
+    "Cose da fare in pista.md",
+    "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
+    "Database/5 - Ristrutturazione.md",
+    "Database/6 - Gestione del tempo.md",
+    "Database/7 - Algebra relazionale.md",
+    "Database/11 - Manipolazione dei Dati.md",
+    "Database/12 - Gestione delle Tabelle.md",
     "Database/13 - Costrutti Avanzati.md",
+    "Database/14 - Trigger.md",
+    "Database/Esercizi.md",
+    "Database/Esercizi SQL.md",
+    "Database/Esercizi Trigger.md",
+    "Database/Esempi Trigger.md",
     "Database/10 - Interrogazioni avanzate.md",
+    "Database/3 - Entità-Relazione.md",
+    "Database/2 - Modello Relazionale.md",
     "verilog/appunti L10-verilog.md",
     "verilog/appunti L11-verilog-memorie-testbench.md",
-    "Database/12 - Gestione delle Tabelle.md",
-    "Database/11 - Manipolazione dei Dati.md",
-    "Database/Esercizi.md",
     "Database/9 - Interrogazioni Nidificate.md",
-    "Database/Esercizi SQL.md",
     "Untitled.base",
     "Algoritmi/programmazione/scripts/Consegne/s340616_3.zip",
     "Algoritmi/programmazione/scripts/Consegne/s340616_2.zip",
     "Algoritmi/programmazione/scripts/Consegne/s340616_1.zip",
     "Algoritmi/programmazione/scripts/Consegne",
     "Database/8 - SQL.md",
-    "Database/7 - Algebra relazionale.md",
     "assembly/1 - Esercitazione.md",
     "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
     "verilog",
-    "Database/6 - Gestione del tempo.md",
     "Database/img/binary_relationship.png",
     "Informatica/7 - Cicli.md",
     "Informatica/1 - Introduzione alla programmazione.md",
     "assembly",
-    "Esercizi python.md",
-    "README.md",
-    "Database/5 - Ristrutturazione.md",
     "Database/img/redundancy.png",
     "Database/img/padre&figli.png",
     "Database/img/accorpamento_padre.png",
     "Database/img/kill_padre.png",
-    "Identificatore.md",
     "Pasted image 20260302124729.png",
     "Pasted image 20260302124700.png",
     "Database/img/1-1.png",
     "Database/img/1-n.png",
     "Database/img/esempio_ristrutturazione.png",
-    "Database/3 - Entità-Relazione.md",
-    "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
     "Database/img",
     "Database",
-    "Algoritmi/programmazione/preparazione_esame/prove_esame/prova9.c",
     "Untitled.canvas"
   ]
 }
