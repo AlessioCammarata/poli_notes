@@ -8,18 +8,49 @@
         "type": "tabs",
         "children": [
           {
-            "id": "08d23df79a4d1914",
+            "id": "aa4245dfbc598008",
             "type": "leaf",
             "state": {
-              "type": "release-notes",
+              "type": "markdown",
               "state": {
-                "currentVersion": "1.13.7"
+                "file": "OS/01.1 - Introduction to Operating Systems.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-book-up",
-              "title": "Release Notes 1.13.7"
+              "icon": "lucide-file",
+              "title": "01.1 - Introduction to Operating Systems"
+            }
+          },
+          {
+            "id": "b197191a1c6fe199",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OS/01.2 Operating systems classification.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "01.2 Operating systems classification"
+            }
+          },
+          {
+            "id": "dfb19eab02a20032",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OS/02.1 Unix_Linux commands.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "02.1 Unix_Linux commands"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -78,7 +109,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "ed1933459f3df990",
@@ -164,8 +196,23 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "08d23df79a4d1914",
+  "active": "dfb19eab02a20032",
   "lastOpenFiles": [
+    "OS/02.1 Unix_Linux commands.md",
+    "OS/01.2 Operating systems classification.md",
+    "OS/01.1 - Introduction to Operating Systems.md",
+    "Untitled.md",
+    "OS/img/system_call.png",
+    "OS/img/dirs.png",
+    "OS/img/Pasted image 20260924110447.png",
+    "OS/img/Pasted image 20260924105520.png",
+    "OS/img",
+    "Pasted image 20260924110447.png",
+    "Pasted image 20260924105520.png",
+    "Database/Esempi Trigger.md",
+    "Database/14 - Trigger.md",
+    "Database/3 - Entità-Relazione.md",
+    "OS",
     "Database/Controllo dell'acceso.md",
     "OOP/1-lecture.md",
     "OOP",
@@ -177,13 +224,10 @@
     "Database/11 - Manipolazione dei Dati.md",
     "Database/12 - Gestione delle Tabelle.md",
     "Database/13 - Costrutti Avanzati.md",
-    "Database/14 - Trigger.md",
     "Database/Esercizi.md",
     "Database/Esercizi SQL.md",
     "Database/Esercizi Trigger.md",
-    "Database/Esempi Trigger.md",
     "Database/10 - Interrogazioni avanzate.md",
-    "Database/3 - Entità-Relazione.md",
     "Database/2 - Modello Relazionale.md",
     "verilog/appunti L10-verilog.md",
     "verilog/appunti L11-verilog-memorie-testbench.md",
@@ -194,24 +238,12 @@
     "Algoritmi/programmazione/scripts/Consegne/s340616_1.zip",
     "Algoritmi/programmazione/scripts/Consegne",
     "Database/8 - SQL.md",
-    "assembly/1 - Esercitazione.md",
-    "Algoritmi/1 - Ricorsione e paradigma divide et impera.md",
     "verilog",
     "Database/img/binary_relationship.png",
-    "Informatica/7 - Cicli.md",
-    "Informatica/1 - Introduzione alla programmazione.md",
     "assembly",
     "Database/img/redundancy.png",
     "Database/img/padre&figli.png",
     "Database/img/accorpamento_padre.png",
-    "Database/img/kill_padre.png",
-    "Pasted image 20260302124729.png",
-    "Pasted image 20260302124700.png",
-    "Database/img/1-1.png",
-    "Database/img/1-n.png",
-    "Database/img/esempio_ristrutturazione.png",
-    "Database/img",
-    "Database",
     "Untitled.canvas"
   ]
 }
