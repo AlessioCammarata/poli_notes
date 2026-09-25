@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OOP/Lezione 1 - The Java Environment.md",
+                "file": "OS/02.1 Unix_Linux commands.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lezione 1 - The Java Environment"
+              "title": "02.1 Unix_Linux commands"
             }
           }
         ]
@@ -169,6 +169,7 @@
   },
   "active": "eed8a55ce61a7619",
   "lastOpenFiles": [
+    "OOP/Lezione 1 - The Java Environment.md",
     "OOP/examples/PrimoEsempio/bin/Car.class",
     "OOP/examples/PrimoEsempio/src/Car.java",
     "OOP/examples/PrimoEsempio/bin/App.class",
@@ -181,7 +182,6 @@
     "OOP/examples",
     "Pasted image 20260925085638.png",
     "OS/02.1 Unix_Linux commands.md",
-    "OOP/Lezione 1 - The Java Environment.md",
     "OS/01.2 Operating systems classification.md",
     "OS/01.1 - Introduction to Operating Systems.md",
     "OS/img/system_call.png",
@@ -194,7 +194,6 @@
     "Database/Esempi Trigger.md",
     "Database/14 - Trigger.md",
     "Database/3 - Entità-Relazione.md",
-    "OS",
     "Database/Controllo dell'acceso.md",
     "OOP/1-lecture.md",
     "Cose da fare in pista.md",
