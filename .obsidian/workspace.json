@@ -13,15 +13,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OS/02.1 Unix_Linux commands.md",
+                "file": "OOP/Lezione 1 - The Java Environment.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02.1 Unix_Linux commands"
+              "title": "Lezione 1 - The Java Environment"
+            }
+          },
+          {
+            "id": "5a66d99f68d88f6b",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OOP/Lezione 2 - Java Basic Functions.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Lezione 2 - Java Basic Functions"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -167,28 +182,42 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "eed8a55ce61a7619",
+  "active": "5a66d99f68d88f6b",
   "lastOpenFiles": [
+    "OOP/examples/PrimoEsempio/bin/transport/Mechanic.class",
+    "OOP/examples/PrimoEsempio/src/transport/Mechanic.java",
+    "OOP/examples/PrimoEsempio/bin/transport/Car$fuelState.class",
+    "OOP/examples/PrimoEsempio/bin/transport/Car.class",
+    "OOP/examples/PrimoEsempio/src/transport/Car.java",
+    "OOP/examples/PrimoEsempio/bin/transport",
+    "OOP/examples/PrimoEsempio/src/transport",
+    "OOP/examples/PrimoEsempio/bin/Car$fuelState.class",
     "OOP/Lezione 1 - The Java Environment.md",
+    "OOP/Lezione 2 - Java Basic Functions.md",
+    "OOP/img/java_working.png",
+    "chimica/7+ - Tensione di Vapore e Diagrammi di fase.md",
+    "chimica/7 - Gas.md",
+    "chimica/6 - Orbitali Molecolari.md",
+    "chimica/3 - Orbitali Atomici.md",
+    "Informatica/16 - Strutture dati complesse (e dizionari).md",
+    "Informatica/13 - Componenti computer.md",
+    "Informatica/9 - Numeri relativi (continuo lezione5).md",
+    "Informatica/3 - Operatori numerici.md",
+    "Informatica/1 - Introduzione alla programmazione.md",
+    "Analisi/06. Operazioni e Grafici delle Funzioni.md",
+    "Analisi/02. L'Assioma di Dedekind.md",
+    "OS/02.1 Unix_Linux commands.md",
     "OOP/examples/PrimoEsempio/bin/Car.class",
     "OOP/examples/PrimoEsempio/src/Car.java",
     "OOP/examples/PrimoEsempio/bin/App.class",
-    "OOP/examples/PrimoEsempio/bin",
-    "OOP/examples/PrimoEsempio/lib",
     "OOP/examples/PrimoEsempio/README.md",
-    "OOP/examples/PrimoEsempio/src/App.java",
-    "OOP/examples/PrimoEsempio/src",
-    "OOP/examples/PrimoEsempio",
-    "OOP/examples",
     "Pasted image 20260925085638.png",
-    "OS/02.1 Unix_Linux commands.md",
     "OS/01.2 Operating systems classification.md",
     "OS/01.1 - Introduction to Operating Systems.md",
     "OS/img/system_call.png",
     "OS/img/dirs.png",
     "OS/img/Pasted image 20260924110447.png",
     "OS/img/Pasted image 20260924105520.png",
-    "OS/img",
     "Pasted image 20260924110447.png",
     "Pasted image 20260924105520.png",
     "Database/Esempi Trigger.md",
@@ -199,21 +228,8 @@
     "Cose da fare in pista.md",
     "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
     "Database/5 - Ristrutturazione.md",
-    "Database/6 - Gestione del tempo.md",
-    "Database/7 - Algebra relazionale.md",
-    "Database/11 - Manipolazione dei Dati.md",
-    "Database/12 - Gestione delle Tabelle.md",
-    "Database/13 - Costrutti Avanzati.md",
-    "Database/Esercizi.md",
-    "Database/Esercizi SQL.md",
-    "Database/Esercizi Trigger.md",
-    "Database/10 - Interrogazioni avanzate.md",
-    "Database/2 - Modello Relazionale.md",
-    "verilog/appunti L10-verilog.md",
-    "verilog/appunti L11-verilog-memorie-testbench.md",
     "Database/img/binary_relationship.png",
     "Database/img/redundancy.png",
-    "Database/img/padre&figli.png",
     "Untitled.canvas"
   ]
 }
