@@ -13,30 +13,58 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OOP/Lezione 1 - The Java Environment.md",
+                "file": "OS/02.2 C Programming tools.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lezione 1 - The Java Environment"
+              "title": "02.2 C Programming tools"
             }
           },
           {
-            "id": "5a66d99f68d88f6b",
+            "id": "1f8214c6311426e2",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OOP/Lezione 2 - Java Basic Functions.md",
+                "file": "OS/02.1 Unix_Linux commands.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lezione 2 - Java Basic Functions"
+              "title": "02.1 Unix_Linux commands"
+            }
+          },
+          {
+            "id": "4f3001b14a91d92e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OS/03.1 Files in Linux.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "03.1 Files in Linux"
+            }
+          },
+          {
+            "id": "b14d88812e47c4a1",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OS/03.2 Directories in Linux.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "03.2 Directories in Linux"
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -182,8 +210,14 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "5a66d99f68d88f6b",
+  "active": "b14d88812e47c4a1",
   "lastOpenFiles": [
+    "OS/03.1 Files in Linux.md",
+    "OS/03.2 Directories in Linux.md",
+    "OS/02.2 C Programming tools.md",
+    "OS/02.1 Unix_Linux commands.md",
+    "OS/img/Vim.png",
+    "OOP/Lezione 2 - Java Basic Functions.md",
     "OOP/examples/PrimoEsempio/bin/transport/Mechanic.class",
     "OOP/examples/PrimoEsempio/src/transport/Mechanic.java",
     "OOP/examples/PrimoEsempio/bin/transport/Car$fuelState.class",
@@ -193,7 +227,6 @@
     "OOP/examples/PrimoEsempio/src/transport",
     "OOP/examples/PrimoEsempio/bin/Car$fuelState.class",
     "OOP/Lezione 1 - The Java Environment.md",
-    "OOP/Lezione 2 - Java Basic Functions.md",
     "OOP/img/java_working.png",
     "chimica/7+ - Tensione di Vapore e Diagrammi di fase.md",
     "chimica/7 - Gas.md",
@@ -206,10 +239,8 @@
     "Informatica/1 - Introduzione alla programmazione.md",
     "Analisi/06. Operazioni e Grafici delle Funzioni.md",
     "Analisi/02. L'Assioma di Dedekind.md",
-    "OS/02.1 Unix_Linux commands.md",
     "OOP/examples/PrimoEsempio/bin/Car.class",
     "OOP/examples/PrimoEsempio/src/Car.java",
-    "OOP/examples/PrimoEsempio/bin/App.class",
     "OOP/examples/PrimoEsempio/README.md",
     "Pasted image 20260925085638.png",
     "OS/01.2 Operating systems classification.md",
@@ -226,10 +257,7 @@
     "Database/Controllo dell'acceso.md",
     "OOP/1-lecture.md",
     "Cose da fare in pista.md",
-    "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
-    "Database/5 - Ristrutturazione.md",
     "Database/img/binary_relationship.png",
-    "Database/img/redundancy.png",
     "Untitled.canvas"
   ]
 }
