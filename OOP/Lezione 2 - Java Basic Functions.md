@@ -273,7 +273,7 @@ Classes that have **only query methods are called immutable**
 - Once initialized (by the constructor) their status cannot be changed 
 Other classes that have modifiers, conversely, **are called mutable** 
 - Their status can be changed through modifier methods
-
+---
 #### Package
 Class is a better mechanism of modularization than a procedure -> Like libraries in C.
 For the purpose of code organization and structuring Java provides the **package feature**.
@@ -380,5 +380,212 @@ set_expression can be
 ```java
 for(String arg : args){ 
 //... 
+}
+```
+---
+#### Multidimensional Array
+Array of arrays:
+```java
+Person[][] table = new Person[2][3]; 
+table[0][2] = new Person(“Mary”);
+```
+>Since rows are **not stored in adjacent positions** in memory they can be **easily exchanged**.
+```java
+double[][] balance = new double[5][6]; 
+... 
+double[] temp = balance[i]; 
+balance[i] = balance[j]; 
+balance[j] = temp;
+```
+---
+#### Variable arguments
+It is possible to pass a variable number of arguments to a method using the **varargs** notation 
+	method( type ... args ) 
+
+ The compiler assembles an array that can be used to scan the actual arguments 
+ - Type can be primitive or class
+```java
+static int min(int... values){ 
+	int res = Integer.MAX_VALUE; 
+	for(int v : values){ 
+		if(v < res) res=v; 
+	} 
+	return res; 
+} 
+
+public static void main(String[] args) { 
+	int m = min(9,3,5,7,2,8); 
+	System.out.println("min=" + m); 
+	int[] numbers = {9,3,5,7,2,8}; 
+	min(numbers); // also ok! 
+}
+```
+---
+### STATIC ATTRIBUTES AND METHODS
+#### Static attributes
+Represent properties which are common to all instances of a class 
+- A single copy of a static attribute is shared by all instances of the class 
+- Sometimes called **class attributes** as opposed to **instance attributes** 
+- Static attributes exists before any object is created 
+- A change performed by any object is visible to all instances at once 
+They are defined with the **static** modifier.
+
+Why?
+Used to keep a shared property 
+- A count of created instances 
+- A pool of all instances 
+Keep a common constant value.
+```java
+class Car { 
+	static int countBuiltCars = 0; // Common to all the istances
+	public Car(){ 
+		countBuiltCars++; 
+	} 
+}
+```
+#### Static methods
+Static methods are not related to any instance.
+They are defined with the **static** modifier 
+Used to implement functions:
+```java
+public class HelloWorld { 
+	public static void main (String args[]) { 
+		System.out.println("Hello World!"); 
+	} 
+}
+public class Utility { 
+	public static int inverse(double n){ 
+		return 1 / n; 
+	} 
+}
+```
+The name of the class is used to access the member: 
+	Car.countCountBuiltCars 
+	Utility.inverse(10); 
+It is possible to import all static items: 
+	**import static** package.Utility.\*; 
+Then all static members are accessible without specifying the class name 
+>Impossible if class in default package.
+
+Why static methods?
+Implement functions 
+- Avoid creating an object just to invoke the method (see e.g., main()) 
+- Collected in utility classes 
+Provide ideal factory method 
+- Method to create an instance
+##### Function method
+A method whose return value depends only on the arguments 
+- Typically defined as static 
+Often collected within a **utility** class 
+- Class containing static function methods 
+Wrapper types include several function methods for conversion purposes.
+##### Utility classes
+- Math: Mathematical functions 
+- Arrays: Functions to operate on arrays 
+- Objects: Functions to operate on object 
+- IO: Functions to perform console I/O 
+- System: Interact with the operating system
+###### Math
+Math-related function methods 
+- Trigonometric functions − sin(), cos(), tan() 
+- Min-max − min(), max() 
+- Exponential and logarithms − exp(), log() 
+- Truncations − round(), ceil(), floor() 
+- Random number generation − random() 
+- Powers − pow(), sqrt()
+###### Arrays
+Arrays utility functions 
+- Binary search (binarySearch()) 
+- Copy (copyOf(), copyOfRange()) 
+- Equality (equals(), deepEquals()) 
+- Fill-in (fill()) 
+- Sorting (sort()) 
+- String representation (toString())
+###### IO
+Input-Output utilities
+- static void **print**(Object obj); − Prints an object value (also primitives) 
+- static void **println**(Object obj); − Prints an object value (also primitives) with newline 
+- static void **println**(); − Prints a new line 
+- static String **readln**(String prompt); − Read a string from the console with a prompt 
+- static String **readln**(); − Read a string from the console
+###### System
+General purpose utilities 
+- static long currentTimeMillis() − Current system time in milliseconds 
+- static void exit(int code) − Terminates the execution of the JVM 
+- static final PrintStream out − Standard output stream, Also err for standard error
+---
+#### Factory method
+A method used to create an object 
+- Encapsulates an explicit object creation with the **new** operator 
+Can be used to: 
+- Simplify creation 
+	− E.g., when alternative classes can be created 
+- Return objects from a pool 
+	− Requires immutable objects 
+	− Either pre-allocated or cached 
+- Maintain a collection of created objects 
+- Control new objects allocation 
+	− See e.g., Singleton pattern
+###### Integer
+**valueOf**(int) 
+- Replaces new Integer(int) 
+- Caches values in the range -128 to 127 
+**valueOf**(String) 
+- Returns the integer corresponding to the parsed string 
+- Same as: new Integer(Integer.parseInt(s))
+---
+#### Final Attributes
+An attribute declared as **final**: 
+- cannot be changed after object construction 
+- can be initialized inline or by the constructor
+```java
+class Student { 
+	final int years=3; 
+	final String id; 
+	public Student(String id){ 
+		this.id = id; 
+	} 
+}
+```
+**Final parameters** cannot be changed 
+- Non final parameters are treated as local variables (initialized by the caller) 
+**Final variables** 
+- Cannot be modified after initialization 
+- Initialization can occur at declaration or later
+---
+#### Constants
+Use **static final** modifiers 
+- static implies no redundant copies 
+- final implies not modifiable
+```java
+final static float PI = 3.14; 
+… 
+PI = 16.0; // ERROR, no changes 
+final static int SIZE; // missing init
+```
+>All uppercase (coding conventions)
+##### Static initialization block
+Block of code preceded by static 
+Executed at class loading time
+```java
+public final static double 2PI; 
+static { 
+	2PI = Math.acos(-1); 
+}
+```
+
+---
+### Singleton Pattern
+Context: 
+- A class represents a concept that requires a single instance 
+Problem: 
+- Clients could use this class in an inappropriate way
+```java
+private Singleton() { } 
+private static Singleton instance; 
+public static Singleton getInstance(){ 
+	if(instance==null) 
+		instance = new Singleton(); 
+	return instance; 
 }
 ```
