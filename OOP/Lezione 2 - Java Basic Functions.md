@@ -462,6 +462,7 @@ public class Utility {
 The name of the class is used to access the member: 
 	Car.countCountBuiltCars 
 	Utility.inverse(10); 
+
 It is possible to import all static items: 
 	**import static** package.Utility.\*; 
 Then all static members are accessible without specifying the class name 
@@ -528,11 +529,11 @@ Can be used to:
 	− See e.g., Singleton pattern
 ###### Integer
 **valueOf**(int) 
-- Replaces new Integer(int) 
+- Replaces **new Integer(int)** 
 - Caches values in the range -128 to 127 
 **valueOf**(String) 
 - Returns the integer corresponding to the parsed string 
-- Same as: new Integer(Integer.parseInt(s))
+- Same as: **new Integer(Integer.parseInt(s))**
 ---
 #### Final Attributes
 An attribute declared as **final**: 
@@ -575,7 +576,7 @@ static {
 ```
 
 ---
-### Singleton Pattern
+#### Singleton Pattern
 Context: 
 - A class represents a concept that requires a single instance 
 Problem: 
@@ -589,3 +590,113 @@ public static Singleton getInstance(){
 	return instance; 
 }
 ```
+---
+### NESTED CLASSES
+Static nested class 
+- Within the container name space 
+Inner class 
+- As above + contains a link to the creator container object 
+Local inner class 
+- As above + may access (final) local variables 
+Anonymous inner class 
+- As above + no explicit name
+
+Why??
+>In order to have an hierchical bound to the outer class, to use the inner one you use also the outer one. (they're linked)
+#### (static) nested classes
+A class declared inside another class:
+```java
+package pkg; 
+class Outer { 
+	static class Nested { 
+	} 
+}
+```
+Similar to regular classes 
+- Subject to usual member visibility rules
+- Fully qualified name includes the outer class: − pkg.Outer.Inner
+
+>Static nested classes can be used to hide classes that are used only within another class 
+>- Reduce namespace pollution 
+>- Encapsulate internal details 
+>- Nested class lies within the scope of the outer class
+```java
+public class StackOfInt{ 
+	private static class Element { 
+		int value; 
+		Element next; 
+	} 
+	private Element head;
+	public void push(int v){ … } 
+	public int void pop(){ … } 
+}
+```
+#### Inner Class
+Linked to an instance
+```java
+package pkg; 
+class Outer { 
+	class Inner{ 
+	} 
+}
+```
+It is linked to instances of enclosing outer classes.
+- Any inner class instance is associated with the instance of its enclosing class that instantiated it 
+- Cannot be instantiated from 
+	- a static method 
+	- Other classes 
+- Has direct access to that enclosing object methods and fields
+```java
+public class Counter { 
+	int i; 
+	public class Incrementer { 
+		private int step=1; 
+		public void doIncrement(){ 
+			i+=step; 
+		} 
+		Incrementer(int step){ 
+			this.step=step; 
+		} 
+	} 
+	public Incrementer buildIncrementer(int step){ 
+		return new Incrementer(step);  // inner instance is linked to this outer object
+	} 
+	public int getValue(){ 
+		return i; 
+	} 
+}
+
+//Nel main
+Counter c = new Counter();
+Incrementer byOne = c.buildIncrementer(1); 
+Incrementer byFour = c.buildIncrementer(4); 
+byOne.doIncrement(); //This wasn't possible in the nested classes
+byFour.doIncrement(); 
+c.getValue(); // -> 5
+```
+#### Local Inner Class
+Declared inside a method
+```java
+public void m(){ 
+	final int j=1; 
+	class X { 
+		int plus(){ 
+			return j + 1; 
+		} 
+	} 
+	X x = new X(); 
+	System.out.println(x.plus()); 
+}
+```
+References to local variables are allowed 
+- Replaced with “current” value 
+- Set of such local variables is called **closure**
+
+>Local variable cannot be changed after being referred to by an inner class.
+>Local variables used in local inner classes should be declared **final**, Or be effectively final
+#### Anonymous Inner Class
+Local class **without a name** 
+Only possible with inheritance 
+- Implement an interface, or 
+- Extend a class
+---
