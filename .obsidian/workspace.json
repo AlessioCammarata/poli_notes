@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Lezione 4 - JUnit.md",
+                "file": "OOP/Lezione 5 -Inheritance.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lezione 4 - JUnit"
+              "title": "Lezione 5 -Inheritance"
             }
           }
         ],
@@ -199,7 +199,8 @@
   "active": "314b5e2ef63d8094",
   "lastOpenFiles": [
     "OOP/Lezione 3 - Chars and Strings.md",
-    "Lezione 4 - JUnit.md",
+    "OOP/Lezione 5 -Inheritance.md",
+    "OOP/Lezione 4 - JUnit.md",
     "OOP/Lezione 2 - Java Basic Functions.md",
     "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/beehive/Bee.class",
     "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/App.class",
@@ -236,7 +237,6 @@
     "Analisi/02. L'Assioma di Dedekind.md",
     "OOP/examples/PrimoEsempio/README.md",
     "Pasted image 20260925085638.png",
-    "OS/01.2 Operating systems classification.md",
     "OS/img/system_call.png",
     "OS/img/dirs.png",
     "OS/img/Pasted image 20260924110447.png",
