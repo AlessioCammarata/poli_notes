@@ -253,3 +253,263 @@ class Manager extends Employee{ } // works
 ```
 ##### Super
 The child class constructor must call the right constructor of the parent class, explicitly ▪ Use super() to invoke the constructor of parent class and pass the appropriate arguments ▪ Must be the first statement in child constructors
+
+
+>**this** references the current object
+>super references the parent **class**
+
+##### Final method
+The keyword **final** applied to a method makes it not overridable by subclasses.
+
+---
+#### Class object
+- java.lang.Object 
+- All classes are subtypes of Object
+
+Why?
+**Generality**: 
+- *any instance of any class can be seen as an **Object** instance 
+- Object is the universal reference type 
+**Common behavior**: 
+- Object defines some common **operations** which are inherited by all classes 
+- Often, they are **overridden** in sub-classes
+
+>toString() : String 
+>equals(Object) : boolean
+##### Generality
+Each class is either directly or indirectly a subclass of **Object**.
+It is always possible to upcast any instance to Object type
+```java
+AnyClass foo = new AnyClass(); 
+Object obj; 
+obj = foo;
+```
+>References of type Object play a role similar to void* in C
+
+We can collect heterogeneous objects into a single container:
+```java
+Object[] objects = new Object[4]; 
+objects[0]= "First!"; 
+objects[2]= new Employee(); 
+objects[1]= new Integer(2); // Note: wrappers must be used instead of primitive types
+Objects[3]= 42; 
+for(Object obj : objects){ 
+	IO.println(obj); 
+}
+```
+##### Object class methods
+- **toString**() -> Returns string representation of the object 
+- **equals**() -> Checks if two objects have same contents 
+- **hashCode**() -> Returns a unique code 
+- Protected: 
+	- **clone**() – Creates a copy of the current object 
+	- **finalize**() – Invoked by GC upon memory reclamation
+>Examples:
+###### toString
+```java
+class Employee { 
+// … 
+    //toString
+	@Override 
+	public String toString(){ 
+		return "Employee: " + name; 
+	} 
+}
+```
+>The default (Object) implementation returns:
+>	ClassName@#hashcode#
+###### equals()
+Tests equality of values. 
+Default implementation compares references:
+```java
+public boolean equals(Object other){ 
+	return this == other; 
+}
+```
+>Must be overridden to compare contents
+- **Reflexive**: x.equals(x) == true
+- **Symmetric**: x.equals(y)\==y.equals(x) 
+- **Transitive**: for any reference x, y and z 
+	- if x.equals(y)\==true && y.equals(z)\==true => x.equals(z)\==true 
+- **Consistent**: multiple calls x.equals(y) consistently return true (or false) 
+	- No information used in the comparison should be changed (immutables) 
+- **Robust**: x.equals(null) == false
+```java
+class Employee { 
+// … 	
+	//equals
+	@Override 
+	public boolean equals(Object o){ 
+		if( !(o instanceof Employee)){ // null instanceof X → false
+			return false; 
+		} 
+		Employee other = (Employee) o; 
+		return this.name.equals(other.name); 
+	}
+}
+```
+###### hashcode()
+Returns a (fairly) unique code for the object.
+Can be used as 
+- index in hash tables 
+- quick approximation for equality 
+
+The default implementation (Object) converts the internal address of the object into an integer.
+- **Consistent**: hashCode() must return the same value, if no information used in equals() is modified.
+- **Equal compliant**: if two objects are equal for equals() method, then calling hashCode() on the two objects must return the same value
+---
+##### Variable arguments - example
+```java
+static void plst(String pre, Object...args){ // ...args
+	IO.print(pre + " "); 
+	for(Object o : args){ //args
+		if(o!=args[0]) IO.print(", "); 
+		IO.print(o); 
+	} 
+	IO.println(); 
+} 
+
+public static void main(String[] args) { 
+	plst("List:", "A", 'b', 123, "hi!"); // Character, Integer
+}
+```
+---
+#### Abstract classes
+Often, a superclass is used to define common behavior for children classes.
+In this case some methods may have no obvious meaningful implementation in the superclass.
+>Abstract classes leave the behavior partially unspecified, the abstract class cannot be instantiated.
+```java
+public abstract class Shape { 
+	private int color; 
+	
+	public void setColor(int color){ 
+		this.color = color; 
+	} 
+	
+	// to be implemented in child classes 
+	public abstract void draw(); //No method body
+}
+
+class Circle extends Shape { 
+	public void draw() { 
+		// body goes here 
+	} 
+} 
+
+Object a = new Shape(); // Illegal: abstract 
+Object a = new Circle();// OK: concrete
+```
+>The abstract modifier marks the method as non-complete / undefined 
+>The modifier must be applied to all incomplete method and to the class
+```java
+public abstract class Shape { 
+	public void setColor(int color){…} 
+	
+	// implemented in child classes 
+	protected abstract void draw(); //No method body
+}
+```
+>A class must be declared abstract if any of its methods is **abstract**.
+
+A class that extends an abstract class should implement (i.e. override) all the base class abstract methods.
+If any abstract method is not implemented, then the class must be declared abstract itself.
+###### Example: Sorter
+```java
+public class Sorter { 
+	public void sort(Object v[]){ 
+		for(int i=1; i<v.length; ++i) 
+			for(int j=0; j<v.length-i; ++j){
+				if(compare(v[j],v[j+1])>0){
+					Object o=v[j]; 
+					v[j]=v[j+1]; 
+					v[j+1]=o; 
+				}
+			}
+	} 
+	protected int compare(Object a, Object b){ 
+		IO.println("Someone forgot about" + 
+					"the compare() method!"); 
+		return 0; // why not 42? 
+	} 
+}
+
+public abstract class Sorter { 
+	public void sort(Object v[]){ 
+		for(int i=1; i<v.length; ++i) 
+			for(int j=0; j<v.length-i; ++j){
+				if(compare(v[j],v[j+1])>0){
+					Object o=v[j]; 
+					v[j]=v[j+1]; 
+					v[j+1]=o; 
+				}
+			}
+	} 
+	abstract int compare(Object a, Object b); 
+}
+
+//StringSorter
+class StringSorter extends Sorter { 
+	@Override
+	int compare(Object a, Object b){ 
+		String sa=(String)a; 
+		String sb=(String)b; 
+		return sa.compareTo(sb); 
+	} 
+}
+
+//main
+Sorter ssrt = new StringSorter(); 
+String[] v={"g","t","h","n","j","k"}; 
+ssrt.sort(v);
+```
+---
+#### Java Interfaces
+Special type of class where 
+- Methods are implicitly abstract (no body) 
+- Attributes are implicitly static and final 
+- Members are implicitly public 
+
+Defined with keyword **interface**, Instead of class.
+Cannot be instantiated -> i.e. no new (like abstract classes) 
+Can be used as a type for references -> Like abstract class
+
+All methods are implicitly 
+- abstract 
+- public
+```java
+public interface Expression{ 
+	double eval(); 
+	String formula(); 
+}
+```
+A class **implements** interfaces.
+A class implementing an interface must override all interface methods, unless the class is declared abstract:
+```java
+class Value implements Expression { 
+	@Override void value(){ … } 
+	@Override void formula(){ … } 
+}
+```
+
+>An interface cannot extend a class:
+```java
+interface Bar extends String { // class, not doable
+	void print(); 
+}
+```
+
+>An interface can extend many interfaces:
+```java
+interface Bar extends Orderable, Comparable{ //interfaces
+	... 
+}
+```
+
+>Inheritance:
+```java
+class Employee extends Person implements Cloneable, Comparable {
+	…
+}
+```
+---
+
