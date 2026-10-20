@@ -511,5 +511,208 @@ class Employee extends Person implements Cloneable, Comparable {
 	…
 }
 ```
+#### Functional Interface
+An interface containing **only one regular method** 
+- May include any additional static or default methods 
+Method’s semantics is purely functional 
+- The result of the method is based solely on the arguments
+- E.g., java.lang.Comparator
+
+Predefined interfaces are defined in
+- java.util.function 
+- Specific for different primitive types 
+- Generic version (see Generics) 
+
+>The predefined interfaces can be used to define behavioral parameterization arguments
+##### Functions
+Consumer 
+- void accept(Object value) 
+Supplier 
+- Object get() 
+Predicate 
+- boolean test(Object value) 
+Function 
+- Object apply(Object value) 
+BiFunction 
+- Object apply(Object l, Object r)
+###### Int versions
+IntFunction 
+- Object apply(int value) 
+IntConsumer 
+- void accept(int value) 
+IntPredicate 
+- boolean test(int value) 
+IntSupplier 
+- int getAsInt() 
+IntBinaryOperator 
+- int applyAsInt(int left, int right)
+##### Interface Usage Patterns
+- Define a **common “interface”**  
+- Provide a **common behavior** -> Define method(s) to be called by algorithms 
+- Enable **behavioral parameterization** -> Encapsulate behavior in an object parameter 
+- Enable **communication decoupling** -> Define a set of callback method(s) 
+- Allow **class flagging**
+```java
+public interface Complex { 
+	double real(); 
+	double im(); 
+	double mod(); 
+	double arg(); 
+}
+
+//ComplexRect
+class ComplexRect implements Complex { 
+	private double im, re; 
+	public ComplexRect(double re, double im) { 
+		this.im = im; 
+		this.re = re; 
+	} 
+	
+	@Override public double real() { 
+		return re; 
+	} 
+	
+	@Override public double im() { 
+		return im; 
+	} 
+	
+	@Override public double arg() { 
+		return Math.atan2(im, re); 
+	} 
+	
+	@Override public double mod() { 
+		return Math.sqrt(re*re+im*im); 
+	} 
+}
+
+//ComplexPolar
+class ComplexPolar implements Complex { 
+	private double mod, arg; 
+	public ComplexPolar(double mod, double arg) { 
+		this.mod = mod; 
+		this.arg = arg; 
+	} 
+	
+	@Override public double real() { 
+		return mod*cos(arg); 
+	} 
+	
+	@Override public double im() { 
+		return mod*sin(arg); 
+	} 
+	
+	@Override public double mod() { 
+		return mod; 
+	} 
+	
+	@Override public double arg() { 
+		return arg; 
+	} 
+}
+
+//Main
+Complex c1 = new ComplexRect(4,3); 
+IO.println(c1 + " -> Module " + c1.mod() + " argument: " + c1.arg()); 
+
+
+Complex c2 = new ComplexPolar(5,0.6435); IO.println(c2 + " -> Real " + c1.real() + " Imaginary: " + c1.im());
+```
+###### Static method in Interface
+If alternatives are known in advance, static methods can serve as factory methods
+```java
+public interface Complex { 
+	double real(); 
+	double im(); 
+	double mod(); 
+	double arg(); 
+	
+	static Complex fromRect(double re, double im){ 
+		return new ComplexRect(re,im); 
+	} 
+	
+	static Complex fromPolar(double mod, double arg){ 
+		return new ComplexPolar(mod,arg); 
+	} 
+}
+```
+##### Common behaviour
+Context 
+- An algorithm requires its data to provide a predefined set of common operations 
+Problem 
+- The algorithm must work on diverse classes 
+Solution 
+- An interface defines the required methods 
+- Classes implement the interface and provide methods that are used by the algorithm
+###### Sorting
+Class java.utils.Arrays provides the static method sort()
+```java
+int[] v = {7, 2, 5, 1, 8, 5}; 
+Arrays.sort(v);
+```
+Sorting object arrays requires a means to compare two objects: 
+- java.lang.Comparable
+##### Comparable
+```java
+public interface Comparable{ 
+	int compareTo(Object obj); 
+}
+```
+Returns 
+- <0 if this precedes obj 
+- =0 if this equals obj 
+- >0 if this follows obj
+Example
+```java
+public class Student implements Comparable { 
+	int id; Student(int id){ 
+		this.id=id; 
+	} 
+	
+	@Override 
+	public int compareTo(Object o){ 
+		Student other = (Student)o; 
+		return this.id - other.id; 
+	} 
+}
+```
+##### Iteration
+```java
+public interface Iterable{ 
+	Iterator iterator(); 
+}
+```
+Any class implementing Iterable can be the target of a for-each construct 
+- Uses the Iterator interface
+```java
+public interface Iterator { 
+	boolean hasNext(); 
+	Object next(); 
+}
+```
+Semantics: 
+- Initially positioned before the first element 
+- **hasNext**() tells if a next element is present 
+- **next**() returns the next element and advances by one position
+###### Using an iterator
+```java
+Iterator it = seq.iterator(); 
+while( it.hasNext() ){ 
+	Object element = it.next(); 
+	IO.println(el); 
+}
+//OR
+for(Object element : seq){ 
+	IO.println(el); 
+}
+```
+##### Behavioral parameretization
+Context 
+- A generic algorithm is fully defined but a few given core operations that vary often 
+Problem 
+- Multiple implementations with significant code repetitions 
+- Complex conditional structures 
+Solution 
+- The operations are defined in interfaces 
+- Objects implementing the interface are used to parameterize the algorithm
 ---
 
