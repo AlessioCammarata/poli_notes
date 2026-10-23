@@ -512,7 +512,7 @@ class Employee extends Person implements Cloneable, Comparable {
 }
 ```
 #### Functional Interface
-An interface containing **only one regular method** 
+An interface containing **only one regular method** (abstract)
 - May include any additional static or default methods 
 Method’s semantics is purely functional 
 - The result of the method is based solely on the arguments
@@ -635,6 +635,18 @@ public interface Complex {
 	} 
 }
 ```
+###### Default methods in interface
+These are not abstract methods, but method written inside the interface:
+```java
+//add advertisement (default method)
+public default void playWithADV(String adv){
+	IO.println(adv);
+	play();
+}
+```
+>You can still have some code inside in order to mantain compatibility with legacy code.
+>You have to call these from the object, while the static are callable from the class.
+---
 ##### Common behaviour
 Context 
 - An algorithm requires its data to provide a predefined set of common operations 
@@ -705,7 +717,35 @@ for(Object element : seq){
 	IO.println(el); 
 }
 ```
-##### Behavioral parameretization
+---
+##### Anonymous Classes
+Classes without name, that exists only when you define them in the code.
+```java
+Comparable obj = new Comparable(){ //Anonymous class implementing comparable behaviour
+	public int compare(...){...}
+};
+
+Consumer<Song> consumerOfSongs2 = new Consumer<Song>(){
+	
+};
+```
+Interfaces can be used to instantiate anonymous local classes.
+
+>Per esempio per oggetti che non sono multipli nel codice (singola istanza), in quel caso ha senso non creare un file a parte ma creare appunto un'anonymous class che implementa i metodi legati alla singola istanza.
+>In questo modo anche se fosse un solo metodo, tu puoi richiamare piu volte lo stesso metodo senza dover riscrivere il codice.
+##### Lambda functions
+We want to reach the same results, but with lambda functions (writing **less code**):
+```java
+Consumer<Song> anotherMixingOption = s->{ //Anonymous inner class (compressed)
+	for(String v : s.getVerses()){
+		IO.println(v.toUpperCase());
+	}
+};
+```
+Non devi specificare il tipo si capisce che è song perche è un Consumer of songs.
+
+>Once you get a song s, the method should apply the function in the breckets {}.
+##### Behavioral parameterization
 Context 
 - A generic algorithm is fully defined but a few given core operations that vary often 
 Problem 
@@ -714,5 +754,32 @@ Problem
 Solution 
 - The operations are defined in interfaces 
 - Objects implementing the interface are used to parameterize the algorithm
----
+Example:
+```java
+consumerOfSongs2=s->s.playLoud();
 
+//Same with behavioural parameterization
+Consumer<Song> metRefMixer = Song::playLoud; //Using the same loop with playLoud method on it (:: is like a pointer to a method)
+```
+>PlayLoud is a method inside the Song class, which actually does the uppercase print of the song.
+>I can simply use the functionality of it, inside the accept method of the Consumer interface.
+>The compiler will create the Anonymous inner class and implement the previous code.
+
+Why should I care if I can modify the method??
+**Example:**
+```java
+static void performConcert(Iterable<Song> playlist, Consumer<Song> behaviour){
+	IO.println("=== Concert starts! ===);
+	for(Song s : playlist){
+		behaviour.accept(s);
+	}
+	
+	IO.println("=== Concert finished ===");
+}
+
+performConcert(playlist, Song::play); //Normal concert
+performConcert(playlist, mrtRefMixer); //Rock concert
+performConcert(playlist, s->s.playWithADV(adv)); //Sponsor concert
+```
+>This way I can parametrized the behaviour of the concert based on the Consumer I pass as a paremeter.
+---
