@@ -8,35 +8,20 @@
         "type": "tabs",
         "children": [
           {
-            "id": "623132fde621a6c9",
+            "id": "eed8a55ce61a7619",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OS/04.1 Introduction to Linux Processes.md",
+                "file": "OOP/Lezione 6 - Generics.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "04.1 Introduction to Linux Processes"
-            }
-          },
-          {
-            "id": "bc8ce6bafb41ffa1",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "OS/04.2 Theoretical Aspects of processes.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "04.2 Theoretical Aspects of processes"
+              "title": "Lezione 6 - Generics"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -182,46 +167,35 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "bc8ce6bafb41ffa1",
+  "active": "eed8a55ce61a7619",
   "lastOpenFiles": [
-    "OS/04.1 Introduction to Linux Processes.md",
-    "OS/04.2 Theoretical Aspects of processes.md",
-    "OS/03.2 Directories in Linux.md",
-    "OOP/Lezione 6 - Generics.md",
     "OOP/Lezione 5 -Inheritance.md",
-    "OOP/Lezione 3 - Chars and Strings.md",
-    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop/test/beehive/TestApp.class",
-    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop/test/beehive",
-    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop/test",
-    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop",
-    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito",
-    "OOP/examples/javabasics/beeHive/target/test-classes/it",
-    "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/beehive/Bee.class",
-    "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/App.class",
-    "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/beehive",
-    "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop",
-    "OOP/Lezione 4 - JUnit.md",
-    "OOP/Lezione 2 - Java Basic Functions.md",
-    "OOP/examples/javabasics/secondProject_LZ/README.md",
-    "OOP/examples/javabasics/firstProject/README.md",
-    "OOP/examples/javabasics/README.md",
-    "OOP/examples/StringsExample/README.md",
-    "OS/02.2 C Programming tools.md",
-    "OS/03.1 Files in Linux.md",
-    "OS/02.1 Unix_Linux commands.md",
+    "OOP/Lezione 6 - Generics.md",
+    "OS/01.1 - Introduction to Operating Systems.md",
     "OS/img/Vim.png",
+    "OS/04.2 Theoretical Aspects of processes.md",
+    "OS/04.1 Introduction to Linux Processes.md",
+    "OS/03.2 Directories in Linux.md",
+    "OS/03.1 Files in Linux.md",
+    "OS/02.2 C Programming tools.md",
+    "OOP/examples/StringsExample/src/packages/Scribe.java",
+    "OOP/examples/StringsExample/src/App.java",
+    "OOP/examples/StringsExample/src/packages",
+    "OOP/examples/StringsExample/README.md",
+    "OOP/examples/StringsExample/src",
+    "OOP/examples/StringsExample",
+    "OOP/examples/PrimoEsempio/src/transport/Mechanic.java",
+    "OOP/examples/PrimoEsempio/src/transport/Car.java",
+    "OOP/examples/PrimoEsempio/src/transport",
+    "OOP/Lezione 4 - JUnit.md",
+    "OOP/Lezione 3 - Chars and Strings.md",
+    "OOP/Lezione 2 - Java Basic Functions.md",
+    "OS/02.1 Unix_Linux commands.md",
+    "OS/01.2 Operating systems classification.md",
     "OOP/Lezione 1 - The Java Environment.md",
-    "OOP/img/java_working.png",
-    "chimica/7+ - Tensione di Vapore e Diagrammi di fase.md",
-    "chimica/7 - Gas.md",
-    "chimica/6 - Orbitali Molecolari.md",
-    "chimica/3 - Orbitali Atomici.md",
-    "Informatica/16 - Strutture dati complesse (e dizionari).md",
-    "Informatica/13 - Componenti computer.md",
-    "Informatica/9 - Numeri relativi (continuo lezione5).md",
-    "Informatica/3 - Operatori numerici.md",
-    "Informatica/1 - Introduzione alla programmazione.md",
-    "Analisi/06. Operazioni e Grafici delle Funzioni.md",
+    "OOP/examples/PrimoEsempio/bin/Car.class",
+    "OOP/examples/PrimoEsempio/src/Car.java",
+    "OOP/examples/PrimoEsempio/README.md",
     "Pasted image 20260925085638.png",
     "OS/img/system_call.png",
     "OS/img/dirs.png",
@@ -229,7 +203,17 @@
     "OS/img/Pasted image 20260924105520.png",
     "Pasted image 20260924110447.png",
     "Pasted image 20260924105520.png",
+    "Database/Esempi Trigger.md",
+    "Database/14 - Trigger.md",
+    "Database/3 - Entità-Relazione.md",
+    "Database/Controllo dell'acceso.md",
+    "OOP/1-lecture.md",
+    "Cose da fare in pista.md",
+    "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
+    "Database/5 - Ristrutturazione.md",
+    "Database/6 - Gestione del tempo.md",
     "Database/img/binary_relationship.png",
+    "Database/img/redundancy.png",
     "Untitled.canvas"
   ]
 }

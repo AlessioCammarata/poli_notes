@@ -178,28 +178,48 @@ objArray[0] = "Hello"; // ArrayStoreException!
 Allow to express constraints when using generic types:
 - \<?>
 	- Unknown, unbounded
+- <\? extends B> : upper bound: only sub-types of B (Including B) 
+- <\? super D> : lower bound: only super-types of D (Including D)
 ```java
 void clearFirst(Pair<?> p){
 	p.set1st("");
 }
 ```
 It's not possible to assign anything to the \<?>. (unknown)
-- <>
-- <>
 
 Example
 ```java
+/*
+With this declaration, a `Comparator<Integer>` works for a `Pair<Integer>`, but a `Comparator<Number>` does not, because `Comparator<Number>` is not a subtype of `Comparator<Integer>`.
+*/
 <T> void sort(Pair<T> p, Comparator<T> cmp){
-	if(cmp.compare(p.first,)){
+	if(cmp.compare(p.first(),p.second()) > 0)){
 		T tmp = p.first();
 		p.set1st(p.second());
 		p.set2nd(tmp);
 	}
 }
 
-
 Pair<Integer> pi = new Pair<>(4,2);
 Comparator ci = (i1,i2)->i1.compareTo(i2);
 sort(pi, ci);
-Comparator<
+Comparator<Number> cn = (n1,n2)-> Double.compare(n1.doubleValue(), n2.doubleValue()); 
+sort(pi,cn); //Method not applicable for the argument
+
+//Working example
+<T> void sort(Pair<T> p, Comparator<? super T> cmp){ //Comparator of any superclass
+	if(cmp.compare(p.first(),p.second()) > 0)){
+		T tmp = p.first();
+		p.set1st(p.second());
+		p.set2nd(tmp);
+	}
+}
+//Why does it work?
+/*
+`Number` is a supertype of `Integer`. A `Comparator<Number>` can compare two `Integer` objects because integers are also numbers.
+
+`Comparator<? super T>` therefore allows comparators defined for `T` or any of its supertypes, without requiring the generic types to be identical.
+*/
 ```
+>Perché è sicuro? 
+>Il metodo deve confrontare due oggetti `Integer`. Un comparatore che accetta `Number` o `Object` può comunque riceverli, perché un `Integer` è anche un `Number` e un `Object`.

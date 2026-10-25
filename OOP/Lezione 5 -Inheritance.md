@@ -725,8 +725,13 @@ Comparable obj = new Comparable(){ //Anonymous class implementing comparable beh
 	public int compare(...){...}
 };
 
-Consumer<Song> consumerOfSongs2 = new Consumer<Song>(){
-	
+Consumer<Song> consumerOfSongs= new Consumer<Song>(){ 
+	@Override 
+	public void accept(Song s) { 
+		for (String v : s.getVerses()) { 
+			IO.println(v.toUpperCase()); 
+		} 
+	} 
 };
 ```
 Interfaces can be used to instantiate anonymous local classes.
