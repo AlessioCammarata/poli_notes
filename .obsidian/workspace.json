@@ -34,9 +34,23 @@
               "icon": "lucide-file",
               "title": "04.2 Theoretical Aspects of processes"
             }
+          },
+          {
+            "id": "918b18b1ce2be3c6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OOP/Lezione 7 - Java Collections.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Lezione 7 - Java Collections"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -182,12 +196,17 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "bc8ce6bafb41ffa1",
+  "active": "918b18b1ce2be3c6",
   "lastOpenFiles": [
-    "OS/04.1 Introduction to Linux Processes.md",
-    "OS/04.2 Theoretical Aspects of processes.md",
-    "OS/03.2 Directories in Linux.md",
     "OOP/Lezione 6 - Generics.md",
+    "OOP/Lezione 7 - Java Collections.md",
+    "OOP/img/implementations.png",
+    "OOP/img/interfaces.png",
+    "OS/04.3 Advanced Control (exec).md",
+    "OS/04.2 Theoretical Aspects of processes.md",
+    "OOP/Lezione 4 - JUnit.md",
+    "OS/04.1 Introduction to Linux Processes.md",
+    "OS/03.2 Directories in Linux.md",
     "OOP/Lezione 5 -Inheritance.md",
     "OOP/Lezione 3 - Chars and Strings.md",
     "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop/test/beehive/TestApp.class",
@@ -200,7 +219,6 @@
     "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/App.class",
     "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/beehive",
     "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop",
-    "OOP/Lezione 4 - JUnit.md",
     "OOP/Lezione 2 - Java Basic Functions.md",
     "OOP/examples/javabasics/secondProject_LZ/README.md",
     "OOP/examples/javabasics/firstProject/README.md",
@@ -219,17 +237,12 @@
     "Informatica/16 - Strutture dati complesse (e dizionari).md",
     "Informatica/13 - Componenti computer.md",
     "Informatica/9 - Numeri relativi (continuo lezione5).md",
-    "Informatica/3 - Operatori numerici.md",
-    "Informatica/1 - Introduzione alla programmazione.md",
-    "Analisi/06. Operazioni e Grafici delle Funzioni.md",
     "Pasted image 20260925085638.png",
     "OS/img/system_call.png",
     "OS/img/dirs.png",
     "OS/img/Pasted image 20260924110447.png",
     "OS/img/Pasted image 20260924105520.png",
     "Pasted image 20260924110447.png",
-    "Pasted image 20260924105520.png",
-    "Database/img/binary_relationship.png",
     "Untitled.canvas"
   ]
 }
