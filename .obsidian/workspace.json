@@ -8,36 +8,63 @@
         "type": "tabs",
         "children": [
           {
-            "id": "eed8a55ce61a7619",
+            "id": "623132fde621a6c9",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OOP/Lezione 6 - Generics.md",
+                "file": "OS/04.3 Advanced Control (exec).md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lezione 6 - Generics"
+              "title": "04.3 Advanced Control (exec)"
             }
           },
           {
-            "id": "918b18b1ce2be3c6",
+            "id": "bc8ce6bafb41ffa1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OOP/Lezione 7 - Java Collections.md",
+                "file": "OS/04.2 Theoretical Aspects of processes.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Lezione 7 - Java Collections"
+              "title": "04.2 Theoretical Aspects of processes"
+            }
+          },
+          {
+            "id": "9b5163ee20731511",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OS/04.5 Shell command for process management.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "04.5 Shell command for process management"
+            }
+          },
+          {
+            "id": "1481e1947ea0a6c6",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OS/04.4 Signals.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "04.4 Signals"
             }
           }
         ],
-        "currentTab": 2
-        ]
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -183,59 +210,54 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "918b18b1ce2be3c6",
-  "active": "eed8a55ce61a7619",
+  "active": "1481e1947ea0a6c6",
   "lastOpenFiles": [
-    "OOP/Lezione 6 - Generics.md",
+    "OS/04.3 Advanced Control (exec).md",
+    "OS/04.2 Theoretical Aspects of processes.md",
+    "OS/04.5 Shell command for process management.md",
+    "OS/04.4 Signals.md",
+    "OS/04.1 Introduction to Linux Processes.md",
     "OOP/Lezione 7 - Java Collections.md",
+    "OOP/Lezione 6 - Generics.md",
     "OOP/img/implementations.png",
     "OOP/img/interfaces.png",
-    "OS/04.3 Advanced Control (exec).md",
-    "OOP/Lezione 5 -Inheritance.md",
-    "OOP/Lezione 6 - Generics.md",
-    "OS/01.1 - Introduction to Operating Systems.md",
-    "OS/img/Vim.png",
-    "OS/04.2 Theoretical Aspects of processes.md",
-    "OS/04.1 Introduction to Linux Processes.md",
-    "OS/03.2 Directories in Linux.md",
-    "OS/03.1 Files in Linux.md",
-    "OS/02.2 C Programming tools.md",
-    "OOP/examples/StringsExample/src/packages/Scribe.java",
-    "OOP/examples/StringsExample/src/App.java",
-    "OOP/examples/StringsExample/src/packages",
-    "OOP/examples/StringsExample/README.md",
-    "OOP/examples/StringsExample/src",
-    "OOP/examples/StringsExample",
-    "OOP/examples/PrimoEsempio/src/transport/Mechanic.java",
-    "OOP/examples/PrimoEsempio/src/transport/Car.java",
-    "OOP/examples/PrimoEsempio/src/transport",
     "OOP/Lezione 4 - JUnit.md",
+    "OS/03.2 Directories in Linux.md",
+    "OOP/Lezione 5 -Inheritance.md",
     "OOP/Lezione 3 - Chars and Strings.md",
+    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop/test/beehive/TestApp.class",
+    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop/test/beehive",
+    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop/test",
+    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop",
+    "OOP/examples/javabasics/beeHive/target/test-classes/it/polito",
+    "OOP/examples/javabasics/beeHive/target/test-classes/it",
+    "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/beehive/Bee.class",
+    "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/App.class",
+    "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop/beehive",
+    "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop",
     "OOP/Lezione 2 - Java Basic Functions.md",
+    "OOP/examples/javabasics/secondProject_LZ/README.md",
+    "OOP/examples/javabasics/firstProject/README.md",
+    "OOP/examples/javabasics/README.md",
+    "OOP/examples/StringsExample/README.md",
+    "OS/02.2 C Programming tools.md",
+    "OS/03.1 Files in Linux.md",
     "OS/02.1 Unix_Linux commands.md",
-    "OS/01.2 Operating systems classification.md",
+    "OS/img/Vim.png",
     "OOP/Lezione 1 - The Java Environment.md",
-    "OOP/examples/PrimoEsempio/bin/Car.class",
-    "OOP/examples/PrimoEsempio/src/Car.java",
-    "OOP/examples/PrimoEsempio/README.md",
+    "OOP/img/java_working.png",
+    "chimica/7+ - Tensione di Vapore e Diagrammi di fase.md",
+    "chimica/7 - Gas.md",
+    "chimica/6 - Orbitali Molecolari.md",
+    "chimica/3 - Orbitali Atomici.md",
+    "Informatica/16 - Strutture dati complesse (e dizionari).md",
+    "Informatica/13 - Componenti computer.md",
     "Pasted image 20260925085638.png",
     "OS/img/system_call.png",
     "OS/img/dirs.png",
     "OS/img/Pasted image 20260924110447.png",
     "OS/img/Pasted image 20260924105520.png",
     "Pasted image 20260924110447.png",
-    "Pasted image 20260924105520.png",
-    "Database/Esempi Trigger.md",
-    "Database/14 - Trigger.md",
-    "Database/3 - Entità-Relazione.md",
-    "Database/Controllo dell'acceso.md",
-    "OOP/1-lecture.md",
-    "Cose da fare in pista.md",
-    "Database/4 - Traduzione dello schema ER nel modello logico relazionale.md",
-    "Database/5 - Ristrutturazione.md",
-    "Database/6 - Gestione del tempo.md",
-    "Database/img/binary_relationship.png",
-    "Database/img/redundancy.png",
     "Untitled.canvas"
   ]
 }
