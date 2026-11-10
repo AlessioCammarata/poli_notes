@@ -327,3 +327,146 @@ else
 	IO.println("Nobody likes Reading");
 ```
 ---
+###### Exercise
+From a stream of Dummt of Person, retrieve how many Persona have a name longer than 4 letter containing letter 'f'
+```java
+nMatches = DummyPList.stream()
+				.map(Dummy::getDummy)
+				.map(Person::getName)
+				.filter(x->x.length()>4 && x.toUpperCase.contains("F"))
+				.count();
+// 1
+```
+---
+##### Other Terminal Operations
+**Stateless operations** 
+- No internal storage is required – E.g. map, filter 
+**Stateful operations** 
+- Require internal storage, can be 
+	- **Bounded**: require a fixed amount of memory – E.g. reduce, limit 
+	- **Unbounded**: require unlimited memory – E.g. sorted, collect
+
+**Operations**:
+- reduce()
+- collect()
+###### Reduce
+**reduce()** T, BinaryOperator\<T> 
+- Reduces the elements using an identity value and an associative merge operator 
+>To compute the maximum in positive numbers the identity value is 0.
+>In multiplication is number 1.
+>
+>It also need an associative merge operator: starting from the result it aggregate the results
+>- The full stream collpase into a single value, for example the max.
+###### Parallel streams
+You can parallelize the stream, in each of the partition of the streams you can apply the reduction, so it is faster.
+```java
+IntStream.of(numbers) 
+		.parallel() //up to n times faster (n = number of CPU cores)
+		.reduce(0, Math::max); 
+```
+>More efficient if we have large sources.
+
+Example:
+```java
+//Given a stream of number filter out odd numbers, than sum
+List<Integer> numbers = new LinkedList<Integer>();
+nummbers.add(1);
+nummbers.add(3);
+nummbers.add(2);
+nummbers.add(8);
+
+int evenSum = numbers.stream()
+					.filter(n->n%2==0) //filter odd
+					.reduce(0, (n1, n2)->n1+n2);
+// 10
+```
+
+Example:
+```java
+// Concatenate all the strings into one sentence
+ List<String> words = new LinkedList<String>();
+ words.add("koala");
+ words.add("daino");
+ words.add("topo");
+ words.add("malato");
+ 
+ String concaString = words.stream()
+						 .reduce("", (s1, s2)->s1+ " " +s2);
+ // koala daino topo malato
+```
+###### Collect
+**collect()** Collector<T,A,R> 
+- Reduces the stream to create a collection such as a List, a Map, or even an Integer.
+
+Stream.collect() takes as argument a recipe for accumulating the elements of a stream into a summary result.
+- It is a **stateful** operation
+```java
+class Acc { int n; } 
+int s = Stream.of(numbers). 
+			collect(Acc::new,           // supplier 
+					(a,i) -> a.n+=i,    // accumulator 
+					(a1,a2)->a1.n+=a2.n // combiner 
+				).n;
+```
+>Combiner is used when you have parallelized stream, so that you can combine the result of different streams (parallel streams).
+
+It's useful if we need to collect in a more complex (box superiore tipo) structure, for instance:
+```java
+List n = Stream.of(numbers). 
+			collect(LinkedList::new, // supplier 
+					List::add,       // accumulator 
+					List::addAll);   // combiner
+```
+>This way you obtain a List of numbers
+
+This also support the **Lazy Evaluation**.
+Examples:
+```java
+//We want to collect into a List
+List<Integer> numbers = new LinkedList<Integer>();
+nummbers.add(1);
+nummbers.add(3);
+nummbers.add(2);
+nummbers.add(8);
+
+List<Integer> oodNumbers = numbers.stream()
+								.filter(x->x%2!=0) // just odd numbers
+								.collect(LinkeList::new
+										List::add,
+										List::addAll
+									);
+oddNumbers.forEach(IO::println); //FOREACH of collections not of streams
+// 1
+// 3
+
+// (1,3) -> LinkedList of 2 elements
+```
+
+>You can also use a collector:
+```java
+List<Integer> oodNumbers = numbers.stream()
+								.filter(x->x%2!=0) // just odd numbers
+								.collect(Collectors.toList());
+// (1,3) -> LinkedList of 2 elements
+```
+
+Example:
+```java
+// Collect all person objects with more than one hooby into a new container
+//To many stuff to write
+
+List<Person> moreThanOneHobby = Arrays.stream(arrayOfPersons)
+									.filter(x->x.getHobbies().size() > 1)
+									.collect(Collectors.toList());	
+// Persons
+//Return the sorted set of hobbies that people older than 30 have
+SortedSet<String> moreThanThirtyHobbies = Arrays.stream(arrayOfPersons)
+									.filter(x->x.getAge()>30)
+									.map(Person::getHobbies)
+									.flatMap(Collection::stream)
+									.collect(TreeSet::new,
+											TreeSet::add,
+											TreeSet::addAll);
+// All hobbies uniquely, sorted and filtered.
+```
+---

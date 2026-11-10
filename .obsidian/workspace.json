@@ -41,12 +41,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OS/02.3 Regular expressions and find.md",
+                "file": "OOP/Lezione 9 - Java Stream API.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02.3 Regular expressions and find"
+              "title": "Lezione 9 - Java Stream API"
             }
           }
         ],
@@ -198,9 +198,9 @@
   },
   "active": "a08cb48f4037eb15",
   "lastOpenFiles": [
+    "OS/02.3 Regular expressions and find.md",
     "OS/04.7 Shell commands for Pipes and redirections.md",
     "OS/04.6 Inter-process communication and Pipe.md",
-    "OS/02.3 Regular expressions and find.md",
     "OS/02.2 C Programming tools.md",
     "OS/img/Vim.png",
     "OS/img/pipe.png",
