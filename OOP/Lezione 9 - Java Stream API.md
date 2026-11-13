@@ -453,7 +453,7 @@ List<Integer> oodNumbers = numbers.stream()
 Example:
 ```java
 // Collect all person objects with more than one hooby into a new container
-//To many stuff to write
+//To many stuff to write (it's an array of people with name, age, hobbies)
 
 List<Person> moreThanOneHobby = Arrays.stream(arrayOfPersons)
 									.filter(x->x.getHobbies().size() > 1)
@@ -469,4 +469,257 @@ SortedSet<String> moreThanThirtyHobbies = Arrays.stream(arrayOfPersons)
 											TreeSet::addAll);
 // All hobbies uniquely, sorted and filtered.
 ```
+---
+#### PREDEFINED COLLECTORS
+Predefined recipes are returned by static methods in **Collectors** class 
+- Method are easier to access with: 
+	import static java.util.stream.Collectors.\*;
+```java
+double averageWord = Stream.of(txta)
+				.collect(averagingInt(String::length));
+```
+##### Summarizing Collectors
+
+| Collector               | Return                      | Purpose                                          |
+| ----------------------- | --------------------------- | ------------------------------------------------ |
+| counting()              | long                        | Count number of elements in stream               |
+| maxBy() / minBy()       | T (elements type)           | Find the min/max according to given Comparator   |
+| summing***Type***()     | ***Type***                  | Sum the elements                                 |
+| averaging***Type***()   | ***Type***                  | Compute arithmetic mean                          |
+| summarizing***Type***() | ***Type***SummaryStatistics | Compute several summary statistics from elements |
+
+>Type can be int, long or double.
+```java
+//Compute sum, max, mean
+IntStream five = Stream.of(1,2,3,4,5)
+						.mapToInt(Integer::valueOf);
+
+//Using the stream as it is you can perform only one operation
+int max = five
+			.max() //Return an optional
+			.orElse(0); // To get the int inside the Optional
+
+//For mean, and sum we need to redefine the same stream, but starting from a new stream, because five has been used yet.
+//That's why we use collectors
+IntSummaryStatistics fiveCollectors = Stream.of(1,2,3,4,5)
+						.collect(summarizingInt(Integer::valueOf));
+IO.println(fiveCollectors);
+// count, sum, min, average, max
+```
+
+Example with Lyrics:
+```java
+//The lyric is a single String, we need to split it in individual words
+String[] words = Lyrics.ALL_ALONG_THE_WATCHTOWER.split("[ ,.\n?'\"]+");
+IO.println(Arrays.toString(words));
+
+Stream<String> streamWord = Stream.of(words); //in this case return Stream of String
+
+//Find the min and max length of words
+var sum = streamWord
+	.filter(Predicate.not(String::isEmpty))
+	.collect(summarizingInt(String::length); //Transform the element into Int
+
+IO.println("Min: " + sum.getMin() + ", Max: " + sum.getMax());
+// Min: 1, Max: 11
+```
+##### Accumulating Collectors
+
+| Collector                    | Return         | Purpose                                                                       |
+| ---------------------------- | -------------- | ----------------------------------------------------------------------------- |
+| toList()                     | List\<T>       | Accumulates into a new List                                                   |
+| toSet()                      | Set\<T>        | Accumulates into a new Set (i.e. discarding duplicates)                       |
+| toCollection (Supplier<> cs) | Collection\<T> | Accumulate into the collection provided by given Supplier                     |
+| joining()                    | String         | Concatenates into a String Optional arguments: separator, prefix, and postfix |
+```java
+//Find the individual words used in the Lyrics
+Collection<String> unique = Stream.of(words)
+							.filter(Predicate.not(String::isEmpty))
+							.distinct() //We discard duplicates
+							.toList(); //equal to collect(toList())
+//OPTION 2
+unique = Stream.of(words)
+			.filter(Predicate.not(String::isEmpty))
+			.collect(toSet()); //So we discard duplicates
+```
+Other example
+```java
+//Find the individual words used in the Lyrics
+// and show them sorted from longest to shortest
+unique = Stream.of(words)
+			.filter(Predicate.not(String::isEmpty))
+			.map(String::toLowerCase) //Optional actually
+			.distinct() //We discard duplicates
+			.sorted(Comparator.comparingInt(String::length).reversed())
+			.toList(); //equal to collect(toList())
+			
+//Option 2
+unique = Stream.of(words)
+			.filter(Predicate.not(String::isEmpty))
+			.map(String::toLowerCase) //Optional actually
+			.collect(toCollection(
+				()->new TreeSet<>(Comprator.comparingInt(String::length)
+								.reversed()
+								.thenComparing(Comparator.naturalOrder())
+								)
+			));
+```
+>Then comparing means, if the first comparison return equal, then order using the second comparator.
+##### Group container collectors
+| Collector                              | Return                 | Purpose                                                                                                                                                        |
+| -------------------------------------- | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| groupingBy (Function <T,K> classifier) | Map<K, List\<T>>       | Map according to the key extracted (by classifier) and add to list. <br><br>Optional arguments: <br>- Downstream Collector (nested) <br>- Map factory supplier |
+| partitioningBy (Predicate\<T> p)       | Map<Boolean, List\<T>> | Split according to partition function (p) and add to list. <br><br>Optional arguments: <br>- Downstream Collector (nested) <br>- Map supplier                  |
+Example
+```java
+Map<Integer, List<String>> byLength = 
+	Stream.of(txta).distinct() 
+	.collect(groupingBy(String::length));
+```
+Other example:
+```java
+//Count the frequency of words
+unique = Stream.of(words)
+			.filter(Predicate.not(String::isEmpty))
+			.map(String::toLowerCase);
+
+Map<String,List<String>> map = unique
+			.collect(
+				groupingBy(s->s)
+			);
+//This way you get for each word the other repeated words in the list, if we apply a count operation on the list we get the frequency of words
+Map<String,Long> frequency = unique
+			.collect(
+				groupingBy(
+					word->word, //The word is the key
+					//toList() //default downstream collector
+					counting()
+				)
+			);
+//I obtained the frequency of each words in the song
+
+//Print the most common words
+frequency.entrySet() //Set of all the entries
+	.stream() //We get a stream from the <Set> collection
+	.sorted(
+		//Comparator.comparing(Map.Entry<String,Long>::getValue).reversed()		    // OR
+		(e1, e2) -> (int)(e2.getValue() - e1.getValue())
+	)
+	.limit(1)
+	.map( e-> e.getKey() + " : " + e.getValue())
+	.forEach(IO::println)
+;
+// {the=12}
+```
+
+```java
+//How many words for each length?
+Map<Long,Long> lengthFrequency = Stream.of(words)
+			.filter(Predicate.not(String::isEmpty))
+			.map(String::toLowerCase)
+			.collect(
+				groupingBy(
+					word->word.length(), //String::length
+					counting()
+				)
+			)
+;
+IO.println(lengthFrequency)
+// {1=7, 2=23, 3=34, ...}
+```
+##### Collector Composition
+
+| Collector                                                       | Purpose                                                                     |
+| --------------------------------------------------------------- | --------------------------------------------------------------------------- |
+| ollectingAndThen (Collector<T,?,R> cltr, Function<R,RR> mapper) | Apply a transformation (mapper) **after** performing collection (cltr)      |
+| ng (Function<T,U> mapper, Collector<U,?,R> cltr)                | Performs a transformation (mapper) **before** applying the collector (cltr) |
+```java
+// most frequent words map
+Map<Long,List<String>> mfwp = 
+			map.entrySet().stream() // word::Stringm freq::Long
+			.collect(
+				groupingBy(
+					Map.Entry::getValue, //Classifier: freq
+					mapping(
+						Map.Entry::getKey, // (word, freq) --> word
+						toList() // collector: list of words
+					)
+				)
+			)
+;
+IO.println(mfwp);
+//{1=[..], 2=[...], 3=[is, to, watchtower, there], 4=[all, along, and, of], 12[the]}
+
+//If I want them reversed
+mfwp.
+	map.entrySet().stream() // word::Stringm freq::Long
+	.collect(
+		groupingBy(
+			Map.Entry::getValue, //Classifier: freq
+			() -> new TreeMap<>(Comparator.reverseOrder()), // supplier of the map 
+			mapping(
+				Map.Entry::getKey, // (word, freq) --> word
+				toList() // collector: list of words
+			)
+		)
+	)
+;
+IO.println(mfwp);
+//{12=[the], 4=[all, along, and, of], 3=[is, to, watchtower, there], 2=[...], 1[...]}
+```
+---
+#### Custom Collectors
+>Probably we won't use this
+
+It exist a Colllector interface to implements which is really hard to use.
+
+Example
+```java
+//Collector used to compute the average length of a stream of String
+//Uses the AverageAcc accumulator object
+Collector avgCollector = Collector.of( 
+	AverageAcc::new, // supplier 
+	AverageAcc::addWord,// accumulator 
+	AverageAcc::merge , // combiner 
+	AverageAcc::average // finisher 
+);
+
+class AverageAcc { 
+	private long length; 
+	private long count; 
+	public void addWord(String w){ 
+		this.length+=w.length();// accumulator 
+		count++; 
+	} 
+	public double average(){ // finisher 
+		return length*1.0/count; 
+		
+	} 
+	public AverageAcc merge(AverageAcc o){ 
+		this.length+=other.length; 
+		this.count+=other.count; // combiner 
+		return this;
+	} 
+}
+```
+---
+#### EXCEPTIONS AND FUNCTIONAL INTERFACES
+Functional interfaces largely used in **Stream API do not include exceptions.**
+Lambdas and method reference are not allowed to throw (checked) exceptions
+- This is mainly due to the intermediate code that does not handle exceptions 
+- Unchecked exceptions work as usual and interrupt the stream processing
+```java
+static int convert(String s) throws NotANumber { 
+	try { 
+		return Integer.parseInt(s); 
+	}catch(NumberFormatException e) { 
+		throw new NotANumber(e); 
+	}
+}
+
+Stream.of("1","2","B","6","30") 
+	.mapToInt( s -> convert(s) ) // Unhandled exception in convert 
+	.sum();
+```
+>Exists some workaround, not part of the exam.
 ---
