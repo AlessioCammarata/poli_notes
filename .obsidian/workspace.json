@@ -41,24 +41,26 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OS/05.2 pthread library.md",
+                "file": "OS/06.1 shells.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "05.2 pthread library"
+              "title": "06.1 shells"
             }
           },
           {
-            "id": "964099e796a872a4",
+            "id": "29fbbe6634263a60",
             "type": "leaf",
             "state": {
-              "type": "image",
+              "type": "markdown",
               "state": {
-                "file": "OS/img/threads.png"
+                "file": "OS/06.2 shell scripts.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-image",
-              "title": "threads"
+              "icon": "lucide-file",
+              "title": "06.2 shell scripts"
             }
           },
           {
@@ -135,7 +137,8 @@
       }
     ],
     "direction": "horizontal",
-    "width": 200
+    "width": 200,
+    "collapsed": true
   },
   "right": {
     "id": "ed1933459f3df990",
@@ -221,17 +224,19 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "50f326ddb85c6f2e",
+  "active": "29fbbe6634263a60",
   "lastOpenFiles": [
-    "OS/05.1 Threads.md",
-    "OS/05.2 pthread library.md",
+    "OS/06.1 shells.md",
+    "OS/06.2 shell scripts.md",
     "OS/02.4 Filters.md",
+    "OS/05.2 pthread library.md",
+    "OOP/Lezione 10 - IO.md",
+    "OS/img/threads.png",
+    "OS/05.1 Threads.md",
     "OS/02.3 Regular expressions and find.md",
     "OS/01.1 - Introduction to Operating Systems.md",
-    "OS/img/threads.png",
     "OOP/Lezione 9 - Java Stream API.md",
     "OS/04.7 Shell commands for Pipes and redirections.md",
-    "OOP/Lezione 10 -.md",
     "OS/03.2 Directories in Linux.md",
     "OS/03.1 Files in Linux.md",
     "OS/02.2 C Programming tools.md",
@@ -250,9 +255,7 @@
     "OS/img/Vim.png",
     "OS/img/pipe.png",
     "OOP/Lezione 7 - Java Collections.md",
-    "OOP/Lezione 8 - Exceptions.md",
     "OOP/img/exceptions_hierarchy.png",
-    "OOP/Lezione 6 - Generics.md",
     "OOP/img/implementations.png",
     "OOP/img/interfaces.png",
     "OOP/examples/javabasics/beeHive/target/test-classes/it/polito/oop/test/beehive/TestApp.class",
@@ -267,7 +270,6 @@
     "OOP/examples/javabasics/beeHive/target/classes/it/polito/oop",
     "OOP/img/java_working.png",
     "Pasted image 20260925085638.png",
-    "OS/img/threads.png",
     "OS/img/dirs.png",
     "Untitled.canvas"
   ]
