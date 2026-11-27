@@ -27,40 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OS/05.1 Threads.md",
+                "file": "OS/06.2 shell scripts.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "05.1 Threads"
-            }
-          },
-          {
-            "id": "fb7aac2dbe8e8d53",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "OS/06.1 shells.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "06.1 shells"
-            }
-          },
-          {
-            "id": "29fbbe6634263a60",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "OOP/Lezione 9 - Java Stream API.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "Lezione 9 - Java Stream API"
+              "title": "06.2 shell scripts"
             }
           },
           {
@@ -78,17 +50,31 @@
             }
           },
           {
-            "id": "394b99f12770ddd2",
+            "id": "3360a702d83d0de1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "OS/02.4 Filters.md",
+                "file": "OS/06.3 Bash script exercises.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "02.4 Filters"
+              "title": "06.3 Bash script exercises"
+            }
+          },
+          {
+            "id": "861a9b154c904723",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "OS/07.1 Critical sections.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "07.1 Critical sections"
             }
           }
         ],
@@ -238,12 +224,15 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "c513b4f4ee91e6af",
+  "active": "861a9b154c904723",
   "lastOpenFiles": [
-    "OOP/Lezione 9 - Java Stream API.md",
-    "OOP/Lezione 11 - DateTime.md",
-    "OOP/Lezione 10 - IO.md",
+    "OS/06.3 Bash script exercises.md",
+    "OS/07.1 Critical sections.md",
+    "OS/06.2 shell scripts.md",
     "OS/05.1 Threads.md",
+    "OOP/Lezione 11 - DateTime.md",
+    "OOP/Lezione 9 - Java Stream API.md",
+    "OOP/Lezione 10 - IO.md",
     "OS/04.7 Shell commands for Pipes and redirections.md",
     "OS/04.6 Inter-process communication and Pipe.md",
     "OS/04.5 Shell command for process management.md",
@@ -264,13 +253,10 @@
     "OS/img/Vim.png",
     "OS/img/dirs.png",
     "OS/img/pipe.png",
-    "OS/06.2 shell scripts.md",
     "OS/06.1 shells.md",
     "OS/05.2 pthread library.md",
     "Tecniche di Programmazione/Problemi di ordinamento.md",
     "Tecniche di Programmazione/GOMOKU.md",
-    "Tecniche di Programmazione/Elaborazione testi a livello carattere.md",
-    "verilog/appunti L10-verilog.md",
     "OOP/img/exceptions_hierarchy.png",
     "OOP/img/implementations.png",
     "OOP/img/interfaces.png",
